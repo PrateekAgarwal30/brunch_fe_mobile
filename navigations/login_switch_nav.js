@@ -2,9 +2,9 @@ import React from 'react';
 import {Text} from 'react-native';
 import Home from '../screens/home'
 import Login from '../screens/login'
-import {createStackNavigator} from 'react-navigation';
+import {createSwitchNavigator} from 'react-navigation';
 
-export const LoginStackNavigator = createStackNavigator({
+export const LoginSwitchNavigator = createSwitchNavigator({
     Home : {
         screen : Home 
     },
