@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import { connect } from 'react-redux'
+import { login } from '../redux/actions'
 import {
     Container,
     Header,
@@ -15,14 +17,14 @@ import {
 } from "native-base";
 import { ipAddress } from "../constants";
 import { Constants } from "expo";
-export default class Login extends React.Component {
+class Login extends React.Component {
     state = {
         validEmail: null,
         validPassword: null,
         email: null,
         password: null,
         error: null
-    }
+    };
     componentDidMount() {
         // fetch(ipAddress)
         //   .then(res => {
@@ -33,35 +35,42 @@ export default class Login extends React.Component {
         //   })
         //   .catch(ex => console.log(ex.message));
     }
-    _checkLogin = async () => {
+    _checkLogin = () => {
+        this.props.login(this.state.email, this.state.password);
+        console.log(this.props.user);
+    };
+    _checkLogin1 = async () => {
         const data = {
             email: this.state.email,
             password: this.state.password
-        }
+        };
         const url = ipAddress + "/api/auth";
         console.log(url);
         fetch(url, {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
                 // "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: JSON.stringify(data), // body data type must match "Content-Type" header
-        }).then(res => {
-            return res.json()
-        }).then(result => {
-            if (result._status == "fail") {
-                this.setState({
-                    ...this.state,
-                    error: result._message
-                })
-            } else {
-                alert(result._message)
-            }
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
         })
-            .catch(ex => console.log(ex.message));
-    }
-    _validEmailInput = (x) => {
+            .then(res => {
+                return res.json();
+            })
+            .then(result => {
+                if (result._status == "fail") {
+                    this.setState({
+                        ...this.state,
+                        error: result._message
+                    });
+                } else {
+                    alert(result._message);
+                    this.props.navigation.navigate("Home");
+                }
+            })
+            .catch(ex => alert(`${ex.message}. Please try later`));
+    };
+    _validEmailInput = x => {
         reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         this.setState({
             ...this.state,
@@ -70,8 +79,8 @@ export default class Login extends React.Component {
             error: null
         });
         // console.log(reg.test(x) != 0);
-    }
-    _validPasswordInput = (x) => {
+    };
+    _validPasswordInput = x => {
         if (x.length >= 5) {
             this.setState({
                 ...this.state,
@@ -87,29 +96,37 @@ export default class Login extends React.Component {
                 error: null
             });
         }
-    }
+    };
     render() {
         return <Container style={styles.container}>
-            <Text style={{ textAlign: 'center', alignItems: 'center' }}>
-                {JSON.stringify(this.state)}
+            <Text style={{ textAlign: "center", alignItems: "center" }}>
+              {JSON.stringify(this.state)}
             </Text>
             <Card style={styles.card}>
-                <Text style={{ textAlign: 'center', alignItems: 'center', color: 'red' }}>{this.state.error}</Text>
-                <Form>
-                    <FormItem floatingLabel>
-                        <Label>Email</Label>
-                        <Input style={{ color: this.state.validEmail ? "blue" : "red" }} onChangeText={this._validEmailInput} value={this.state.email} />
-                    </FormItem>
-                    <FormItem floatingLabel last>
-                        <Label>Password</Label>
-                        <Input style={{ color: this.state.validPassword ? "blue" : "red" }} secureTextEntry={true} onChangeText={this._validPasswordInput} value={this.state.password} />
-                    </FormItem>
-                    <Button full primary style={{ paddingBottom: 4 }} onPress={this._checkLogin} disabled={!(this.state.validEmail && this.state.validPassword)}>
-                        <Text> Login </Text>
-                    </Button>
-                </Form>
+              <Text style={{ textAlign: "center", alignItems: "center", color: "red" }}>
+                {JSON.stringify(this.props.user)}
+              </Text>
+              <Form>
+                <FormItem floatingLabel>
+                  <Label>Email</Label>
+                  <Input style={{ color: this.state.validEmail ? "blue" : "red" }} onChangeText={this._validEmailInput} value={this.state.email} />
+                </FormItem>
+                <FormItem floatingLabel last>
+                  <Label>Password</Label>
+                  <Input style={{ color: this.state.validPassword ? "blue" : "red" }} secureTextEntry={true} onChangeText={this._validPasswordInput} value={this.state.password} />
+                </FormItem>
+                <Button full primary style={{ paddingBottom: 4 }} onPress={this._checkLogin} disabled={!(this.state.validEmail && this.state.validPassword)}>
+                  <Text> Login </Text>
+                </Button>
+              </Form>
+              <Container style={styles.registerContainer}>
+                <Text>Don't have Account ?</Text>
+                <Button transparent onPress={() => this.props.navigation.navigate("Register")}>
+                  <Text>Register</Text>
+                </Button>
+              </Container>
             </Card>
-        </Container>;
+          </Container>;
     }
 }
 const styles = StyleSheet.create({
@@ -121,5 +138,18 @@ const styles = StyleSheet.create({
         // backgroundColor: "#0ABDA0",
         justifyContent: "center",
         color: "#fff"
+    },
+    registerContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: "center"
     }
 });
+
+const mapStateToProps = state => ({
+    user: state.user
+})
+const mapActionsToProps = {
+    login: login
+}
+export default connect(mapStateToProps, mapActionsToProps)(Login);

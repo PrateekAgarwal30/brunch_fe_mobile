@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer } from 'react-navigation'
 import { LoginSwitchNavigator } from "./navigations/login_switch_nav";
 import { AppLoading, Asset, Font, Icon } from "expo";
+import store from './redux/store';
+import { Provider } from 'react-redux'
 const AppContainer = createAppContainer(LoginSwitchNavigator);
 export default class App extends React.Component {
   state = {
@@ -26,7 +28,10 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <AppContainer />
+        <Provider store={store}>
+          <AppContainer />
+        </Provider>
+
       );
     }
   }
