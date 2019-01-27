@@ -1,20 +1,20 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import Home from '../screens/home'
 import Login from '../screens/login';
 import Register from '../screens/register';
-import {createSwitchNavigator} from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 
 export const LoginSwitchNavigator = createSwitchNavigator({
-    Home : {
-        screen : Home 
+    Home: {
+        screen: Home
     },
-    Login : {
-        screen : Login
+    Login: {
+        screen: Login
     },
-    Register : {
-        screen : Register
+    Register: {
+        screen: Register
     }
-},{
-    initialRouteName : "Login"
-})
+}, {
+        initialRouteName: "Login"
+    })

@@ -37,7 +37,9 @@ class Login extends React.Component {
     }
     _checkLogin = () => {
         this.props.login(this.state.email, this.state.password);
-        console.log(this.props.user);
+        if(this.props.user.jwtToken){
+            this.props.navigation.navigate('Home');
+        }
     };
     _checkLogin1 = async () => {
         const data = {
