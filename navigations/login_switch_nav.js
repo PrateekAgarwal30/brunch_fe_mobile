@@ -7,13 +7,22 @@ import { createSwitchNavigator } from 'react-navigation';
 
 export const LoginSwitchNavigator = createSwitchNavigator({
     Home: {
-        screen: Home
+        screen: Home,
+        navigationOptions: ({ navigation }) => ({
+            drawerLockMode: 'locked-closed'
+        })
     },
     Login: {
-        screen: Login
+        screen: Login,
+        navigationOptions: ({ navigation }) => ({
+            drawerLockMode: 'locked-closed'
+        })
     },
     Register: {
-        screen: Register
+        screen: Register,
+        navigationOptions: ({ navigation }) => ({
+            drawerLockMode: 'locked-closed'
+        })
     }
 }, {
         initialRouteName: "Login"

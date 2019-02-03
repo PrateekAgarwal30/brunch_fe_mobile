@@ -8,7 +8,7 @@ import { ipAddress } from "../constants";
 export const login = (email, password) => dispatch => {
     dispatch({ type: LOGIN_SENT });
     let jwtToken = null;
-    fetch(ipAddress + "/api/auth", {
+    return fetch(ipAddress + "/api/auth", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         headers: {
             "Content-Type": "application/json"
