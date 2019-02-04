@@ -1,29 +1,37 @@
-import React from 'react';
-import { Text } from 'react-native';
-import Home from '../screens/home'
-import Login from '../screens/login';
-import Register from '../screens/register';
-import { createSwitchNavigator } from 'react-navigation';
+import React from "react";
+import { Text } from "react-native";
+import Home from "../screens/home";
+import Login from "../screens/login";
+import Register from "../screens/register";
+import Profile from "../screens/profile";
+import { createSwitchNavigator, createStackNavigator } from "react-navigation";
 
-export const LoginSwitchNavigator = createSwitchNavigator({
+export const HomeStackNavigator = createStackNavigator(
+  {
     Home: {
-        screen: Home,
-        navigationOptions: ({ navigation }) => ({
-            drawerLockMode: 'locked-closed'
-        })
+      screen: Home
     },
-    Login: {
-        screen: Login,
-        navigationOptions: ({ navigation }) => ({
-            drawerLockMode: 'locked-closed'
-        })
-    },
-    Register: {
-        screen: Register,
-        navigationOptions: ({ navigation }) => ({
-            drawerLockMode: 'locked-closed'
-        })
+    Profile: {
+      screen: Profile
     }
-}, {
+  },
+  {
+      initialRouteName: "Home"
+  }
+);
+export const LoginSwitchNavigator = createSwitchNavigator(
+    {
+        HomeStack: {
+            screen: HomeStackNavigator
+        },
+        Login: {
+            screen: Login
+        },
+        Register: {
+            screen: Register
+        }
+    },
+    {
         initialRouteName: "Login"
-    })
+    }
+);

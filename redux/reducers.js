@@ -1,35 +1,35 @@
 import { combineReducers } from "redux";
-import { LOGIN_FULFILLED, LOGIN_SENT, LOGIN_REJECTED,REGISTER_SENT,REGISTER_FULFILLED,REGISTER_REJECTED } from "./actions";
-const userReducer = (state = { jwtToken: null }, action) => {
+import { LOGIN, REGISTER, PROFILE } from "./actions";
+const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, action) => {
   switch (action.type) {
-    case LOGIN_SENT:
+    case LOGIN.LOGIN_SENT:
       return {
         ...state,
         jwtToken: null,
         err: null
       };
-    case LOGIN_FULFILLED:
+    case LOGIN.LOGIN_FULFILLED:
       return {
         ...state,
         ...action.payload
       };
-    case LOGIN_REJECTED:
+    case LOGIN.LOGIN_REJECTED:
       return {
         ...state,
         ...action.payload
       };
-    case REGISTER_SENT:
+    case REGISTER.REGISTER_SENT:
       return {
         ...state,
         jwtToken: null,
         err: null
       };
-    case REGISTER_FULFILLED:
+    case REGISTER.REGISTER_FULFILLED:
       return {
         ...state,
         ...action.payload
       };
-    case REGISTER_REJECTED:
+    case REGISTER.REGISTER_REJECTED:
       return {
         ...state,
         ...action.payload
@@ -39,7 +39,21 @@ const userReducer = (state = { jwtToken: null }, action) => {
       return { ...state };
   }
 };
-
-export default (reducer = combineReducers({
-  user: userReducer
-}));
+const profileReducer = (state = { jwtToken: null, err: null, isLoading: true }, action) => {
+  switch (action.type) {
+    case PROFILE.GET_PROFILE_FULFILLED:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case PROFILE.GET_PROFILE_REJECTED:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      console.log(action.type);
+      return { ...state };
+  }
+};
+export default reducer = combineReducers({ user: userReducer, profile: profileReducer });

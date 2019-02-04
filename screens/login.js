@@ -39,42 +39,11 @@ class Login extends React.Component {
     this.props
       .login(this.state.email, this.state.password)
       .then(() => {
-        this.props.navigation.navigate("Home");
+        if (this.props.user.jwtToken) this.props.navigation.navigate("Home");
       })
       .catch(error => {
         this.setState({ error });
       });
-  };
-  _checkLogin1 = async () => {
-    const data = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    const url = ipAddress + "/api/auth";
-    console.log(url);
-    fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        "Content-Type": "application/json"
-        // "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(result => {
-        if (result._status == "fail") {
-          this.setState({
-            ...this.state,
-            error: result._message
-          });
-        } else {
-          alert(result._message);
-          this.props.navigation.navigate("Home");
-        }
-      })
-      .catch(ex => alert(`${ex.message}. Please try later`));
   };
   _validEmailInput = x => {
     reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -107,7 +76,7 @@ class Login extends React.Component {
     return (
       <Container style={styles.container}>
         <Text style={{ textAlign: "center", alignItems: "center" }}>
-          {JSON.stringify(this.state)}
+          {this.props.user.err}
         </Text>
         <Card style={styles.card}>
           <Text
