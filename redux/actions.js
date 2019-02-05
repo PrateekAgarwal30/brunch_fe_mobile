@@ -96,7 +96,7 @@ export const getProfile = (jwtToken) => dispatch => {
         if (res._status === "success") {
           dispatch({
             type: PROFILE.GET_PROFILE_FULFILLED,
-            payload: _.pick(res._data,['email','details.email'])
+            payload: _.pick(res._data,['email','details.email','addresses'])
           });
         } else {
           dispatch({

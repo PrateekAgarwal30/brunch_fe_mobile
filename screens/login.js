@@ -19,10 +19,10 @@ import { ipAddress } from "../constants";
 import { Constants } from "expo";
 class Login extends React.Component {
   state = {
-    validEmail: null,
-    validPassword: null,
-    email: null,
-    password: null,
+    validEmail: true,
+    validPassword: true,
+    email: "P@gmail.com",
+    password: "11234",
     error: null
   };
   componentDidMount() {

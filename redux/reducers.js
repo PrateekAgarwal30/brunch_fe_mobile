@@ -39,7 +39,7 @@ const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, act
       return { ...state };
   }
 };
-const profileReducer = (state = { jwtToken: null, err: null, isLoading: true }, action) => {
+const profileReducer = (state = {  }, action) => {
   switch (action.type) {
     case PROFILE.GET_PROFILE_FULFILLED:
       return {
