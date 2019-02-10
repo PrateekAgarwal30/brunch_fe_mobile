@@ -1,22 +1,19 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Image,
+  Text,
+  Button,
+  TouchableHighlight,
+  TextInput
+} from "react-native";
 import { connect } from "react-redux";
 import { login } from "../redux/actions";
-import {
-  Container,
-  Header,
-  Button,
-  Text,
-  Body,
-  Form,
-  Item as FormItem,
-  Input,
-  Label,
-  Title,
-  Card
-} from "native-base";
 import { ipAddress } from "../constants";
 import { Constants } from "expo";
+const { width, height } = Dimensions.get("screen");
 class Login extends React.Component {
   state = {
     validEmail: true,
@@ -25,16 +22,7 @@ class Login extends React.Component {
     password: "11234",
     error: null
   };
-  componentDidMount() {
-    // fetch(ipAddress)
-    //   .then(res => {
-    //     return res.json();
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(ex => console.log(ex.message));
-  }
+  componentDidMount() { }
   _checkLogin = () => {
     this.props
       .login(this.state.email, this.state.password)
@@ -47,6 +35,7 @@ class Login extends React.Component {
   };
   _validEmailInput = x => {
     reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    console.log(x);
     this.setState({
       ...this.state,
       email: x,
@@ -74,75 +63,104 @@ class Login extends React.Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <Text style={{ textAlign: "center", alignItems: "center" }}>
-          {this.props.user.err}
-        </Text>
-        <Card style={styles.card}>
-          <Text
-            style={{ textAlign: "center", alignItems: "center", color: "red" }}
+      <View style={styles.wrapper}>
+        <View style={styles.logoWrapper}>
+          <Image
+            style={styles.logo}
+            source={require("./../assets/logo.png")}
+          />
+          <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
+          <Text>{this.props.user.err}</Text>
+          <TextInput
+            style={styles.textWrapper}
+            placeholder="Email Id"
+            value={this.state.email}
+            onChangeText={this._validEmailInput}
+          />
+          <TextInput
+            style={styles.textWrapper}
+            placeholder="Password"
+            value={this.state.password}
+            onChangeText={this._validPasswordInput}
+            secureTextEntry={true}
+          />
+          <TouchableHighlight
+            style={styles.loginWrapper}
+            onPress={this._checkLogin}
+          // disabled={!(this.state.validEmail && this.state.validPassword)}
           >
-            {JSON.stringify(this.props.user)}
-          </Text>
-          <Form>
-            <FormItem floatingLabel>
-              <Label>Email</Label>
-              <Input
-                style={{ color: this.state.validEmail ? "blue" : "red" }}
-                onChangeText={this._validEmailInput}
-                value={this.state.email}
-              />
-            </FormItem>
-            <FormItem floatingLabel last>
-              <Label>Password</Label>
-              <Input
-                style={{ color: this.state.validPassword ? "blue" : "red" }}
-                secureTextEntry={true}
-                onChangeText={this._validPasswordInput}
-                value={this.state.password}
-              />
-            </FormItem>
-            <Button
-              full
-              primary
-              style={{ paddingBottom: 4 }}
-              onPress={this._checkLogin}
-              disabled={!(this.state.validEmail && this.state.validPassword)}
-            >
-              <Text> Login </Text>
-            </Button>
-          </Form>
-          <Container style={styles.registerContainer}>
-            <Text>Don't have Account ?</Text>
-            <Button
-              transparent
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableHighlight>
+          <View style={styles.registerWrapper}>
+            <Text style={{ fontSize: 16, marginRight: 50,color:'white'}}>
+              Don't have Account ?
+            </Text>
+            <TouchableHighlight
               onPress={() => this.props.navigation.navigate("Register")}
             >
-              <Text>Register</Text>
-            </Button>
-          </Container>
-        </Card>
-      </Container>
+              <Text style={{ fontSize: 16, color: 'white', textDecorationLine : 'underline' }}>Register</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: Constants.statusBarHeight
-  },
-  card: {
+  wrapper: {
     flex: 1,
-    // backgroundColor: "#0ABDA0",
-    justifyContent: "center",
-    color: "#fff"
+    display: "flex",
+    backgroundColor: "#A4A4BF"
   },
-  registerContainer: {
+  logo: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
+    marginBottom: 40
+  },
+  logoWrapper: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center"
+    display: "flex",
+    marginTop: 30,
+    alignItems: "center"
+  },
+  welcomeText: {
+    fontSize: 30,
+    fontWeight: "300",
+    color: "white",
+    marginBottom: 40
+  },
+  loginWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#595775",
+    width: "80%"
+  },
+  textWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#F1E0D6",
+    width: "80%",
+    marginBottom: 20,
+    fontSize: 18
+  },
+  buttonText: {
+    fontSize: 18,
+    textAlign: "center",
+    width: "100%",
+    color: "white"
+  },
+  registerWrapper: {
+    flexDirection: 'row',
+    padding: 15
   }
 });
-
 const mapStateToProps = state => ({
   user: state.user
 });
