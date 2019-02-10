@@ -1,22 +1,19 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { connect } from "react-redux";
 import {
-  Container,
-  Header,
-  Button,
+  StyleSheet,
+  Dimensions,
+  View,
+  Image,
   Text,
-  Body,
-  Form,
-  Item as FormItem,
-  Input,
-  Label,
-  Title,
-  Card
-} from "native-base";
-import { ipAddress } from "../constants";
+  Button,
+  TouchableHighlight,
+  TextInput
+} from "react-native";
+import { Ionicons as Icon } from "@expo/vector-icons";
+import { connect } from "react-redux";
 import { Constants } from "expo";
-import { register } from "../redux/actions";
+import { register, textChange } from "../redux/actions";
+// import {  } from "native-base";
 class Register extends React.Component {
   state = {
     email: null,
@@ -26,23 +23,20 @@ class Register extends React.Component {
     validPassword: null,
     validConfirmPassword: null
   };
-  componentDidUpdate() {
-    console.log("componentDidUpdate");
-    if (this.props.user.jwtToken) {
-      this.props.navigation.navigate('Home');
-    }
-  }
-  componentWillReceiveProps(){
-    console.log("componentWillReceiveProps");
-    if (this.props.user.jwtToken) {
-      this.props.navigation.navigate('Home');
-    }
-  }
-  com
+
   _register = x => {
-    this.props.register(this.state.email, this.state.password);
+    this.props
+      .register(this.state.email, this.state.password)
+      .then(() => {
+        if (this.props.user.jwtToken) this.props.navigation.navigate("Home");
+      })
+      .catch(error => {
+        console.log("REGISTER ERROR", error);
+      });
   };
   _validEmailInput = x => {
+    if (this.props.user.err)
+      this.props.textChange();
     reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.setState({
       ...this.state,
@@ -52,7 +46,9 @@ class Register extends React.Component {
     });
     // console.log(reg.test(x) != 0);
   };
-  __validConfirmPasswordInput = x => {
+  _validConfirmPasswordInput = x => {
+    if (this.props.user.err)
+      this.props.textChange();
     if (x.length >= 5 && x === this.state.password) {
       this.setState({
         ...this.state,
@@ -70,6 +66,8 @@ class Register extends React.Component {
     }
   };
   _validPasswordInput = x => {
+    if (this.props.user.err)
+      this.props.textChange();
     if (x.length >= 5) {
       this.setState({
         ...this.state,
@@ -88,75 +86,130 @@ class Register extends React.Component {
   };
   render() {
     return (
-      <Container style={styles.container}>
-        <Text style={{ textAlign: "center", alignItems: "center" }}>
-          {JSON.stringify(this.state)}
-        </Text>
-        <Card style={styles.card}>
-          <Text
-            style={{ textAlign: "center", alignItems: "center", color: "red" }}
+      <View style={styles.wrapper}>
+        <View style={styles.logoWrapper}>
+          <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
+          <Text style={{ color: "red" }}>{this.props.user.err}</Text>
+          <TextInput
+            style={styles.textWrapper}
+            placeholder="Email Id"
+            value={this.state.email}
+            onChangeText={this._validEmailInput}
+          />
+          <TextInput
+            style={styles.textWrapper}
+            placeholder="Password"
+            value={this.state.password}
+            onChangeText={this._validPasswordInput}
+            secureTextEntry={true}
+          />
+          <TextInput
+            style={styles.textWrapper}
+            placeholder="Confirm Password"
+            value={this.state.confirmPassword}
+            onChangeText={this._validConfirmPasswordInput}
+            secureTextEntry={true}
+          />
+          <TouchableHighlight
+            style={styles.loginWrapper}
+            onPress={this._register}
+            disabled={
+              !(
+                this.state.validEmail &&
+                this.state.validPassword &&
+                this.state.validConfirmPassword
+              )
+            }
           >
-            {JSON.stringify(this.props.user)}
-          </Text>
-          <Form>
-            <FormItem floatingLabel>
-              <Label>Email</Label>
-              <Input
-                value={this.state.email}
-                onChangeText={this._validEmailInput}
-              />
-            </FormItem>
-            <FormItem floatingLabel>
-              <Label>Password</Label>
-              <Input
-                secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={this._validPasswordInput}
-              />
-            </FormItem>
-            <FormItem floatingLabel last>
-              <Label>Confirm Password</Label>
-              <Input
-                secureTextEntry={true}
-                value={this.state.confirmPassword}
-                onChangeText={this.__validConfirmPasswordInput}
-              />
-            </FormItem>
-            <Button
-              full
-              primary
-              style={{ paddingBottom: 4 }}
-              onPress={this._register}
-              disabled={
-                !(
-                  this.state.validEmail &&
-                  this.state.validPassword &&
-                  this.state.validConfirmPassword
-                )
-              }
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableHighlight>
+          <View style={styles.registerWrapper}>
+            <Text style={{ fontSize: 16, marginRight: 50, color: "white" }}>
+              Already have Account ?
+            </Text>
+            <TouchableHighlight
+              onPress={() => this.props.navigation.navigate("Login")}
             >
-              <Text> Register </Text>
-            </Button>
-          </Form>
-        </Card>
-      </Container>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "white",
+                  textDecorationLine: "underline"
+                }}
+              >
+                Login
+              </Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: Constants.statusBarHeight
-  },
-  card: {
+  wrapper: {
     flex: 1,
-    // backgroundColor: "#0ABDA0",
-    justifyContent: "center",
-    color: "#fff"
+    display: "flex",
+    backgroundColor: "#A4A4BF"
   },
-  registerContainer: {
+  logo: {
+    width: 100,
+    height: 100,
+    marginTop: 50,
+    marginBottom: 40
+  },
+  logoWrapper: {
     flex: 1,
+    display: "flex",
+    marginTop: 30,
+    alignItems: "center"
+  },
+  welcomeText: {
+    fontSize: 30,
+    fontWeight: "300",
+    color: "white",
+    marginBottom: 40
+  },
+  loginWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#595775",
+    width: "80%"
+  },
+  textWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#F1E0D6",
+    width: "80%",
+    marginBottom: 20,
+    fontSize: 18
+  },
+  passwordWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#F1E0D6",
+    width: "80%",
+    marginBottom: 20,
+    flexDirection: "row"
+  },
+  buttonText: {
+    fontSize: 18,
+    textAlign: "center",
+    width: "100%",
+    color: "white"
+  },
+  registerWrapper: {
     flexDirection: "row",
-    justifyContent: "center"
+    padding: 15
   }
 });
 
@@ -164,7 +217,8 @@ const mapStateToProps = state => ({
   user: state.user
 });
 const mapActionsToProps = {
-  register: register
+  register: register,
+  textChange: textChange
 };
 export default connect(
   mapStateToProps,

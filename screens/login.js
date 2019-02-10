@@ -35,7 +35,7 @@ class Login extends React.Component {
       });
   };
   _validEmailInput = x => {
-    this.props.textChange();
+    if (this.props.user.err) this.props.textChange();
     reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.setState({
       ...this.state,
@@ -45,7 +45,7 @@ class Login extends React.Component {
     // console.log(reg.test(x) != 0);
   };
   _validPasswordInput = x => {
-    this.props.textChange();
+    if (this.props.user.err) this.props.textChange();
     if (x.length >= 5) {
       this.setState({
         ...this.state,
