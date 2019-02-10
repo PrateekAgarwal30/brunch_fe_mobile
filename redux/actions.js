@@ -1,7 +1,8 @@
 export const LOGIN = {
   LOGIN_SENT: "LOGIN_SENT",
   LOGIN_FULFILLED: "LOGIN_FULFILLED",
-  LOGIN_REJECTED: "LOGIN_REJECTED"
+  LOGIN_REJECTED: "LOGIN_REJECTED",
+  LOGIN_TEXT_CHANGE : "LOGIN_TEXT_CHANGE"
 };
 export const REGISTER = {
   REGISTER_SENT: "REGISTER_SENT",
@@ -15,6 +16,9 @@ export const PROFILE = {
 };
 import { ipAddress } from "../constants";
 import _ from 'lodash';
+export const textChange = () => dispatch=>{
+  dispatch({type : LOGIN.LOGIN_TEXT_CHANGE});
+}
 export const login = (email, password) => dispatch => {
   dispatch({ type: LOGIN.LOGIN_SENT });
   let jwtToken = null;

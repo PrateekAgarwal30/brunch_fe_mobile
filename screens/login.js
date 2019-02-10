@@ -10,7 +10,7 @@ import {
   TextInput
 } from "react-native";
 import { connect } from "react-redux";
-import { login } from "../redux/actions";
+import { login, textChange } from "../redux/actions";
 import { ipAddress } from "../constants";
 import { Constants } from "expo";
 const { width, height } = Dimensions.get("screen");
@@ -19,8 +19,7 @@ class Login extends React.Component {
     validEmail: true,
     validPassword: true,
     email: "P@gmail.com",
-    password: "11234",
-    error: null
+    password: "11234"
   };
   componentDidMount() { }
   _checkLogin = () => {
@@ -34,30 +33,28 @@ class Login extends React.Component {
       });
   };
   _validEmailInput = x => {
+    this.props.textChange();
     reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    console.log(x);
     this.setState({
       ...this.state,
       email: x,
-      validEmail: reg.test(x) != 0,
-      error: null
+      validEmail: reg.test(x) != 0
     });
     // console.log(reg.test(x) != 0);
   };
   _validPasswordInput = x => {
+    this.props.textChange();
     if (x.length >= 5) {
       this.setState({
         ...this.state,
         password: x,
-        validPassword: true,
-        error: null
+        validPassword: true
       });
     } else {
       this.setState({
         ...this.state,
         password: x,
-        validPassword: false,
-        error: null
+        validPassword: false
       });
     }
   };
@@ -70,7 +67,7 @@ class Login extends React.Component {
             source={require("./../assets/logo.png")}
           />
           <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
-          <Text>{this.props.user.err}</Text>
+          <Text style={{ color: 'red' }}>{this.props.user.err}</Text>
           <TextInput
             style={styles.textWrapper}
             placeholder="Email Id"
@@ -82,8 +79,7 @@ class Login extends React.Component {
             placeholder="Password"
             value={this.state.password}
             onChangeText={this._validPasswordInput}
-            secureTextEntry={true}
-          />
+            secureTextEntry={true} />
           <TouchableHighlight
             style={styles.loginWrapper}
             onPress={this._checkLogin}
@@ -92,13 +88,13 @@ class Login extends React.Component {
             <Text style={styles.buttonText}>Login</Text>
           </TouchableHighlight>
           <View style={styles.registerWrapper}>
-            <Text style={{ fontSize: 16, marginRight: 50,color:'white'}}>
+            <Text style={{ fontSize: 16, marginRight: 50, color: 'white' }}>
               Don't have Account ?
             </Text>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate("Register")}
             >
-              <Text style={{ fontSize: 16, color: 'white', textDecorationLine : 'underline' }}>Register</Text>
+              <Text style={{ fontSize: 16, color: 'white', textDecorationLine: 'underline' }}>Register</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -165,7 +161,8 @@ const mapStateToProps = state => ({
   user: state.user
 });
 const mapActionsToProps = {
-  login: login
+  login: login,
+  textChange: textChange
 };
 export default connect(
   mapStateToProps,

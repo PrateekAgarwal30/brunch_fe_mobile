@@ -8,6 +8,11 @@ const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, act
         jwtToken: null,
         err: null
       };
+    case LOGIN.LOGIN_TEXT_CHANGE:
+      return {
+        ...state,
+        err : null
+      };
     case LOGIN.LOGIN_FULFILLED:
       return {
         ...state,
