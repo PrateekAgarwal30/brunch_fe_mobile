@@ -13,13 +13,15 @@ import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
 import { ipAddress } from "../constants";
 import { Constants } from "expo";
+import { Ionicons as Icon } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("screen");
 class Login extends React.Component {
   state = {
     validEmail: true,
     validPassword: true,
     email: "P@gmail.com",
-    password: "11234"
+    password: "11234",
+    showPassword : false
   };
   componentDidMount() { }
   _checkLogin = () => {
@@ -62,24 +64,38 @@ class Login extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.logoWrapper}>
-          <Image
-            style={styles.logo}
-            source={require("./../assets/logo.png")}
-          />
+          <Image style={styles.logo} source={require("./../assets/logo.png")} />
           <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
-          <Text style={{ color: 'red' }}>{this.props.user.err}</Text>
+          <Text style={{ color: "red" }}>{this.props.user.err}</Text>
           <TextInput
             style={styles.textWrapper}
             placeholder="Email Id"
             value={this.state.email}
             onChangeText={this._validEmailInput}
           />
-          <TextInput
-            style={styles.textWrapper}
-            placeholder="Password"
-            value={this.state.password}
-            onChangeText={this._validPasswordInput}
-            secureTextEntry={true} />
+          <View style={styles.passwordWrapper}>
+            <TextInput
+            style={{fontSize:16}}
+              placeholder="Password"
+              value={this.state.password}
+              onChangeText={this._validPasswordInput}
+              secureTextEntry={!this.state.showPassword}
+            />
+            <TouchableHighlight
+              onPress={()=>{this.setState({...this.state,showPassword:!this.state.showPassword})}}
+              style={{
+                justifyContent: 'flex-end', flex: 1,
+                display: "flex",
+                width : '10%'
+              }}
+            >
+              <Icon
+                name={this.state.showPassword ? "md-eye-off" :"md-eye"}
+                size={32}
+              />
+            </TouchableHighlight>
+          </View>
+
           <TouchableHighlight
             style={styles.loginWrapper}
             onPress={this._checkLogin}
@@ -88,13 +104,21 @@ class Login extends React.Component {
             <Text style={styles.buttonText}>Login</Text>
           </TouchableHighlight>
           <View style={styles.registerWrapper}>
-            <Text style={{ fontSize: 16, marginRight: 50, color: 'white' }}>
+            <Text style={{ fontSize: 16, marginRight: 50, color: "white" }}>
               Don't have Account ?
             </Text>
             <TouchableHighlight
               onPress={() => this.props.navigation.navigate("Register")}
             >
-              <Text style={{ fontSize: 16, color: 'white', textDecorationLine: 'underline' }}>Register</Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "white",
+                  textDecorationLine: "underline"
+                }}
+              >
+                Register
+              </Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -146,6 +170,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 18
   },
+  passwordWrapper: {
+    borderRadius: 50,
+    borderWidth: 1,
+    padding: 15,
+    display: "flex",
+    borderColor: "white",
+    backgroundColor: "#F1E0D6",
+    width: "80%",
+    marginBottom: 20,
+    flexDirection: "row"
+  },
   buttonText: {
     fontSize: 18,
     textAlign: "center",
@@ -153,7 +188,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   registerWrapper: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 15
   }
 });
