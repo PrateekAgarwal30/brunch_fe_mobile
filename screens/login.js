@@ -6,7 +6,7 @@ import {
   Image,
   Text,
   Button,
-  TouchableHighlight,
+  TouchableOpacity,
   TextInput
 } from "react-native";
 import { connect } from "react-redux";
@@ -75,13 +75,13 @@ class Login extends React.Component {
           />
           <View style={styles.passwordWrapper}>
             <TextInput
-            style={{fontSize:16}}
+            style={{fontSize:16,flex:8}}
               placeholder="Password"
               value={this.state.password}
               onChangeText={this._validPasswordInput}
               secureTextEntry={!this.state.showPassword}
             />
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={()=>{this.setState({...this.state,showPassword:!this.state.showPassword})}}
               style={{
                 justifyContent: 'flex-end', flex: 1,
@@ -93,21 +93,21 @@ class Login extends React.Component {
                 name={this.state.showPassword ? "md-eye-off" :"md-eye"}
                 size={32}
               />
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
 
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.loginWrapper}
             onPress={this._checkLogin}
           // disabled={!(this.state.validEmail && this.state.validPassword)}
           >
             <Text style={styles.buttonText}>Login</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={styles.registerWrapper}>
             <Text style={{ fontSize: 16, marginRight: 50, color: "white" }}>
               Don't have Account ?
             </Text>
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={() => this.props.navigation.navigate("Register")}
             >
               <Text
@@ -119,7 +119,7 @@ class Login extends React.Component {
               >
                 Register
               </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
