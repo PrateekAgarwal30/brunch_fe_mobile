@@ -13,7 +13,7 @@ import {
 import { connect } from "react-redux";
 import { getProfile } from "../redux/actions";
 import Separator from "./../components/Separator";
-import { Icon } from "native-base";
+import { Icon, Card } from "native-base";
 
 class Profile extends React.Component {
   static navigationOptions = {
@@ -53,38 +53,61 @@ class Profile extends React.Component {
         <View style={styles.body}>
           <View style={styles.bodyContent}>
             <Text style={styles.name}>{this.props.profile.email}</Text>
-            <Text style={styles.info}>S</Text>
           </View>
-          <ScrollView style={styles.buttonContainer}>
-            <TouchableHighlight style={styles.buttonWrapper} onPress={() => alert("Clicked")}>
-              <View style={styles.buttonInsideView}>
-                <Icon name="person" style={{ flex: 1 }} />
-                <Text style={styles.textWrapper}>Personal Info</Text>
-                <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.buttonWrapper} onPress={() => alert("Clicked")}>
-              <View style={styles.buttonInsideView}>
-                <Icon name="map" style={{ flex: 1 }} />
-                <Text style={styles.textWrapper}>Manage Addresses</Text>
-                <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.buttonWrapper} onPress={() => alert("Clicked")}>
-              <View style={styles.buttonInsideView}>
-                <Icon name="heart" style={{ flex: 1 }} />
-                <Text style={styles.textWrapper}>Favourite</Text>
-                <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
-              </View>
-            </TouchableHighlight>
-            <TouchableOpacity style={styles.buttonWrapper} onPress={()=>alert("Clicked")}>
-              <View style={styles.buttonInsideView}>
-                <Icon name="keypad" style={{ flex: 1 }} />
-                <Text style={styles.textWrapper}>Change Password</Text>
-                <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
+          <Card style={styles.cardContainer}>
+            <ScrollView style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => alert("Clicked")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="person" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Personal Info</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => this.props.navigation.navigate("Address")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="map" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Manage Addresses</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => alert("Clicked")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="card" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Payment</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => alert("Clicked")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="heart" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Favourite</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => alert("Clicked")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="keypad" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Change Password</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </Card>
         </View>
       </View>
     );
@@ -143,17 +166,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     // padding : 20,
     // textAlign: 'center',
-    marginLeft : 5,
-    flex : 10
+    marginLeft: 5,
+    flex: 10
   },
   buttonWrapper: {
     marginBottom: 20,
-    backgroundColor : '#A4A4BF'
+    backgroundColor: '#A4A4BF',
+    borderRadius : 5
   },
-  buttonInsideView : {
+  buttonInsideView: {
     flex: 1,
     flexDirection: 'row',
-    padding : 10
+    padding: 10
+  },
+  cardContainer: {
+    marginTop: 30,
+
+    paddingLeft: 15,
+    paddingRight: 15
   }
 });
 const mapStateToProps = state => ({
