@@ -14,6 +14,7 @@ import { login, textChange } from "../redux/actions";
 import { ipAddress } from "../constants";
 import { Constants } from "expo";
 import { Ionicons as Icon } from "@expo/vector-icons";
+import * as Animatable from 'react-native-animatable'
 const { width, height } = Dimensions.get("screen");
 class Login extends React.Component {
   state = {
@@ -64,7 +65,12 @@ class Login extends React.Component {
     return (
       <View style={styles.wrapper}>
         <View style={styles.logoWrapper}>
-          <Image style={styles.logo} source={require("./../assets/logo.png")} />
+          <Animatable.View animation="zoomIn" iterationCount={1}>
+            <Image
+              style={styles.logo}
+              source={require("./../assets/logo.png")}
+            />
+          </Animatable.View>
           <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
           <Text style={{ color: "red" }}>{this.props.user.err}</Text>
           <TextInput
@@ -75,22 +81,28 @@ class Login extends React.Component {
           />
           <View style={styles.passwordWrapper}>
             <TextInput
-            style={{fontSize:16,flex:8}}
+              style={{ fontSize: 16, flex: 8 }}
               placeholder="Password"
               value={this.state.password}
               onChangeText={this._validPasswordInput}
               secureTextEntry={!this.state.showPassword}
             />
             <TouchableOpacity
-              onPress={()=>{this.setState({...this.state,showPassword:!this.state.showPassword})}}
+              onPress={() => {
+                this.setState({
+                  ...this.state,
+                  showPassword: !this.state.showPassword
+                });
+              }}
               style={{
-                justifyContent: 'flex-end', flex: 1,
+                justifyContent: "flex-end",
+                flex: 1,
                 display: "flex",
-                width : '10%'
+                width: "10%"
               }}
             >
               <Icon
-                name={this.state.showPassword ? "md-eye-off" :"md-eye"}
+                name={this.state.showPassword ? "md-eye-off" : "md-eye"}
                 size={32}
               />
             </TouchableOpacity>
@@ -99,7 +111,7 @@ class Login extends React.Component {
           <TouchableOpacity
             style={styles.loginWrapper}
             onPress={this._checkLogin}
-          // disabled={!(this.state.validEmail && this.state.validPassword)}
+            // disabled={!(this.state.validEmail && this.state.validPassword)}
           >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
