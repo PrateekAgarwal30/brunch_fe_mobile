@@ -5,24 +5,28 @@ import Login from "../screens/login";
 import Register from "../screens/register";
 import Profile from "../screens/profile";
 import Address from "../screens/address";
+import ChangePassword from "../screens/changePassword";
 import { createSwitchNavigator, createStackNavigator } from "react-navigation";
 
 export const AppNavigator = createStackNavigator(
-  {
-    Home: {
-      screen: Home
-    },
-    Profile: {
-      screen: Profile
-    },
-    Address: {
-      screen: Address
-    }
-  },
-  {
-    initialRouteName: "Home"
-  }
-);
+         {
+           Home: {
+             screen: Home
+           },
+           Profile: {
+             screen: Profile
+           },
+           Address: {
+             screen: Address
+           },
+           ChangePassword: {
+             screen: ChangePassword
+           }
+         },
+         {
+           initialRouteName: "Home"
+         }
+       );
 export const LoginSwitchNavigator = createSwitchNavigator(
          {
            HomeStack: {
@@ -33,9 +37,6 @@ export const LoginSwitchNavigator = createSwitchNavigator(
            },
            Register: {
              screen: Register
-           },
-           Address1: {
-             screen: Address
            }
          },
          {

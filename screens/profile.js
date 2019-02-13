@@ -98,7 +98,7 @@ class Profile extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() =>this.props.navigation.navigate("ChangePassword")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="keypad" style={{ flex: 1 }} />

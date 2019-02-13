@@ -7,7 +7,8 @@ import {
   Text,
   Button,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView
 } from "react-native";
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
@@ -21,7 +22,7 @@ class Login extends React.Component {
     validEmail: true,
     validPassword: true,
     email: "P@gmail.com",
-    password: "11234",
+    password: "12345678",
     showPassword : false
   };
   componentDidMount() { }
@@ -63,7 +64,7 @@ class Login extends React.Component {
   };
   render() {
     return (
-      <View style={styles.wrapper}>
+      <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
         <View style={styles.logoWrapper}>
           <Animatable.View animation="zoomIn" iterationCount={1}>
             <Image
@@ -134,7 +135,7 @@ class Login extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
