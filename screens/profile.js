@@ -16,16 +16,25 @@ import Separator from "./../components/Separator";
 import { Icon, Card } from "native-base";
 
 class Profile extends React.Component {
-  static navigationOptions = {
-    headerTitle: "Profile",
-    headerStyle: {
-      backgroundColor: "#16235A"
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Profile",
+      headerRight: (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")} style={{padding:5,marginRight:10}}
+        ><Icon name="log-out" style={{ color: '#fff' }}/>
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: "#16235A"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    };
   };
+
   state = {
     addresses: []
   };

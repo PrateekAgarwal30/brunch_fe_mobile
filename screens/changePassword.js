@@ -127,9 +127,6 @@ class ChangePassword extends React.Component {
           >
             <Text style={styles.buttonText}>Change Password</Text>
           </TouchableHighlight>
-        {/* </View> */}
-        <Text>{JSON.stringify(this.state)}</Text>
-        <Text>{JSON.stringify(this.props.user)}</Text>
       </View>
     );
   }
