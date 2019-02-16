@@ -1,12 +1,13 @@
 import { combineReducers } from "redux";
-import { LOGIN, REGISTER, PROFILE } from "./actions";
-const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, action) => {
+import { LOGIN, REGISTER, USER } from "./actions";
+const userReducer = (state = { jwtToken: null, err: null, isLoading: false }, action) => {
   switch (action.type) {
     case LOGIN.LOGIN_SENT:
       return {
         ...state,
         jwtToken: null,
-        err: null
+        err: null,
+        isLoading:true
       };
     case LOGIN.LOGIN_TEXT_CHANGE:
       return {
@@ -16,29 +17,39 @@ const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, act
     case LOGIN.LOGIN_FULFILLED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading : false
       };
     case LOGIN.LOGIN_REJECTED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading: false
       };
     case REGISTER.REGISTER_SENT:
       return {
         ...state,
         jwtToken: null,
-        err: null
+        err: null,
+        isLoading : true
       };
     case REGISTER.REGISTER_FULFILLED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading: false
       };
     case REGISTER.REGISTER_REJECTED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading : false
       };
+    case USER.CHANGE_PASS_REJECTED: return {
+      ...state,
+      ...action.payload,
+      isLoading : false
+    };
     default:
       console.log(action.type);
       return { ...state };
@@ -46,15 +57,17 @@ const userReducer = (state = { jwtToken: null, err: null, isLoading: true }, act
 };
 const profileReducer = (state = {  }, action) => {
   switch (action.type) {
-    case PROFILE.GET_PROFILE_FULFILLED:
+    case USER.GET_PROFILE_FULFILLED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading : false
       };
-    case PROFILE.GET_PROFILE_REJECTED:
+    case USER.GET_PROFILE_REJECTED:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        isLoading : false
       };
     default:
       console.log(action.type);

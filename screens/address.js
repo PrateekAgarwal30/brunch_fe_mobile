@@ -27,7 +27,7 @@ class Address extends React.PureComponent {
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={() => alert("Clicked")}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("GetLocation")}>
           <Text>Add New Address</Text>
         </TouchableOpacity>
         <FlatList

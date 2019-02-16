@@ -7,12 +7,13 @@ import {
   Text,
   Button,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  ToastAndroid
 } from "react-native";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { Constants } from "expo";
-import { register, textChange } from "../redux/actions";
+import { register, textChange,changePassword } from "../redux/actions";
 class ChangePassword extends React.Component {
   state = {
     newP: null,
@@ -23,16 +24,17 @@ class ChangePassword extends React.Component {
     validConfirmP: null
   };
 
-  _changePassword = x => {
-    // this.props
-    //   .register(this.state.email, this.state.password)
-    //   .then(() => {
-    //     if (this.props.user.jwtToken) this.props.navigation.navigate("Home");
-    //   })
-    //   .catch(error => {
-    //     console.log("REGISTER ERROR", error);
-    //   });
-    console.log("clicked");
+  _changePassword = async (x) => {
+    const a = await this.props.changePassword(this.state.oldP, this.state.confirmP, this.state.newP,this.props.user.jwtToken)
+    this.setState({
+      newP: null,
+      oldP: null,
+      confirmP: null,
+      validNewP: null,
+      validOldP: null,
+      validConfirmP: null
+    });
+    ToastAndroid.show(a, ToastAndroid.SHORT);
   };
   _validOldPasswordInput = x => {
     if (this.props.user.err) this.props.textChange();
@@ -127,6 +129,7 @@ class ChangePassword extends React.Component {
           </TouchableHighlight>
         {/* </View> */}
         <Text>{JSON.stringify(this.state)}</Text>
+        <Text>{JSON.stringify(this.props.user)}</Text>
       </View>
     );
   }
@@ -199,7 +202,8 @@ const mapStateToProps = state => ({
 });
 const mapActionsToProps = {
   register: register,
-  textChange: textChange
+  textChange: textChange,
+  changePassword:changePassword
 };
 export default connect(
   mapStateToProps,
