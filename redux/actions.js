@@ -16,7 +16,7 @@ export const USER = {
   CHANGE_PASS_SENT: "CHANGE_PASS_SENT",
   CHANGE_PASS_FULFILLED: "CHANGE_PASS_FULFILLED",
   CHANGE_PASS_REJECTED: "CHANGE_PASS_REJECTED",
-
+  LOGOUT: "LOGOUT"
 };
 import { ipAddress } from "../constants";
 import _ from 'lodash';
@@ -149,4 +149,7 @@ export const changePassword = (oldp, confirmp, newp, jwtToken) => dispatch => {
     .catch(err => {
       console.log(err);
     });
+};
+export const logOut = () => dispatch => {
+  dispatch({ type: USER.LOGOUT });
 };

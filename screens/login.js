@@ -21,11 +21,13 @@ class Login extends React.Component {
   state = {
     validEmail: true,
     validPassword: true,
-    email: "P@gmail.com",
-    password: "12345678",
+    email: "P2@gmail.com",
+    password: "12345",
     showPassword : false
   };
-  componentDidMount() { }
+  componentDidMount() { 
+  
+  }
   _checkLogin = () => {
     this.props
       .login(this.state.email, this.state.password)

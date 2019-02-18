@@ -11,7 +11,7 @@ import {
   Button
 } from "react-native";
 import { connect } from "react-redux";
-import { getProfile } from "../redux/actions";
+import { getProfile, logOut } from "../redux/actions";
 import Separator from "./../components/Separator";
 import { Icon, Card } from "native-base";
 
@@ -21,8 +21,15 @@ class Profile extends React.Component {
       title: "Profile",
       headerRight: (
         <TouchableOpacity
-          onPress={() => navigation.navigate("Login")} style={{padding:5,marginRight:10}}
-        ><Icon name="log-out" style={{ color: '#fff' }}/>
+          onPress={() => {
+            const _logOut = navigation.getParam('_logOut', null)
+            if (_logOut) {
+              _logOut();
+            }
+          }
+          }
+          style={{ padding: 5, marginRight: 10 }}
+        ><Icon name="log-out" style={{ color: '#fff' }} />
         </TouchableOpacity>
       ),
       headerStyle: {
@@ -38,7 +45,15 @@ class Profile extends React.Component {
   state = {
     addresses: []
   };
-  componentWillMount() {
+  _logOut = () => {
+    this.props.logOut();
+    this.props.navigation.navigate("Login")
+  }
+  componentDidMount() {
+
+    this.props.navigation.setParams({
+      _logOut: this._logOut
+    });
     this.props
       .getProfile(this.props.user.jwtToken)
       .then(res => {
@@ -107,7 +122,7 @@ class Profile extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() =>this.props.navigation.navigate("ChangePassword")}
+                onPress={() => this.props.navigation.navigate("ChangePassword")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="keypad" style={{ flex: 1 }} />
@@ -181,7 +196,7 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     marginBottom: 20,
     backgroundColor: '#A4A4BF',
-    borderRadius : 5
+    borderRadius: 5
   },
   buttonInsideView: {
     flex: 1,
@@ -200,7 +215,8 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 const mapActionsToProps = {
-  getProfile: getProfile
+  getProfile: getProfile,
+  logOut: logOut
 };
 export default connect(
   mapStateToProps,
