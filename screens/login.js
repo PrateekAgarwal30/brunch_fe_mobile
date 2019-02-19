@@ -8,7 +8,8 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
@@ -23,20 +24,21 @@ class Login extends React.Component {
     validPassword: true,
     email: "P2@gmail.com",
     password: "12345",
-    showPassword : false
+    showPassword: false
   };
-  componentDidMount() { 
-  
+  componentDidMount() {
+
   }
-  _checkLogin = () => {
-    this.props
-      .login(this.state.email, this.state.password)
-      .then(() => {
-        if (this.props.user.jwtToken) this.props.navigation.navigate("Home");
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
+  _checkLogin = async () => {
+    try {
+      await this.props.login(this.state.email, this.state.password);
+      if (this.props.user.jwtToken) {
+        await AsyncStorage.setItem('authToken',this.props.user.jwtToken);
+        this.props.navigation.navigate("AppStack");
+      }
+    } catch (error) {
+      this.setState({ error });
+    };
   };
   _validEmailInput = x => {
     if (this.props.user.err) this.props.textChange();
@@ -114,7 +116,7 @@ class Login extends React.Component {
           <TouchableOpacity
             style={styles.loginWrapper}
             onPress={this._checkLogin}
-            // disabled={!(this.state.validEmail && this.state.validPassword)}
+          // disabled={!(this.state.validEmail && this.state.validPassword)}
           >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>

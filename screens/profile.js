@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Button
+  Button,AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
@@ -45,9 +45,10 @@ class Profile extends React.Component {
   state = {
     addresses: []
   };
-  _logOut = () => {
+  _logOut = async () => {
     this.props.logOut();
-    this.props.navigation.navigate("Login")
+    await AsyncStorage.clear();
+    this.props.navigation.navigate("AuthLoading")
   }
   componentDidMount() {
 

@@ -28,7 +28,7 @@ class Register extends React.Component {
     this.props
       .register(this.state.email, this.state.password)
       .then(() => {
-        if (this.props.user.jwtToken) this.props.navigation.navigate("Home");
+        if (this.props.user.jwtToken) this.props.navigation.navigate("AppStack");
       })
       .catch(error => {
         console.log("REGISTER ERROR", error);

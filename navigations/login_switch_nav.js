@@ -1,49 +1,16 @@
 import React from "react";
-import { Text } from "react-native";
-import Home from "../screens/home";
-import Login from "../screens/login";
-import Register from "../screens/register";
-import Profile from "../screens/profile";
-import Address from "../screens/address";
-import ChangePassword from "../screens/changePassword";
-import GetLocation from "../screens/location"
-import { createSwitchNavigator, createStackNavigator } from "react-navigation";
+import AuthStack from './AuthStackNav';
+import AppStack from "./AppStackNav";
+import { createSwitchNavigator} from "react-navigation";
+import AuthLoading from '../screens/auth-loading';
 
-export const AppNavigator = createStackNavigator(
+export const AppNavigator = createSwitchNavigator(
   {
-    Home: {
-      screen: Home
-    },
-    Profile: {
-      screen: Profile
-    },
-    Address: {
-      screen: Address
-    },
-    GetLocation: {
-      screen: GetLocation
-    },
-    ChangePassword: {
-      screen: ChangePassword
-    }
+    AuthLoading: AuthLoading,
+    AppStack: AppStack,
+    AuthStack: AuthStack,
   },
   {
-    initialRouteName: "Home"
-  }
-);
-export const LoginSwitchNavigator = createSwitchNavigator(
-  {
-    HomeStack: {
-      screen: AppNavigator
-    },
-    Login: {
-      screen: Login
-    },
-    Register: {
-      screen: Register
-    }
-  },
-  {
-    initialRouteName: "Login"
+    initialRouteName: 'AuthLoading',
   }
 );
