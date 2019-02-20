@@ -6,10 +6,23 @@ import ChangePassword from "../screens/changePassword";
 import GetLocation from "../screens/location"
 import Drawer from "../screens/drawer";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
-const AppStack = createStackNavigator(
+
+const DrawerNavigator = createDrawerNavigator(
     {
         Home: {
             screen: Home
+        }
+    },
+    {
+        initialRouteName: "Home",
+        contentComponent: Drawer
+    }
+);
+
+export default AppStack = createStackNavigator(
+    {
+        DrawerNavigator: {
+            screen: DrawerNavigator
         },
         Profile: {
             screen: Profile
@@ -25,19 +38,9 @@ const AppStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "Home"
+        initialRouteName: "DrawerNavigator"
     }
 );
-export default DrawerNavigator = createDrawerNavigator(
-    {
-        Drawer: {
-            screen: AppStack
-        }
-    },
-    {
-        initialRouteName: "Drawer",
-        contentComponent : Drawer
-    }
-);
+
 
  
