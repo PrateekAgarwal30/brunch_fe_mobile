@@ -4,8 +4,9 @@ import Profile from "../screens/profile";
 import Address from "../screens/address";
 import ChangePassword from "../screens/changePassword";
 import GetLocation from "../screens/location"
-import { createStackNavigator } from "react-navigation";
-export default AppStack = createStackNavigator(
+import Drawer from "../screens/drawer";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
+const AppStack = createStackNavigator(
     {
         Home: {
             screen: Home
@@ -27,3 +28,16 @@ export default AppStack = createStackNavigator(
         initialRouteName: "Home"
     }
 );
+export default DrawerNavigator = createDrawerNavigator(
+    {
+        Drawer: {
+            screen: AppStack
+        }
+    },
+    {
+        initialRouteName: "Drawer",
+        contentComponent : Drawer
+    }
+);
+
+ 
