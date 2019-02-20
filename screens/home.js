@@ -1,20 +1,47 @@
 import React from "react";
-import { Text, View, Dimensions, Image } from "react-native";
-import { Button } from "native-base";
+import { Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
+import { Button, Header } from "native-base";
 import { connect } from "react-redux";
-import Separator from "../components/Separator";
-const { width, height } = Dimensions.get("window")
 import { DrawerActions } from "react-navigation";
+import { Icon, Card } from "native-base";
 class Home extends React.Component {
+  componentDidMount() {
+
+    this.props.navigation.setParams({
+      _menu: this._menu
+    });
+  }
+  _menu = async () => {
+    console.log('clicked');
+    this.props.navigation.toggleDrawer();
+  }
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Header>
+          <Button
+            onPress={() => this.props.navigation.navigate("Profile")}
+          >
+            <Text>Profile</Text>
+          </Button>
+          <Button
+            onPress={() => this.props.navigation.navigate("Profile")}
+          >
+            <Text>Profile</Text>
+          </Button>
+          <Button
+            onPress={() => this.props.navigation.navigate("Profile")}
+          >
+            <Text>Profile</Text>
+          </Button>
+          <Button
+            onPress={this._menu}
+          >
+            <Text>Menu</Text>
+          </Button>
+        </Header>
         <Image style={{ width: 400, height: 400 }} source={require("../assets/workInProgress.png")} />
-        <Button
-          onPress={() => this.props.navigation.navigate("Profile")}
-        >
-          <Text>Profile</Text>
-        </Button>
+        <Text>{JSON.stringify(this.props.navigation)}</Text>
       </View>
     );
   }

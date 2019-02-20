@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     // padding : 20,
     // textAlign: 'center',
     marginLeft: 5,
-    flex: 10
+    flex: 7
   },
   buttonWrapper: {
     marginBottom: 20,
