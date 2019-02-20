@@ -83,7 +83,7 @@ class Profile extends React.Component {
             <ScrollView style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() => this.props.navigation.navigate("UserInfo")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="person" style={{ flex: 1 }} />

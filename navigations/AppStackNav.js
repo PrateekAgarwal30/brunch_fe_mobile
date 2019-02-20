@@ -5,6 +5,7 @@ import Address from "../screens/address";
 import ChangePassword from "../screens/changePassword";
 import GetLocation from "../screens/location"
 import Drawer from "../screens/drawer";
+import UserInfo from "../screens/userInfo"
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 const DrawerNavigator = createDrawerNavigator(
@@ -35,6 +36,9 @@ export default AppStack = createStackNavigator(
         },
         ChangePassword: {
             screen: ChangePassword
+        },
+        UserInfo : {
+            screen : UserInfo
         }
     },
     {
