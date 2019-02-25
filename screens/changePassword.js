@@ -13,7 +13,7 @@ import {
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { Constants } from "expo";
-import { register, textChange,changePassword } from "../redux/actions";
+import { register, textChange, changePassword } from "../redux/actions";
 class ChangePassword extends React.Component {
   state = {
     newP: null,
@@ -25,16 +25,20 @@ class ChangePassword extends React.Component {
   };
 
   _changePassword = async (x) => {
-    const a = await this.props.changePassword(this.state.oldP, this.state.confirmP, this.state.newP,this.props.user.jwtToken)
-    this.setState({
-      newP: null,
-      oldP: null,
-      confirmP: null,
-      validNewP: null,
-      validOldP: null,
-      validConfirmP: null
-    });
-    ToastAndroid.show(a, ToastAndroid.SHORT);
+    try {
+      const a = await this.props.changePassword(this.state.oldP, this.state.confirmP, this.state.newP)
+      this.setState({
+        newP: null,
+        oldP: null,
+        confirmP: null,
+        validNewP: null,
+        validOldP: null,
+        validConfirmP: null
+      });
+      ToastAndroid.show(a, ToastAndroid.SHORT);
+    } catch (error) {
+      ToastAndroid.show(error.message, ToastAndroid.SHORT);
+    }
   };
   _validOldPasswordInput = x => {
     if (this.props.user.err) this.props.textChange();
@@ -59,7 +63,7 @@ class ChangePassword extends React.Component {
         ...this.state,
         newP: x,
         validNewP: true,
-        validConfirmP:true
+        validConfirmP: true
       });
     } else {
       this.setState({
@@ -93,40 +97,40 @@ class ChangePassword extends React.Component {
       <View style={styles.wrapper}>
         {/* <View style={styles.logoWrapper}> */}
         <Text style={{ color: "red", marginTop: 30 }}>{this.props.user.err}</Text>
-          <TextInput
-            style={styles.textWrapper}
-            placeholder="Old Password"
-            value={this.state.oldP}
-            onChangeText={this._validOldPasswordInput}
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.textWrapper}
-            placeholder="New Password"
-            value={this.state.newP}
-            onChangeText={this._validNewPasswordInput}
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.textWrapper}
-            placeholder="New Password"
-            value={this.state.confirmP}
-            onChangeText={this._validConfirmPasswordInput}
-            secureTextEntry={true}
-          />
-          <TouchableHighlight
-            style={styles.loginWrapper}
-            onPress={this._changePassword}
-            disabled={
-              !(
-                this.state.validOldP &&
-                this.state.validNewP &&
-                this.state.validConfirmP
-              )
-            }
-          >
-            <Text style={styles.buttonText}>Change Password</Text>
-          </TouchableHighlight>
+        <TextInput
+          style={styles.textWrapper}
+          placeholder="Old Password"
+          value={this.state.oldP}
+          onChangeText={this._validOldPasswordInput}
+          secureTextEntry={true}
+        />
+        <TextInput
+          style={styles.textWrapper}
+          placeholder="New Password"
+          value={this.state.newP}
+          onChangeText={this._validNewPasswordInput}
+          secureTextEntry={true}
+        />
+        <TextInput
+          style={styles.textWrapper}
+          placeholder="New Password"
+          value={this.state.confirmP}
+          onChangeText={this._validConfirmPasswordInput}
+          secureTextEntry={true}
+        />
+        <TouchableHighlight
+          style={styles.loginWrapper}
+          onPress={this._changePassword}
+          disabled={
+            !(
+              this.state.validOldP &&
+              this.state.validNewP &&
+              this.state.validConfirmP
+            )
+          }
+        >
+          <Text style={styles.buttonText}>Change Password</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -200,7 +204,7 @@ const mapStateToProps = state => ({
 const mapActionsToProps = {
   register: register,
   textChange: textChange,
-  changePassword:changePassword
+  changePassword: changePassword
 };
 export default connect(
   mapStateToProps,

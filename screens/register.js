@@ -7,7 +7,7 @@ import {
   Text,
   Button,
   TouchableHighlight,
-  TextInput
+  TextInput, AsyncStorage
 } from "react-native";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { connect } from "react-redux";
@@ -28,7 +28,12 @@ class Register extends React.Component {
     this.props
       .register(this.state.email, this.state.password)
       .then(() => {
-        if (this.props.user.jwtToken) this.props.navigation.navigate("AppStack");
+        return AsyncStorage.getItem('authToken')
+      }).then((x) => {
+        console.log(x);
+        if (x) {
+          this.props.navigation.navigate("AppStack");
+        }
       })
       .catch(error => {
         console.log("REGISTER ERROR", error);

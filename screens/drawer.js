@@ -50,22 +50,23 @@ class Drawer extends React.Component {
     await AsyncStorage.clear();
     this.props.navigation.navigate("AuthLoading")
   }
-  componentDidMount() {
-
-    this.props.navigation.setParams({
-      _logOut: this._logOut
-    });
-    this.props
-      .getProfile(this.props.user.jwtToken)
-      .then(res => {
+  async componentDidMount() {
+     this.profileInterval = setImmediate(async()=> {
+      try {
+        console.log("a");
+        await this.props.getProfile();
         this.setState({
           ...this.state,
           ...this.props.profile
         });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+        // console.log("i");
+      } catch (error) {
+        console.log(error.message);
+      }
+    }, 15000);
+  }
+  componentWillUnmount(){
+    clearInterval(this.profileInterval);
   }
   render() {
     return (

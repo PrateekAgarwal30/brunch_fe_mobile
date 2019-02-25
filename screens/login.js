@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  AsyncStorage
+  AsyncStorage,
+  ToastAndroid
 } from "react-native";
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
@@ -32,12 +33,11 @@ class Login extends React.Component {
   _checkLogin = async () => {
     try {
       await this.props.login(this.state.email, this.state.password);
-      if (this.props.user.jwtToken) {
-        await AsyncStorage.setItem('authToken',this.props.user.jwtToken);
+      if (await AsyncStorage.getItem('authToken')) {
         this.props.navigation.navigate("AppStack");
       }
     } catch (error) {
-      this.setState({ error });
+      ToastAndroid.show("Server down. Please try later");
     };
   };
   _validEmailInput = x => {
@@ -139,6 +139,7 @@ class Login extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+        <Text>{JSON.stringify(this.props.user)}</Text>
       </KeyboardAvoidingView>
     );
   }

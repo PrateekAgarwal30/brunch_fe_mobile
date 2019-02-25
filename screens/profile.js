@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Button,AsyncStorage
+  Button, ToastAndroid,AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
@@ -46,26 +46,31 @@ class Profile extends React.Component {
     addresses: []
   };
   _logOut = async () => {
-    this.props.logOut();
-    await AsyncStorage.clear();
-    this.props.navigation.navigate("AuthLoading")
+    try {
+      await this.props.logOut();
+      if(!await AsyncStorage.getItem('authToken'))
+      this.props.navigation.navigate("AuthLoading")
+    } catch (error) {
+      ToastAndroid.show(error);
+    }
   }
-  componentDidMount() {
-
+  async componentDidMount() {
     this.props.navigation.setParams({
       _logOut: this._logOut
     });
-    this.props
-      .getProfile(this.props.user.jwtToken)
-      .then(res => {
-        this.setState({
-          ...this.state,
-          ...this.props.profile
-        });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    // console.log("a")
+    // setInterval(function(){
+    //   try {
+    //     // await this.props.getProfile();
+    //     // this.setState({
+    //     //   ...this.state,
+    //     //   ...this.props.profile
+    //     // });
+    //     console.log("i");
+    //   } catch (error) {
+    //     console.log(error.message);
+    //   }
+    // }, 500);
   }
   render() {
     return (
