@@ -15,6 +15,18 @@ import { connect } from "react-redux";
 import { Constants } from "expo";
 import { register, textChange, changePassword } from "../redux/actions";
 class ChangePassword extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Change Password",
+      headerStyle: {
+        backgroundColor: "#16235A"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    };
+  };
   state = {
     newP: null,
     oldP: null,

@@ -4,6 +4,7 @@ import { Button, Header } from "native-base";
 import { connect } from "react-redux";
 import { DrawerActions } from "react-navigation";
 import { Icon, Card } from "native-base";
+import { getProfile } from "../redux/actions";
 class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -30,11 +31,28 @@ class Home extends React.Component {
       }
     };
   };
-  componentDidMount() {
+  async componentDidMount() {
     this.props.navigation.setParams({
       _menu: this._menu
     });
+    // console.log("a")
+    this.interval = setInterval(async () => {
+      try {
+        await this.props.getProfile();
+        this.setState({
+          ...this.state,
+          ...this.props.profile
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+    }, 5000);
   }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+
   _menu = async () => {
     console.log('clicked');
     this.props.navigation.toggleDrawer();
@@ -76,6 +94,7 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 const mapActionsToProps = {
+  getProfile : getProfile
 };
 export default connect(
   mapStateToProps,

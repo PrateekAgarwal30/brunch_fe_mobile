@@ -74,10 +74,31 @@ class UserInfo extends React.Component {
         edit: { ...this.state.edit, ...this.props.profile.details }
       })
     }
+    this.interval = setInterval(async () => {
+        if (this.state.editing) {
+          this.setState({
+            ...this.state,
+            db: { ...this.props.profile.details }
+          })
+        } else {
+          this.setState({
+            ...this.state,
+            db: { ...this.state.db, ...this.props.profile.details },
+            edit: { ...this.state.edit, ...this.props.profile.details }
+          })
+        }
+      }, 2000);
+  }
+  componentWillUnmount(){
+    clearInterval(this.interval);
   }
   _updateProfile = async () => {
     try {
       const a = await this.props.updateProfile(this.state.edit);
+      this.setState({
+        ...this.state,
+        editing:false
+      });
       ToastAndroid.show(a, ToastAndroid.SHORT);
     } catch (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
@@ -185,7 +206,10 @@ class UserInfo extends React.Component {
             </Item>
           </Form>
         </Content>
-        <Text>{JSON.stringify(this.state)}</Text>
+        {/* <Text>{JSON.stringify(this.state)}</Text>
+        <Separator></Separator>
+        <Text>{JSON.stringify(this.props.profile)}</Text>
+        <Separator></Separator> */}
         {this.state.editing ? <Button full disabled={this.state.db === this.state.edit} onPress={this._updateProfile}><Text>Save</Text></Button> : null}
       </KeyboardAvoidingView>
     );

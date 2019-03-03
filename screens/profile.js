@@ -58,18 +58,6 @@ class Profile extends React.Component {
     this.props.navigation.setParams({
       _logOut: this._logOut
     });
-    // console.log("a")
-    setInterval(async()=>{
-      try {
-        await this.props.getProfile();
-        this.setState({
-          ...this.state,
-          ...this.props.profile
-        });
-      } catch (error) {
-        console.log(error.message);
-      }
-    }, 5000);
   }
   render() {
     return (
