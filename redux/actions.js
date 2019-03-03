@@ -178,10 +178,8 @@ export const logOut = () => async dispatch => {
 };
 export const updateProfile = (Obj) => async dispatch => {
   try {
-    console.log("Yooooooooooooo!")
     dispatch({ type: PROFILE.UPDATE_PROFILE_SENT, payload: { isLoading: true, err: null } });
     const jwtToken = await AsyncStorage.getItem('authToken');
-    console.log(jwtToken);
     const res = await fetch(ipAddress + "/api/me/details", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -190,22 +188,21 @@ export const updateProfile = (Obj) => async dispatch => {
       },
       body: JSON.stringify(Obj) // body data type must match "Content-Type" header
     })
-    console.log("res",res);
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
         type: PROFILE.UPDATE_PROFILE_FULFILLED,
         payload: { isLoading: false }
       });
-      return "Details Updated successfully!"
+      return Promise.resolve("Details Updated successfully!"); 
     } else {
       dispatch({
         type: PROFILE.UPDATE_PROFILE_REJECTED,
         payload: { err: result._message, isLoading: false }
       });
-      return "Details Update Failed.Try Later..."
+      return Promise.resolve("Details Update Failed.Try Later...")
     }
-    return Promise.resolve();
+    
   } catch (error) {
     return Promise.reject(error.message)
   }

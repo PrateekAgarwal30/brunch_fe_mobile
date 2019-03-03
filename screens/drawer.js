@@ -4,73 +4,18 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
   ScrollView,
-  FlatList,
-  Button, AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
-import Separator from "./../components/Separator";
 import { Icon, Card } from "native-base";
 
 class Drawer extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Profile",
-      headerRight: (
-        <TouchableOpacity
-          onPress={() => {
-            const _logOut = navigation.getParam('_logOut', null)
-            if (_logOut) {
-              _logOut();
-            }
-          }
-          }
-          style={{ padding: 5, marginRight: 10 }}
-        ><Icon name="log-out" style={{ color: '#fff' }} />
-        </TouchableOpacity>
-      ),
-      headerStyle: {
-        backgroundColor: "#16235A"
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
-  };
-
-  state = {
-    addresses: []
-  };
-  _logOut = async () => {
-    this.props.logOut();
-    await AsyncStorage.clear();
-    this.props.navigation.navigate("AuthLoading")
-  }
-  async componentDidMount() {
-     this.profileInterval = setImmediate(async()=> {
-      try {
-        console.log("a");
-        await this.props.getProfile();
-        this.setState({
-          ...this.state,
-          ...this.props.profile
-        });
-        // console.log("i");
-      } catch (error) {
-        console.log(error.message);
-      }
-    }, 15000);
-  }
-  componentWillUnmount(){
-    clearInterval(this.profileInterval);
-  }
   render() {
     return (
       <View style={styles.container}>
+     
         <View style={styles.header} />
         <Image
           style={styles.avatar}
@@ -80,6 +25,7 @@ class Drawer extends React.Component {
           <View style={styles.bodyContent}>
             <Text style={styles.name}>{this.props.profile.email}</Text>
           </View>
+          <Text>{JSON.stringify(this.props.navigation)}</Text>
           <Card style={styles.cardContainer}>
             <ScrollView style={styles.buttonContainer}>
               <TouchableOpacity

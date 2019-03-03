@@ -78,6 +78,7 @@ class UserInfo extends React.Component {
   _updateProfile = async () => {
     try {
       const a = await this.props.updateProfile(this.state.edit);
+      ToastAndroid.show(a, ToastAndroid.SHORT);
     } catch (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }

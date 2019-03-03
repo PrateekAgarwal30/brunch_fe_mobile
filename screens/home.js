@@ -5,8 +5,32 @@ import { connect } from "react-redux";
 import { DrawerActions } from "react-navigation";
 import { Icon, Card } from "native-base";
 class Home extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Home",
+      headerLeft: (
+        <TouchableOpacity
+          onPress={() => {
+            const _menu = navigation.getParam('_menu', null)
+            if (_menu) {
+              _menu();
+            }
+          }
+          }
+          style={{ padding: 5, marginRight: 10 }}
+        ><Icon name="menu" style={{ color: '#fff' }} />
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: "#16235A"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    };
+  };
   componentDidMount() {
-
     this.props.navigation.setParams({
       _menu: this._menu
     });
