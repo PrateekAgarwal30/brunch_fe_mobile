@@ -37,7 +37,8 @@ class Login extends React.Component {
         this.props.navigation.navigate("AppStack");
       }
     } catch (error) {
-      ToastAndroid.show("Server down. Please try later");
+      console.log("Error ",error);
+      ToastAndroid.show("Server down. Please try later",ToastAndroid.SHORT);
     };
   };
   _validEmailInput = x => {

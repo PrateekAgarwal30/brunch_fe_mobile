@@ -5,11 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "name": "Debug Android",
+            "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+            "type": "reactnative",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3500",
-            "webRoot": "${workspaceFolder}"
+            "platform": "android",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/.vscode/.react"
         }
     ]
 }

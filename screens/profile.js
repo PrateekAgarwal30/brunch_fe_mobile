@@ -51,7 +51,7 @@ class Profile extends React.Component {
       if(!await AsyncStorage.getItem('authToken'))
       this.props.navigation.navigate("AuthLoading")
     } catch (error) {
-      ToastAndroid.show(error);
+      ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   }
   async componentDidMount() {

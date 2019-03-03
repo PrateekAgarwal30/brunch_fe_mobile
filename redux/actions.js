@@ -1,4 +1,7 @@
 import { AsyncStorage } from "react-native";
+import { ipAddress } from "../constants";
+import _ from 'lodash';
+
 export const LOGIN = {
   LOGIN_SENT: "LOGIN_SENT",
   LOGIN_FULFILLED: "LOGIN_FULFILLED",
@@ -9,6 +12,11 @@ export const REGISTER = {
   REGISTER_SENT: "REGISTER_SENT",
   REGISTER_FULFILLED: "REGISTER_FULFILLED",
   REGISTER_REJECTED: "REGISTER_REJECTED"
+};
+export const PROFILE = {
+  UPDATE_PROFILE_SENT: "UPDATE_PROFILE_SENT",
+  UPDATE_PROFILE_FULFILLED: "UPDATE_PROFILE_FULFILLED",
+  UPDATE_PROFILE_REJECTED: "UPDATE_PROFILE_REJECTED"
 };
 export const USER = {
   GET_PROFILE_SENT: "GET_PROFILE_SENT",
@@ -21,11 +29,11 @@ export const USER = {
   LOGOUT_FULFILLED: "LOGOUT_FULFILLED",
   LOGOUT_REJECTED: "LOGOUT_REJECTED",
 };
-import { ipAddress } from "../constants";
-import _ from 'lodash';
+
 export const textChange = () => dispatch => {
   dispatch({ type: LOGIN.LOGIN_TEXT_CHANGE });
 }
+
 export const login = (email, password) => async dispatch => {
   try {
     dispatch({ type: LOGIN.LOGIN_SENT, payload: { isLoading: true } });
@@ -151,9 +159,9 @@ export const changePassword = (oldp, confirmp, newp) => async dispatch => {
       });
       return "Change Password Failed"
     }
-    Promise.resolve();
+    return Promise.resolve();
   } catch (error) {
-    Promise.reject(error.message)
+    return Promise.reject(error.message)
   }
 
 };
@@ -166,5 +174,39 @@ export const logOut = () => async dispatch => {
   } catch (error) {
     dispatch({ type: USER.LOGOUT_REJECTED, payload: { err: null,isLoading: false }});
     return Promise.reject(error.message);
+  }
+};
+export const updateProfile = (Obj) => async dispatch => {
+  try {
+    console.log("Yooooooooooooo!")
+    dispatch({ type: PROFILE.UPDATE_PROFILE_SENT, payload: { isLoading: true, err: null } });
+    const jwtToken = await AsyncStorage.getItem('authToken');
+    console.log(jwtToken);
+    const res = await fetch(ipAddress + "/api/me/details", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": jwtToken
+      },
+      body: JSON.stringify(Obj) // body data type must match "Content-Type" header
+    })
+    console.log("res",res);
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: PROFILE.UPDATE_PROFILE_FULFILLED,
+        payload: { isLoading: false }
+      });
+      return "Details Updated successfully!"
+    } else {
+      dispatch({
+        type: PROFILE.UPDATE_PROFILE_REJECTED,
+        payload: { err: result._message, isLoading: false }
+      });
+      return "Details Update Failed.Try Later..."
+    }
+    return Promise.resolve();
+  } catch (error) {
+    return Promise.reject(error.message)
   }
 };

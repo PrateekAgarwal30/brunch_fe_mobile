@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { LOGIN, REGISTER, USER } from "./actions";
+import { LOGIN, REGISTER, USER,PROFILE } from "./actions";
 const userReducer = (state = { err: null, isLoading: false }, action) => {
   switch (action.type) {
     case LOGIN.LOGIN_SENT:
@@ -63,6 +63,18 @@ const userReducer = (state = { err: null, isLoading: false }, action) => {
       ...action.payload
     };
     case USER.CHANGE_PASS_FULFILLED: return {
+      ...state,
+      ...action.payload
+    };
+    case PROFILE.UPDATE_PROFILE_SENT: return {
+      ...state,
+      ...action.payload
+    };
+    case PROFILE.UPDATE_PROFILE_REJECTED: return {
+      ...state,
+      ...action.payload
+    };
+    case PROFILE.UPDATE_PROFILE_FULFILLED: return {
       ...state,
       ...action.payload
     };
