@@ -24,20 +24,16 @@ class Register extends React.Component {
     validConfirmPassword: null
   };
 
-  _register = x => {
-    this.props
-      .register(this.state.email, this.state.password)
-      .then(() => {
-        return AsyncStorage.getItem('authToken')
-      }).then((x) => {
-        console.log(x);
-        if (x) {
-          this.props.navigation.navigate("AppStack");
-        }
-      })
-      .catch(error => {
-        console.log("REGISTER ERROR", error);
-      });
+  _register = async (x) => {
+    try {
+      await this.props.register(this.state.email, this.state.password)
+      const a = await AsyncStorage.getItem('authToken');
+      if (x) {
+        this.props.navigation.navigate("AppStack");
+      }
+    } catch (error) {
+      console.log("REGISTER ERROR", error);
+    }
   };
   _validEmailInput = x => {
     if (this.props.user.err)

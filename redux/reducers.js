@@ -26,7 +26,7 @@ const userReducer = (state = { err: null, isLoading: false }, action) => {
     case REGISTER.REGISTER_SENT:
       return {
         ...state,
-        ...payload,
+        ...action.payload,
         err: null
       };
     case REGISTER.REGISTER_FULFILLED:
