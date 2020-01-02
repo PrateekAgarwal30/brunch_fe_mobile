@@ -45,7 +45,6 @@ class Register extends React.Component {
       validEmail: reg.test(x) != 0,
       error: null
     });
-    // console.log(reg.test(x) != 0);
   };
   _validConfirmPasswordInput = x => {
     if (this.props.user.err)

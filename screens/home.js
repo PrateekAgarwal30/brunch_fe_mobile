@@ -35,7 +35,6 @@ class Home extends React.Component {
     this.props.navigation.setParams({
       _menu: this._menu
     });
-    // console.log("a")
     this.interval = setInterval(async () => {
       try {
         await this.props.getProfile();
@@ -46,13 +45,11 @@ class Home extends React.Component {
       } catch (error) {
         console.log(error.message);
       }
-    }, 5000);
+    }, 15000);
   }
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-
-
   _menu = async () => {
     console.log('clicked');
     this.props.navigation.toggleDrawer();

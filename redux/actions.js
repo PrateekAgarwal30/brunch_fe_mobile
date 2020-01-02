@@ -16,7 +16,10 @@ export const REGISTER = {
 export const PROFILE = {
   UPDATE_PROFILE_SENT: "UPDATE_PROFILE_SENT",
   UPDATE_PROFILE_FULFILLED: "UPDATE_PROFILE_FULFILLED",
-  UPDATE_PROFILE_REJECTED: "UPDATE_PROFILE_REJECTED"
+  UPDATE_PROFILE_REJECTED: "UPDATE_PROFILE_REJECTED",
+  GET_TP_ADDRESSES_SENT: "GET_TP_ADDRESSES_SENT",
+  GET_TP_ADDRESSES_FULFILLED: "GET_TP_ADDRESSES_FULFILLED",
+  GET_TP_ADDRESSES_REJECTED: "GET_TP_ADDRESSES_REJECTED",
 };
 export const USER = {
   GET_PROFILE_SENT: "GET_PROFILE_SENT",
@@ -47,7 +50,6 @@ export const login = (email, password) => async dispatch => {
     });
     jwtToken = res.headers.get("x-auth-token");
     const result = await res.json();
-    console.log(result);
     if (result._status === "success") {
       await AsyncStorage.setItem('authToken', jwtToken);
       dispatch({
@@ -66,7 +68,6 @@ export const login = (email, password) => async dispatch => {
   }
 };
 export const register = (email, password) => async dispatch => {
-  console.log(email, password);
   try {
     dispatch({ type: REGISTER.REGISTER_SENT, payload: { isLoading: true } });
     let jwtToken = null;
@@ -77,7 +78,6 @@ export const register = (email, password) => async dispatch => {
       },
       body: JSON.stringify({ email: email, password: password }) // body data type must match "Content-Type" header
     });
-    console.log(res);
     jwtToken = res.headers.get("x-auth-token");
     const result = await res.json();
     if (result._status === "success") {
@@ -115,7 +115,6 @@ export const getProfile = () => async dispatch => {
       }
     })
     const result = await res.json();
-    console.log(result);
     if (result._status === "success") {
       dispatch({
         type: USER.GET_PROFILE_FULFILLED,
@@ -203,6 +202,41 @@ export const updateProfile = (Obj) => async dispatch => {
       return Promise.resolve("Details Update Failed.Try Later...")
     }
     
+  } catch (error) {
+    return Promise.reject(error.message)
+  }
+};
+
+
+export const getTechAddresses = () => async dispatch => {
+  try {
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    dispatch({
+      type: PROFILE.GET_TP_ADDRESSES_SENT, payload: {
+        isLoading: true
+      }
+    });
+    const res = await fetch(ipAddress + "/api/tech_address", {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": jwtToken
+      }
+    })
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: PROFILE.GET_TP_ADDRESSES_FULFILLED,
+        payload: result._data
+      });
+      return Promise.resolve("FULFILLED");
+    } else {
+      dispatch({
+        type: PROFILE.GET_TP_ADDRESSES_REJECTED,
+        payload: { err: result._message, isLoading: false }
+      });
+      return Promise.resolve("REJECTED");
+    }
   } catch (error) {
     return Promise.reject(error.message)
   }

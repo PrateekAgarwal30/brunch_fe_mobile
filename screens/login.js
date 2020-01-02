@@ -49,7 +49,6 @@ class Login extends React.Component {
       email: x,
       validEmail: reg.test(x) != 0
     });
-    // console.log(reg.test(x) != 0);
   };
   _validPasswordInput = x => {
     if (this.props.user.err) this.props.textChange();

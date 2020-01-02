@@ -116,49 +116,49 @@ class UserInfo extends React.Component {
       ...this.state,
       edit: { ...this.state.edit, firstName: x }
     });
-    console.log(this.state.edit)
+    
   }
   _lastNameChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, lastName: x }
     });
-    console.log(this.state.edit)
+    
   }
   _phoneNumberChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, phoneNumber: x }
     });
-    console.log(this.state.edit)
+    
   }
   _locationChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, location: x }
     });
-    console.log(this.state.edit)
+    
   }
   _dateOfBirthChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, dateOfBirth: x }
     });
-    console.log(this.state.edit)
+    
   }
   _preferredMealChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, preferredMeal: x }
     });
-    console.log(this.state.edit)
+    
   }
   _descriptionChange = (x) => {
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, description: x }
     });
-    console.log(this.state.edit)
+    
   }
   render() {
     return (

@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
     height: '80%'
   }
 })
-mapStateToProps = state => ({
+const mapStateToProps = state => ({
   profile: state.profile
 });
-mapActionsToProps = {};
+const mapActionsToProps = {};
 export default connect(
   mapStateToProps,
   mapActionsToProps

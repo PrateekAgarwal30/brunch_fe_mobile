@@ -54,6 +54,23 @@ const userReducer = (state = { err: null, isLoading: false }, action) => {
         ...state,
         ...action.payload
       };
+    
+    case PROFILE.GET_TP_ADDRESSES_SENT:
+      return {
+        ...state,
+        ...action.payload
+      };
+    case PROFILE.GET_TP_ADDRESSES_FULFILLED:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case PROFILE.GET_TP_ADDRESSES_REJECTED:
+      return {
+        ...state,
+        ...action.payload
+      };
+
     case USER.CHANGE_PASS_SENT: return {
       ...state,
       ...action.payload
@@ -101,6 +118,11 @@ const profileReducer = (state = {}, action) => {
       return {
         ...state,
         ...action.payload
+      };
+    case PROFILE.GET_TP_ADDRESSES_FULFILLED:
+      return {
+        ...state,
+        tech_addresses:action.payload
       };
     case USER.LOGOUT_FULFILLED: return {}
     default:
