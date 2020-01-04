@@ -10,7 +10,7 @@ import {
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
-
+import _ from 'lodash';
 class Drawer extends React.Component {
   render() {
     return (
@@ -23,7 +23,7 @@ class Drawer extends React.Component {
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>{this.props.profile.email}</Text>
+          <Text style={styles.name}>{_.get(this.props,"profile.details.firstName",this.props.profile.email) || "Guest"}</Text>
           </View>
           {/* <Text>{JSON.stringify(this.props.navigation)}</Text> */}
           <Card style={styles.cardContainer}>

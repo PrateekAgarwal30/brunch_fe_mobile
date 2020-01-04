@@ -2,11 +2,14 @@ import React from "react";
 import { Text, ScrollView, StyleSheet, View, Image } from "react-native";
 import { connect } from "react-redux";
 import { getTechAddresses } from "../redux/actions";
-import { MapView, Permissions, Location, Marker } from "expo";
+// import { MapView, } from "expo";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
 import { LocationSearchButton } from "../components/LocationSearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
-import { ActionSheet } from 'native-base'
+import { ActionSheet } from "native-base";
 import { ABCD } from "../components/ABCD";
 class Address extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -33,8 +36,8 @@ class Address extends React.Component {
       tech_parks: [],
       filtersParks: [],
       selected: false,
-      selectedItem : [],
-    }
+      selectedItem: []
+    };
     this._getLocationAsync();
   }
   async componentWillMount() {
@@ -42,62 +45,80 @@ class Address extends React.Component {
     this.setState({
       ...this.state,
       tech_parks: this.props.profile.tech_addresses || []
-    })
+    });
   }
-  _searchLocation = (x) => {
-    let filtersParks = this.state.tech_parks.filter((tp) => {
-      return (tp.techPark.toLowerCase().indexOf(x.toLowerCase()) > -1);
+  _searchLocation = x => {
+    let filtersParks = this.state.tech_parks.filter(tp => {
+      return tp.techPark.toLowerCase().indexOf(x.toLowerCase()) > -1;
     });
     this.setState({
       ...this.state,
       filtersParks: filtersParks
-    })
-  }
-  _selectLocation = (x) => {
-    const selectedTechPark = this.state.tech_parks.filter((y) => (y._id === x));
+    });
+  };
+  _selectLocation = x => {
+    const selectedTechPark = this.state.tech_parks.filter(y => y._id === x);
     // this.props.navigation.navigate('GetLocation');
     this.setState({
       ...this.state,
       selected: true,
       selectedItem: selectedTechPark
-    })
-  }
+    });
+  };
   _getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === 'granted') {
-      let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+    if (status === "granted") {
+      let location = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true
+      });
       let region = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         latitudeDelta: 0.0221,
         longitudeDelta: 0.0221
-      }
+      };
       this.setState({
         ...this.state,
         region: region
       });
     } else {
-      throw new Error('Location permission not granted');
+      throw new Error("Location permission not granted");
     }
-  }
+  };
   centerMap() {
-    const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.region;
-    this.map.animateToRegion = ({
-      latitude, longitude, latitudeDelta, longitudeDelta,
-    })
+    const {
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
+    } = this.state.region;
+    this.map.animateToRegion = {
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta
+    };
   }
   render() {
     return (
       <View style={{ flex: 1, zIndex: 0 }}>
-        {this.state.selected ?
-          <ABCD selectedItem = {this.state.selectedItem}/>
-          :
+        {this.state.selected ? (
+          <ABCD selectedItem={this.state.selectedItem} />
+        ) : (
           <View>
             <LocationSearchButton _searchLocation={this._searchLocation} />
-            <LocationSearchResult results={this.state.filtersParks} _selectLocation={this._selectLocation} />
-            <CurrentLocationButton bottom={0} cb={() => { this.centerMap() }} />
+            <LocationSearchResult
+              results={this.state.filtersParks}
+              _selectLocation={this._selectLocation}
+            />
+            <CurrentLocationButton
+              bottom={0}
+              cb={() => {
+                this.centerMap();
+              }}
+            />
           </View>
-        }
+        )}
         <MapView
           style={styles.map}
           initialRegion={this.state.region}
@@ -105,30 +126,31 @@ class Address extends React.Component {
           rotateEnabled={false}
           showsUserLocation={true}
           region={this.state.region}
-          ref={(map) => { this.map = map }}
+          ref={map => {
+            this.map = map;
+          }}
           customMapStyle={mapStyle}
         >
-          {this.state.tech_parks.map((x) => <MapView.Marker
-            key={x._id}
-            zIndex={9}
-            coordinate={{
-              latitude: +x.tPark_location.latitude,
-              longitude: +x.tPark_location.longitude
-            }}
-            title={x.techPark}
-            pointerEvents="none"
-            onPress={(x) => { console.log(x) }}
-          >
-            {/* <View>
-              <Image source={require('../assets/map-marker.png')}></Image>
-              <Text>{x.techPark}</Text>
-            </View> */}
-          </MapView.Marker>)}
+          {this.state.tech_parks.map(x => (
+            <MapView.Marker
+              key={x._id}
+              zIndex={9}
+              coordinate={{
+                latitude: +x.tPark_location.latitude,
+                longitude: +x.tPark_location.longitude
+              }}
+              title={x.techPark}
+              pointerEvents="none"
+              onPress={x => {
+                console.log(x);
+              }}
+            ></MapView.Marker>
+          ))}
         </MapView>
-        {/* <Text>{JSON.stringify(this.state)}</Text>
+        <Text>{JSON.stringify(this.state)}</Text>
         <Text>*******************************************************************</Text>
         <Text>{JSON.stringify(this.props.profile)}</Text>
-        <Text>*******************************************************************</Text> */}
+        <Text>*******************************************************************</Text>
       </View>
     );
   }
@@ -137,98 +159,95 @@ const styles = StyleSheet.create({
   map: {
     flex: 1
   }
-})
+});
 
-mapStateToProps = state => ({
+const mapStateToProps = state => ({
   profile: state.profile,
   user: state.user
 });
 
-mapActionsToProps = {
+const mapActionsToProps = {
   getTechAddresses: getTechAddresses
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(Address);
+export default connect(mapStateToProps, mapActionsToProps)(Address);
 
 var mapStyle = [
   {
-    "featureType": "administrative",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "administrative",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#444444"
+        color: "#444444"
       }
     ]
   },
   {
-    "featureType": "landscape",
-    "elementType": "all",
-    "stylers": [
+    featureType: "landscape",
+    elementType: "all",
+    stylers: [
       {
-        "color": "#f2f2f2"
+        color: "#f2f2f2"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "all",
-    "stylers": [
+    featureType: "poi",
+    elementType: "all",
+    stylers: [
       {
-        "visibility": "simplified"
+        visibility: "simplified"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "all",
-    "stylers": [
+    featureType: "road",
+    elementType: "all",
+    stylers: [
       {
-        "saturation": -100
+        saturation: -100
       },
       {
-        "lightness": 45
+        lightness: 45
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "all",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "all",
+    stylers: [
       {
-        "visibility": "simplified"
+        visibility: "simplified"
       }
     ]
   },
   {
-    "featureType": "road.arterial",
-    "elementType": "labels.icon",
-    "stylers": [
+    featureType: "road.arterial",
+    elementType: "labels.icon",
+    stylers: [
       {
-        "visibility": "simplified"
+        visibility: "simplified"
       }
     ]
   },
   {
-    "featureType": "transit",
-    "elementType": "all",
-    "stylers": [
+    featureType: "transit",
+    elementType: "all",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "all",
-    "stylers": [
+    featureType: "water",
+    elementType: "all",
+    stylers: [
       {
-        "color": "#46bcec"
+        color: "#46bcec"
       },
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   }
-]
+];

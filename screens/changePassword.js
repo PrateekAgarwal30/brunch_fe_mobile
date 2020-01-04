@@ -125,7 +125,7 @@ class ChangePassword extends React.Component {
         />
         <TextInput
           style={styles.textWrapper}
-          placeholder="New Password"
+          placeholder="Confirm New Password"
           value={this.state.confirmP}
           onChangeText={this._validConfirmPasswordInput}
           secureTextEntry={true}
@@ -141,10 +141,22 @@ class ChangePassword extends React.Component {
             )
           }
         >
-          <Text style={styles.buttonText}>Change Password</Text>
+          <Text style={isDisabled(!(
+              this.state.validOldP &&
+              this.state.validNewP &&
+              this.state.validConfirmP
+            ))}>Change Password</Text>
         </TouchableHighlight>
       </View>
     );
+  }
+}
+
+const isDisabled = (bool) => {
+  if(bool){
+    return styles.buttonText;
+  }else{
+    return {...styles.buttonText,opacity: 1};
   }
 }
 const styles = StyleSheet.create({
@@ -202,7 +214,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     width: "100%",
-    color: "white"
+    color: "white",
+    opacity:0.5
   },
   registerWrapper: {
     flexDirection: "row",

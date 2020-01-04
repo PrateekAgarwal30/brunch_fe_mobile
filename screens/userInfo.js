@@ -251,7 +251,7 @@ class UserInfo extends React.Component {
                         ? new Date(moment(this.state.db.dateOfBirth))
                         : new Date(moment())
                     }
-                    minimumDate={new Date(moment().subtract("years", 18))}
+                    minimumDate={new Date(moment().subtract(18,"years"))}
                     // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
                     maximumDate={new Date(moment())}
                     locale={"en"}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { Card, CardItem, Icon } from 'native-base'
-class Address extends React.PureComponent {
+class Address1 extends React.PureComponent {
   _keyExtractor = (item, index) => item._id;
 
   _onPressItem = item => {
@@ -43,10 +43,10 @@ class Address extends React.PureComponent {
 }
 
 
-mapStateToProps = state => ({
+const mapStateToProps = state => ({
   profile: state.profile
 });
-mapActionsToProps = {};
+const mapActionsToProps = {};
 export default connect(
   mapStateToProps,
   mapActionsToProps
