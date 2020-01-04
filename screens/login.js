@@ -43,7 +43,7 @@ class Login extends React.Component {
   };
   _validEmailInput = x => {
     if (this.props.user.err) this.props.textChange();
-    reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     this.setState({
       ...this.state,
       email: x,

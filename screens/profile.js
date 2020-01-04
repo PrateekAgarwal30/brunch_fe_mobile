@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  Button, ToastAndroid,AsyncStorage
+  Button,
+  ToastAndroid,
+  AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
@@ -22,14 +24,14 @@ class Profile extends React.Component {
       headerRight: (
         <TouchableOpacity
           onPress={() => {
-            const _logOut = navigation.getParam('_logOut', null)
+            const _logOut = navigation.getParam("_logOut", null);
             if (_logOut) {
               _logOut();
             }
-          }
-          }
+          }}
           style={{ padding: 5, marginRight: 10 }}
-        ><Icon name="log-out" style={{ color: '#fff' }} />
+        >
+          <Icon name="log-out" style={{ color: "#fff" }} />
         </TouchableOpacity>
       ),
       headerStyle: {
@@ -48,12 +50,13 @@ class Profile extends React.Component {
   _logOut = async () => {
     try {
       await this.props.logOut();
-      if(!await AsyncStorage.getItem('authToken'))
-      this.props.navigation.navigate("AuthLoading")
+      if (!(await AsyncStorage.getItem("authToken"))) {
+        this.props.navigation.navigate("AuthLoading");
+      }
     } catch (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
-  }
+  };
   async componentDidMount() {
     this.props.navigation.setParams({
       _logOut: this._logOut
@@ -147,11 +150,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: 40
   },
-  name: {
-    fontSize: 22,
-    color: "#FFFFFF",
-    fontWeight: "600"
-  },
+  // name: {
+  //   fontSize: 22,
+  //   color: "#FFFFFF",
+  //   fontWeight: "600"
+  // },
   body: {
     marginTop: 20
   },
@@ -188,12 +191,12 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginBottom: 20,
-    backgroundColor: '#A4A4BF',
+    backgroundColor: "#A4A4BF",
     borderRadius: 5
   },
   buttonInsideView: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10
   },
   cardContainer: {
@@ -208,10 +211,6 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 const mapActionsToProps = {
-  getProfile: getProfile,
   logOut: logOut
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(Profile);
+export default connect(mapStateToProps, mapActionsToProps)(Profile);
