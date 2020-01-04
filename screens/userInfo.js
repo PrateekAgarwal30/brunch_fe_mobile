@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Text,
-  View,
   TouchableOpacity,
   ToastAndroid,
   KeyboardAvoidingView,
@@ -14,14 +13,11 @@ import moment from "moment";
 import { DatePicker } from "native-base";
 // import { Separator } from "native-base";
 import {
-  Container,
-  Header,
   Content,
   Form,
   Item,
   Input,
   Label,
-  Separator,
   Button,
   Icon
 } from "native-base";
@@ -268,7 +264,7 @@ class UserInfo extends React.Component {
                     disabled={!this.state.editing}
                   />
                 ) : (
-                  <Label>{this.state.db.dateOfBirth}</Label>
+                  <Label>{moment(this.state.db.dateOfBirth).format("D/M/YYYY") }</Label>
                 )}
               </Item>
               <Item stackedLabel style={{ flex: 1 }}>
@@ -281,8 +277,8 @@ class UserInfo extends React.Component {
                   onValueChange={this._preferredMealChange}
                   enabled = {this.state.editing}
                 >
-                  <Picker.Item label="Veg" value="Veg" />
-                  <Picker.Item label="NonVeg" value="NonVeg" />
+                  <Picker.Item label="Veg" value="veg" />
+                  <Picker.Item label="NonVeg" value="nonVeg" />
                 </Picker>
               </Item>
             </Item>

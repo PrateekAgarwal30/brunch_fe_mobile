@@ -4,19 +4,15 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
   ScrollView,
-  FlatList,
-  Button,
   ToastAndroid,
   AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
-import { getProfile, logOut } from "../redux/actions";
-import Separator from "./../components/Separator";
+import { logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
-
+import _ from 'lodash';
 class Profile extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -72,7 +68,7 @@ class Profile extends React.Component {
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>{this.props.profile.email}</Text>
+            <Text style={styles.name}>{_.get(this.props,"profile.details.firstName",this.props.profile.email) || "Guest"}</Text>
           </View>
           <Card style={styles.cardContainer}>
             <ScrollView style={styles.buttonContainer}>

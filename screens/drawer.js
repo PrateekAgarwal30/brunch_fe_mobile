@@ -25,9 +25,19 @@ class Drawer extends React.Component {
           <View style={styles.bodyContent}>
             <Text style={styles.name}>{this.props.profile.email}</Text>
           </View>
-          <Text>{JSON.stringify(this.props.navigation)}</Text>
+          {/* <Text>{JSON.stringify(this.props.navigation)}</Text> */}
           <Card style={styles.cardContainer}>
             <ScrollView style={styles.buttonContainer}>
+            <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => this.props.navigation.navigate("Profile")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="person" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Profile</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
                 onPress={() => this.props.navigation.navigate("Address")}
@@ -71,11 +81,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "absolute",
     marginTop: 40
-  },
-  name: {
-    fontSize: 22,
-    color: "#FFFFFF",
-    fontWeight: "600"
   },
   body: {
     marginTop: 20

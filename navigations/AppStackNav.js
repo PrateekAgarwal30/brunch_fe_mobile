@@ -9,11 +9,8 @@ import UserInfo from "../screens/userInfo"
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 
 
-import { Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
-import { Button, Header } from "native-base";
-import { connect } from "react-redux";
-import { DrawerActions } from "react-navigation";
-import { Icon, Card } from "native-base";
+import { TouchableOpacity } from "react-native";
+import { Icon } from "native-base";
 
 const DrawerNavigator = createDrawerNavigator(
     {
@@ -49,7 +46,7 @@ const DrawerNavigator = createDrawerNavigator(
     }
 );
 
-export default AppStack = createStackNavigator(
+const AppStack = createStackNavigator(
     {
         DrawerNavigator: {
             screen: DrawerNavigator,
@@ -76,4 +73,5 @@ export default AppStack = createStackNavigator(
     }
 );
 
+export default AppStack;
 

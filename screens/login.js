@@ -1,11 +1,9 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions,
   View,
   Image,
   Text,
-  Button,
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
@@ -14,11 +12,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
-import { ipAddress } from "../constants";
-import { Constants } from "expo";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable'
-const { width, height } = Dimensions.get("screen");
 class Login extends React.Component {
   state = {
     validEmail: true,
@@ -39,7 +34,7 @@ class Login extends React.Component {
     } catch (error) {
       console.log("Error ",error);
       ToastAndroid.show("Server down. Please try later",ToastAndroid.SHORT);
-    };
+    }
   };
   _validEmailInput = x => {
     if (this.props.user.err) this.props.textChange();
@@ -139,7 +134,7 @@ class Login extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Text>{JSON.stringify(this.props.user)}</Text>
+        {/* <Text>{JSON.stringify(this.props.user)}</Text> */}
       </KeyboardAvoidingView>
     );
   }

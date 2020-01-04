@@ -1,9 +1,8 @@
 import React from "react";
-import { Text, View, Dimensions, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import { Button, Header } from "native-base";
 import { connect } from "react-redux";
-import { DrawerActions } from "react-navigation";
-import { Icon, Card } from "native-base";
+import { Icon } from "native-base";
 import { getProfile } from "../redux/actions";
 class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -65,7 +64,7 @@ class Home extends React.Component {
           style={{ width: 400, height: 400 }}
           source={require("../assets/workInProgress.png")}
         />
-        <Text>{JSON.stringify(this.props.navigation)}</Text>
+        {/* <Text>{JSON.stringify(this.props.navigation)}</Text> */}
       </View>
     );
   }
