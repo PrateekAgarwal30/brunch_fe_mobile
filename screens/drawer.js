@@ -5,17 +5,16 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
-import _ from 'lodash';
+import _ from "lodash";
 class Drawer extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-     
         <View style={styles.header} />
         <Image
           style={styles.avatar}
@@ -23,12 +22,18 @@ class Drawer extends React.Component {
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-          <Text style={styles.name}>{_.get(this.props,"profile.details.firstName",this.props.profile.email) || "Guest"}</Text>
+            <Text style={styles.name}>
+              {_.get(
+                this.props,
+                "profile.details.firstName",
+                this.props.profile.email
+              ) || "Guest"}
+            </Text>
           </View>
           {/* <Text>{JSON.stringify(this.props.navigation)}</Text> */}
           <Card style={styles.cardContainer}>
             <ScrollView style={styles.buttonContainer}>
-            <TouchableOpacity
+              <TouchableOpacity
                 style={styles.buttonWrapper}
                 onPress={() => this.props.navigation.navigate("Profile")}
               >
@@ -53,8 +58,28 @@ class Drawer extends React.Component {
                 onPress={() => alert("Clicked")}
               >
                 <View style={styles.buttonInsideView}>
+                  <Icon name="card" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Payment</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => alert("Clicked")}
+              >
+                <View style={styles.buttonInsideView}>
                   <Icon name="heart" style={{ flex: 1 }} />
                   <Text style={styles.textWrapper}>Favourite</Text>
+                  <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonWrapper}
+                onPress={() => this.props.navigation.navigate("ChangePassword")}
+              >
+                <View style={styles.buttonInsideView}>
+                  <Icon name="keypad" style={{ flex: 1 }} />
+                  <Text style={styles.textWrapper}>Change Password</Text>
                   <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
                 </View>
               </TouchableOpacity>
@@ -118,12 +143,12 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     marginBottom: 20,
-    backgroundColor: '#A4A4BF',
+    backgroundColor: "#A4A4BF",
     borderRadius: 5
   },
   buttonInsideView: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10
   },
   cardContainer: {
@@ -141,7 +166,4 @@ const mapActionsToProps = {
   getProfile: getProfile,
   logOut: logOut
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(Drawer);
+export default connect(mapStateToProps, mapActionsToProps)(Drawer);

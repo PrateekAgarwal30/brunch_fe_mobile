@@ -9,6 +9,7 @@ import { LocationSearchButton } from "../components/LocationSearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
 import { SelectStallLocation } from "../components/SelectStallLocation";
+import _ from "lodash";
 class Address extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -37,6 +38,7 @@ class Address extends React.Component {
       selectedItem: []
     };
     this._getLocationAsync();
+    this._selectLocation = this._selectLocation.bind(this);
   }
   async componentWillMount() {
     await this.props.getTechAddresses();
@@ -54,15 +56,17 @@ class Address extends React.Component {
       filtersParks: filtersParks
     });
   };
-  _selectLocation = x => {
+  _selectLocation(x) {
     const selectedTechPark = this.state.tech_parks.filter(y => y._id === x);
     // this.props.navigation.navigate('GetLocation');
+    // const {latitude,longitude} = _.get(selectedTechPark[0],"tPark_location");
+    // this.map.animateCamera({ center: selectedTechPark[0].tPark_location});
     this.setState({
       ...this.state,
       selected: true,
       selectedItem: selectedTechPark
     });
-  };
+  }
   _getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status === "granted") {
@@ -84,20 +88,18 @@ class Address extends React.Component {
     }
   };
   centerMap() {
-    const {
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta
-    } = this.state.region;
-    this.map.animateToRegion = {
-      latitude,
-      longitude,
-      latitudeDelta,
-      longitudeDelta
-    };
+    let latitude = 0;
+    let longitude = 0;
+    if(this.state.selected){
+      latitude = _.get(this.state.selectedItem[0],"tPark_location").latitude;
+      longitude  = _.get(this.state.selectedItem[0],"tPark_location").longitude;
+    }else{
+      latitude = this.state.region.latitude;
+      longitude  = this.state.region.longitude;
+    }
+    this.map.animateCamera({ center: { latitude, longitude } });
   }
-  onConfrimLocation = async (stall_loc_id, tech_park_id) => {
+  onConfirmLocation = async (stall_loc_id, tech_park_id) => {
     // console.log(stall_id,tech_park_id);
     this.props
       .saveOfficeAddressForUser({
@@ -119,19 +121,27 @@ class Address extends React.Component {
     return (
       <View style={{ flex: 1, zIndex: 0 }}>
         {this.state.selected ? (
+          <View>
           <SelectStallLocation
             selectedItem={this.state.selectedItem}
-            onConfrimLocation={this.onConfrimLocation}
+            onConfirmLocation={this.onConfirmLocation}
           />
+          <CurrentLocationButton
+              bottom={130}
+              cb={() => {
+                this.centerMap();
+              }}
+            />
+            </View>
         ) : (
           <View>
             <LocationSearchButton _searchLocation={this._searchLocation} />
             <LocationSearchResult
               results={this.state.filtersParks}
-              _selectLocation={this._selectLocation}
+              _selectLocation={x => this._selectLocation(x)}
             />
             <CurrentLocationButton
-              bottom={0}
+              bottom={130}
               cb={() => {
                 this.centerMap();
               }}
@@ -144,7 +154,16 @@ class Address extends React.Component {
           showsCompass={true}
           rotateEnabled={false}
           showsUserLocation={true}
-          region={this.state.region}
+          region={
+            this.state.selected
+              ? {
+                  latitude: _.get(this.state.selectedItem[0],"tPark_location.latitude"),
+                  longitude: _.get(this.state.selectedItem[0],"tPark_location.longitude"),
+                  latitudeDelta: 0.00121,
+                  longitudeDelta: 0.00121
+                }
+              : this.state.region
+          }
           ref={map => {
             this.map = map;
           }}

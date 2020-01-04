@@ -69,7 +69,7 @@ export const SelectStallLocation = function(props) {
               </Text>
               <TouchableOpacity
                 onPress={() =>
-                  props.onConfrimLocation(x._id, props.selectedItem[0]._id)
+                  props.onConfirmLocation(x._id, props.selectedItem[0]._id)
                 }
               >
                 <Icon name="md-checkmark" />
