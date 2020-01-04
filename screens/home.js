@@ -40,7 +40,7 @@ class Home extends React.Component {
     // clearInterval(this.interval);
   }
   _menu = async () => {
-    console.log("clicked");
+    // console.log("clicked");
     this.props.navigation.toggleDrawer();
   };
   render() {

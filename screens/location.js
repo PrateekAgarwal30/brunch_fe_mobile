@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { Card, CardItem, Icon } from 'native-base'
 import { MapView, Location, Permissions } from "expo";
 import { Marker } from "react-native-maps";
 class GetLocation extends React.Component {
@@ -9,43 +8,45 @@ class GetLocation extends React.Component {
     latitude: 37.78825,
     longitude: -122.4324,
     latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  }
+    longitudeDelta: 0.0421
+  };
   componentWillMount() {
     this.alertIfRemoteNotificationsDisabledAsync();
     this.getLocationHandler();
   }
   alertIfRemoteNotificationsDisabledAsync = async () => {
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    console.log(status);
+    // console.log(status);
 
-    if (status !== 'granted') {
-      alert('Hey! You might want to enable notifications for my app, they are good.');
+    if (status !== "granted") {
+      alert(
+        "Hey! You might want to enable notifications for my app, they are good."
+      );
     }
-  }
+  };
   getLocationAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === 'granted') {
+    if (status === "granted") {
       return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
     } else {
-      throw new Error('Location permission not granted');
+      throw new Error("Location permission not granted");
     }
-  }
+  };
   getLocationHandler = async () => {
     try {
       const coords = await this.getLocationAsync();
-      console.log(coords);
+      // console.log(coords);
       if (coords) {
         this.setState({
           ...this.state,
           latitude: coords.coords.latitude,
           longitude: coords.coords.longitude
-        })
+        });
       }
     } catch (err) {
-      alert(err.message)
+      alert(err.message);
     }
-  }
+  };
   render() {
     return (
       <View>
@@ -57,87 +58,85 @@ class GetLocation extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
           }}
-          region={
-            this.state
-          }
-          loadingEnabled = {true}
-          paddingAdjustmentBehavior = "automatic"
+          region={this.state}
+          loadingEnabled={true}
+          paddingAdjustmentBehavior="automatic"
           customMapStyle={[
             {
-              "featureType": "administrative",
-              "elementType": "labels.text.fill",
-              "stylers": [
+              featureType: "administrative",
+              elementType: "labels.text.fill",
+              stylers: [
                 {
-                  "color": "#444444"
+                  color: "#444444"
                 }
               ]
             },
             {
-              "featureType": "landscape",
-              "elementType": "all",
-              "stylers": [
+              featureType: "landscape",
+              elementType: "all",
+              stylers: [
                 {
-                  "color": "#f2f2f2"
+                  color: "#f2f2f2"
                 }
               ]
             },
             {
-              "featureType": "poi",
-              "elementType": "all",
-              "stylers": [
+              featureType: "poi",
+              elementType: "all",
+              stylers: [
                 {
-                  "visibility": "off"
+                  visibility: "off"
                 }
               ]
             },
             {
-              "featureType": "road",
-              "elementType": "all",
-              "stylers": [
+              featureType: "road",
+              elementType: "all",
+              stylers: [
                 {
-                  "saturation": -100
+                  saturation: -100
                 },
                 {
-                  "lightness": 45
+                  lightness: 45
                 }
               ]
             },
             {
-              "featureType": "road.highway",
-              "elementType": "all",
-              "stylers": [
+              featureType: "road.highway",
+              elementType: "all",
+              stylers: [
                 {
-                  "visibility": "simplified"
+                  visibility: "simplified"
                 }
               ]
             },
             {
-              "featureType": "road.arterial",
-              "elementType": "labels.icon",
-              "stylers": [
+              featureType: "road.arterial",
+              elementType: "labels.icon",
+              stylers: [
                 {
-                  "visibility": "off"
+                  visibility: "off"
                 }
               ]
             },
             {
-              "featureType": "transit",
-              "elementType": "all",
-              "stylers": [
+              featureType: "transit",
+              elementType: "all",
+              stylers: [
                 {
-                  "visibility": "off"
+                  visibility: "off"
                 }
               ]
             },
             {
-              "featureType": "water",
-              "elementType": "all",
-              "stylers": [
+              featureType: "water",
+              elementType: "all",
+              stylers: [
                 {
-                  "color": "#46bcec"
+                  color: "#46bcec"
                 },
                 {
-                  "visibility": "on"
+                  visibility: "on"
                 }
               ]
             }
@@ -154,18 +153,12 @@ class GetLocation extends React.Component {
 
 const styles = StyleSheet.create({
   map: {
-    width: '100%',
-    height: '80%'
+    width: "100%",
+    height: "80%"
   }
-})
+});
 const mapStateToProps = state => ({
   profile: state.profile
 });
 const mapActionsToProps = {};
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(GetLocation);
-
-
-
+export default connect(mapStateToProps, mapActionsToProps)(GetLocation);

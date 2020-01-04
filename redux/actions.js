@@ -158,7 +158,6 @@ export const changePassword = (oldp, confirmp, newp) => async dispatch => {
       });
       return "Change Password Failed"
     }
-    return Promise.resolve();
   } catch (error) {
     return Promise.reject(error.message)
   }

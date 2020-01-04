@@ -74,7 +74,7 @@ class UserInfo extends React.Component {
     editing: false
   };
   componentDidMount() {
-    console.log(this.props.profile);
+    // console.log(this.props.profile);
     this.props.navigation.setParams({
       _editableToggle: this._editableToggle
     });
@@ -122,7 +122,7 @@ class UserInfo extends React.Component {
     }
   };
   _editableToggle = () => {
-    console.log("Edit Called");
+    // console.log("Edit Called");
     this.setState({
       ...this.state,
       editing: !this.state.editing
@@ -153,7 +153,7 @@ class UserInfo extends React.Component {
     });
   };
   _dateOfBirthChange = x => {
-    console.log("Date", x);
+    // console.log("Date", x);
     this.setState({
       ...this.state,
       edit: { ...this.state.edit, dateOfBirth: x }
@@ -172,7 +172,7 @@ class UserInfo extends React.Component {
     });
   };
   componentWillUpdate() {
-    console.log("this.state.db.dateOfBirth", this.state.db.dateOfBirth);
+    // console.log("this.state.db.dateOfBirth", this.state.db.dateOfBirth);
     return true;
   }
 
