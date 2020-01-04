@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { Card, CardItem, Icon } from 'native-base'
@@ -6,7 +6,7 @@ class Address1 extends React.PureComponent {
   _keyExtractor = (item, index) => item._id;
 
   _onPressItem = item => {
-    console.log(item.key);
+    // console.log(item.key);
   };
   _renderItem = ({ item }) => (
     <Card>

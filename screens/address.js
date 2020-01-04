@@ -1,16 +1,14 @@
 import React from "react";
-import { Text, ScrollView, StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, ToastAndroid } from "react-native";
 import { connect } from "react-redux";
-import { getTechAddresses } from "../redux/actions";
-// import { MapView, } from "expo";
-import MapView, { Marker } from "react-native-maps";
+import { getTechAddresses, saveOfficeAddressForUser } from "../redux/actions";
+import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import { LocationSearchButton } from "../components/LocationSearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
-import { ActionSheet } from "native-base";
-import { ABCD } from "../components/ABCD";
+import { SelectStallLocation } from "../components/SelectStallLocation";
 class Address extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -99,11 +97,32 @@ class Address extends React.Component {
       longitudeDelta
     };
   }
+  onConfrimLocation = async (stall_loc_id, tech_park_id) => {
+    // console.log(stall_id,tech_park_id);
+    this.props
+      .saveOfficeAddressForUser({
+        tech_park_id,
+        stall_loc_id
+      })
+      .then(message => {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+        this.setState(prevState => ({
+          ...prevState,
+          selected: false
+        }));
+      })
+      .catch(err => {
+        ToastAndroid.show(err.message, ToastAndroid.SHORT);
+      });
+  };
   render() {
     return (
       <View style={{ flex: 1, zIndex: 0 }}>
         {this.state.selected ? (
-          <ABCD selectedItem={this.state.selectedItem} />
+          <SelectStallLocation
+            selectedItem={this.state.selectedItem}
+            onConfrimLocation={this.onConfrimLocation}
+          />
         ) : (
           <View>
             <LocationSearchButton _searchLocation={this._searchLocation} />
@@ -136,21 +155,21 @@ class Address extends React.Component {
               key={x._id}
               zIndex={9}
               coordinate={{
-                latitude: +x.tPark_location.latitude,
-                longitude: +x.tPark_location.longitude
+                latitude: x.tPark_location.latitude,
+                longitude: x.tPark_location.longitude
               }}
               title={x.techPark}
               pointerEvents="none"
               onPress={x => {
-                console.log(x);
+                // console.log(x);
               }}
             ></MapView.Marker>
           ))}
         </MapView>
-        <Text>{JSON.stringify(this.state)}</Text>
+        {/* <Text>{JSON.stringify(this.state)}</Text>
         <Text>*******************************************************************</Text>
         <Text>{JSON.stringify(this.props.profile)}</Text>
-        <Text>*******************************************************************</Text>
+        <Text>*******************************************************************</Text> */}
       </View>
     );
   }
@@ -167,7 +186,8 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  getTechAddresses: getTechAddresses
+  getTechAddresses: getTechAddresses,
+  saveOfficeAddressForUser: saveOfficeAddressForUser
 };
 export default connect(mapStateToProps, mapActionsToProps)(Address);
 

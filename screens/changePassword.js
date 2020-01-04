@@ -1,18 +1,13 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions,
   View,
-  Image,
   Text,
-  Button,
   TouchableHighlight,
   TextInput,
   ToastAndroid
 } from "react-native";
-import { Ionicons as Icon } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { Constants } from "expo";
 import { register, textChange, changePassword } from "../redux/actions";
 class ChangePassword extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -36,9 +31,13 @@ class ChangePassword extends React.Component {
     validConfirmP: null
   };
 
-  _changePassword = async (x) => {
+  _changePassword = async x => {
     try {
-      const a = await this.props.changePassword(this.state.oldP, this.state.confirmP, this.state.newP)
+      const a = await this.props.changePassword(
+        this.state.oldP,
+        this.state.confirmP,
+        this.state.newP
+      );
       this.setState({
         newP: null,
         oldP: null,
@@ -108,7 +107,9 @@ class ChangePassword extends React.Component {
     return (
       <View style={styles.wrapper}>
         {/* <View style={styles.logoWrapper}> */}
-        <Text style={{ color: "red", marginTop: 30 }}>{this.props.user.err}</Text>
+        <Text style={{ color: "red", marginTop: 30 }}>
+          {this.props.user.err}
+        </Text>
         <TextInput
           style={styles.textWrapper}
           placeholder="Old Password"
@@ -141,24 +142,30 @@ class ChangePassword extends React.Component {
             )
           }
         >
-          <Text style={isDisabled(!(
-              this.state.validOldP &&
-              this.state.validNewP &&
-              this.state.validConfirmP
-            ))}>Change Password</Text>
+          <Text
+            style={isDisabled(
+              !(
+                this.state.validOldP &&
+                this.state.validNewP &&
+                this.state.validConfirmP
+              )
+            )}
+          >
+            Change Password
+          </Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-const isDisabled = (bool) => {
-  if(bool){
+const isDisabled = bool => {
+  if (bool) {
     return styles.buttonText;
-  }else{
-    return {...styles.buttonText,opacity: 1};
+  } else {
+    return { ...styles.buttonText, opacity: 1 };
   }
-}
+};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
@@ -215,7 +222,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     color: "white",
-    opacity:0.5
+    opacity: 0.5
   },
   registerWrapper: {
     flexDirection: "row",
@@ -231,7 +238,4 @@ const mapActionsToProps = {
   textChange: textChange,
   changePassword: changePassword
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(ChangePassword);
+export default connect(mapStateToProps, mapActionsToProps)(ChangePassword);

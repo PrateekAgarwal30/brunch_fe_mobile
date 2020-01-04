@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 import { ipAddress } from "../constants";
-import _ from 'lodash';
+import _ from "lodash";
 
 export const LOGIN = {
   LOGIN_SENT: "LOGIN_SENT",
@@ -20,6 +20,10 @@ export const PROFILE = {
   GET_TP_ADDRESSES_SENT: "GET_TP_ADDRESSES_SENT",
   GET_TP_ADDRESSES_FULFILLED: "GET_TP_ADDRESSES_FULFILLED",
   GET_TP_ADDRESSES_REJECTED: "GET_TP_ADDRESSES_REJECTED",
+  SAVE_OFFICE_ADDRESS_FOR_USER_SENT: "SAVE_OFFICE_ADDRESS_FOR_USER_SENT",
+  SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED:
+    "SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED",
+  SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED: "SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED"
 };
 export const USER = {
   GET_PROFILE_SENT: "GET_PROFILE_SENT",
@@ -30,12 +34,12 @@ export const USER = {
   CHANGE_PASS_REJECTED: "CHANGE_PASS_REJECTED",
   LOGOUT_SENT: "LOGOUT_SENT",
   LOGOUT_FULFILLED: "LOGOUT_FULFILLED",
-  LOGOUT_REJECTED: "LOGOUT_REJECTED",
+  LOGOUT_REJECTED: "LOGOUT_REJECTED"
 };
 
 export const textChange = () => dispatch => {
   dispatch({ type: LOGIN.LOGIN_TEXT_CHANGE });
-}
+};
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -51,7 +55,7 @@ export const login = (email, password) => async dispatch => {
     jwtToken = res.headers.get("x-auth-token");
     const result = await res.json();
     if (result._status === "success") {
-      await AsyncStorage.setItem('authToken', jwtToken);
+      await AsyncStorage.setItem("authToken", jwtToken);
       dispatch({
         type: LOGIN.LOGIN_FULFILLED,
         payload: { isLoading: false }
@@ -64,7 +68,7 @@ export const login = (email, password) => async dispatch => {
     }
     return Promise.resolve();
   } catch (error) {
-    return Promise.reject(error.message)
+    return Promise.reject(error.message);
   }
 };
 export const register = (email, password) => async dispatch => {
@@ -81,7 +85,7 @@ export const register = (email, password) => async dispatch => {
     jwtToken = res.headers.get("x-auth-token");
     const result = await res.json();
     if (result._status === "success") {
-      await AsyncStorage.setItem('authToken', jwtToken);
+      await AsyncStorage.setItem("authToken", jwtToken);
       dispatch({
         type: REGISTER.REGISTER_FULFILLED,
         payload: { isLoading: false }
@@ -94,16 +98,16 @@ export const register = (email, password) => async dispatch => {
     }
     return Promise.resolve();
   } catch (error) {
-    return Promise.reject(error.message)
+    return Promise.reject(error.message);
   }
-
 };
 
 export const getProfile = () => async dispatch => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
-      type: USER.GET_PROFILE_SENT, payload: {
+      type: USER.GET_PROFILE_SENT,
+      payload: {
         isLoading: true
       }
     });
@@ -113,7 +117,7 @@ export const getProfile = () => async dispatch => {
         "Content-Type": "application/json",
         "x-auth-token": jwtToken
       }
-    })
+    });
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
@@ -123,19 +127,21 @@ export const getProfile = () => async dispatch => {
     } else {
       dispatch({
         type: USER.GET_PROFILE_REJECTED,
-        payload: { err: result._message,isLoading:false }
+        payload: { err: result._message, isLoading: false }
       });
     }
   } catch (error) {
-    return Promise.reject(error.message)
+    return Promise.reject(error.message);
   }
 };
 
-
 export const changePassword = (oldp, confirmp, newp) => async dispatch => {
   try {
-    dispatch({ type: USER.CHANGE_PASS_SENT, payload: { isLoading: true,err:null} });
-    const jwtToken = await AsyncStorage.getItem('authToken');
+    dispatch({
+      type: USER.CHANGE_PASS_SENT,
+      payload: { isLoading: true, err: null }
+    });
+    const jwtToken = await AsyncStorage.getItem("authToken");
     const res = await fetch(ipAddress + "/api/auth/change_password", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -143,42 +149,52 @@ export const changePassword = (oldp, confirmp, newp) => async dispatch => {
         "x-auth-token": jwtToken
       },
       body: JSON.stringify({ oldp: oldp, confirmp: confirmp, newp: newp }) // body data type must match "Content-Type" header
-    })
+    });
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
         type: USER.CHANGE_PASS_FULFILLED,
         payload: { isLoading: false }
       });
-      return "Password Change Succesfully"
+      return "Password Change Succesfully";
     } else {
       dispatch({
         type: USER.CHANGE_PASS_REJECTED,
-        payload: { err: result._message,isLoading:false}
+        payload: { err: result._message, isLoading: false }
       });
-      return "Change Password Failed"
+      return "Change Password Failed";
     }
-    return Promise.resolve();
   } catch (error) {
-    return Promise.reject(error.message)
-  }
-
-};
-export const logOut = () => async dispatch => {
-  try {
-    dispatch({ type: USER.LOGOUT_SENT, payload: { err: null, isLoading: true } });
-    await AsyncStorage.clear();
-    dispatch({ type: USER.LOGOUT_FULFILLED, payload: { err: null,isLoading: false }  });
-    return Promise.resolve();
-  } catch (error) {
-    dispatch({ type: USER.LOGOUT_REJECTED, payload: { err: null,isLoading: false }});
     return Promise.reject(error.message);
   }
 };
-export const updateProfile = (Obj) => async dispatch => {
+export const logOut = () => async dispatch => {
   try {
-    dispatch({ type: PROFILE.UPDATE_PROFILE_SENT, payload: { isLoading: true, err: null } });
-    const jwtToken = await AsyncStorage.getItem('authToken');
+    dispatch({
+      type: USER.LOGOUT_SENT,
+      payload: { err: null, isLoading: true }
+    });
+    await AsyncStorage.clear();
+    dispatch({
+      type: USER.LOGOUT_FULFILLED,
+      payload: { err: null, isLoading: false }
+    });
+    return Promise.resolve();
+  } catch (error) {
+    dispatch({
+      type: USER.LOGOUT_REJECTED,
+      payload: { err: null, isLoading: false }
+    });
+    return Promise.reject(error.message);
+  }
+};
+export const updateProfile = Obj => async dispatch => {
+  try {
+    dispatch({
+      type: PROFILE.UPDATE_PROFILE_SENT,
+      payload: { isLoading: true, err: null }
+    });
+    const jwtToken = await AsyncStorage.getItem("authToken");
     const res = await fetch(ipAddress + "/api/me/details", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -186,33 +202,32 @@ export const updateProfile = (Obj) => async dispatch => {
         "x-auth-token": jwtToken
       },
       body: JSON.stringify(Obj) // body data type must match "Content-Type" header
-    })
+    });
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
         type: PROFILE.UPDATE_PROFILE_FULFILLED,
         payload: { isLoading: false }
       });
-      return Promise.resolve("Details Updated successfully!"); 
+      return Promise.resolve("Details Updated successfully!");
     } else {
       dispatch({
         type: PROFILE.UPDATE_PROFILE_REJECTED,
         payload: { err: result._message, isLoading: false }
       });
-      return Promise.resolve("Details Update Failed.Try Later...")
+      return Promise.resolve("Details Update Failed.Try Later...");
     }
-    
   } catch (error) {
-    return Promise.reject(error.message)
+    return Promise.reject(error.message);
   }
 };
-
 
 export const getTechAddresses = () => async dispatch => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
-      type: PROFILE.GET_TP_ADDRESSES_SENT, payload: {
+      type: PROFILE.GET_TP_ADDRESSES_SENT,
+      payload: {
         isLoading: true
       }
     });
@@ -222,7 +237,7 @@ export const getTechAddresses = () => async dispatch => {
         "Content-Type": "application/json",
         "x-auth-token": jwtToken
       }
-    })
+    });
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
@@ -238,6 +253,40 @@ export const getTechAddresses = () => async dispatch => {
       return Promise.resolve("REJECTED");
     }
   } catch (error) {
-    return Promise.reject(error.message)
+    return Promise.reject(error.message);
+  }
+};
+
+export const saveOfficeAddressForUser = Obj => async dispatch => {
+  try {
+    dispatch({
+      type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_SENT,
+      payload: { isLoading: true, err: null }
+    });
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    const res = await fetch(ipAddress + "/api/address", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": jwtToken
+      },
+      body: JSON.stringify(Obj) // body data type must match "Content-Type" header
+    });
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED,
+        payload: { isLoading: false }
+      });
+      return Promise.resolve("Address Saved successfully!");
+    } else {
+      dispatch({
+        type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED,
+        payload: { err: result._message, isLoading: false }
+      });
+      return Promise.resolve("Save Address Failed.Try Later...");
+    }
+  } catch (error) {
+    return Promise.reject(error.message);
   }
 };
