@@ -10,7 +10,7 @@ import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
 import { SelectStallLocation } from "../components/SelectStallLocation";
 import _ from "lodash";
-class Address extends React.Component {
+class ChangeAddress extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Select Office",
@@ -212,7 +212,7 @@ const mapActionsToProps = {
   getTechAddresses: getTechAddresses,
   saveOfficeAddressForUser: saveOfficeAddressForUser
 };
-export default connect(mapStateToProps, mapActionsToProps)(Address);
+export default connect(mapStateToProps, mapActionsToProps)(ChangeAddress);
 
 var mapStyle = [
   {

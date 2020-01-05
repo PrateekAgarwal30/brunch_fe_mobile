@@ -84,7 +84,7 @@ class Profile extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => this.props.navigation.navigate("Address")}
+                onPress={() => this.props.navigation.navigate("ManageAddress")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="map" style={{ flex: 1 }} />

@@ -1,8 +1,9 @@
 import React from "react";
 import Home from "../screens/home";
 import Profile from "../screens/profile";
-import Address from "../screens/address";
+import ChangeAddress from "../screens/changeAddress";
 import ChangePassword from "../screens/changePassword";
+import ManageAddress from "../screens/manageAddress";
 import GetLocation from "../screens/location"
 import Drawer from "../screens/drawer";
 import UserInfo from "../screens/userInfo"
@@ -55,14 +56,17 @@ const AppStack = createStackNavigator(
         Profile: {
             screen: Profile
         },
-        Address: {
-            screen: Address
+        ChangeAddress: {
+            screen: ChangeAddress
         },
         GetLocation: {
             screen: GetLocation
         },
         ChangePassword: {
             screen: ChangePassword
+        },
+        ManageAddress: {
+            screen: ManageAddress
         },
         UserInfo: {
             screen: UserInfo
