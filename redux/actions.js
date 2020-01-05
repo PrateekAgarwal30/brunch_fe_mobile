@@ -207,7 +207,7 @@ export const updateProfile = Obj => async dispatch => {
     if (result._status === "success") {
       dispatch({
         type: PROFILE.UPDATE_PROFILE_FULFILLED,
-        payload: { isLoading: false }
+        payload: { isLoading: true }
       });
       return Promise.resolve("Details Updated successfully!");
     } else {

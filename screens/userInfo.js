@@ -6,12 +6,6 @@ import {
   KeyboardAvoidingView,
   Picker
 } from "react-native";
-import { connect } from "react-redux";
-import { updateProfile, getProfile } from "../redux/actions";
-// import { Calendar } from "react-native-calendars";
-import moment from "moment";
-import { DatePicker } from "native-base";
-// import { Separator } from "native-base";
 import {
   Content,
   Form,
@@ -19,8 +13,15 @@ import {
   Input,
   Label,
   Button,
-  Icon
+  Icon,
+  DatePicker,
+  View
 } from "native-base";
+import { connect } from "react-redux";
+import moment from "moment";
+import { updateProfile, getProfile } from "../redux/actions";
+import CustomActivityIndicator from "./../components/CustomActivityIndicator";
+
 class UserInfo extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -90,23 +91,23 @@ class UserInfo extends React.Component {
         edit: { ...this.state.edit, ...this.props.profile.details }
       });
     }
-    this.interval = setInterval(async () => {
-      if (this.state.editing) {
-        this.setState({
-          ...this.state,
-          db: { ...this.props.profile.details }
-        });
-      } else {
-        this.setState({
-          ...this.state,
-          db: { ...this.state.db, ...this.props.profile.details },
-          edit: { ...this.state.edit, ...this.props.profile.details }
-        });
-      }
-    }, 2000);
+    // this.interval = setInterval(async () => {
+    //   if (this.state.editing) {
+    //     this.setState({
+    //       ...this.state,
+    //       db: { ...this.props.profile.details }
+    //     });
+    //   } else {
+    //     this.setState({
+    //       ...this.state,
+    //       db: { ...this.state.db, ...this.props.profile.details },
+    //       edit: { ...this.state.edit, ...this.props.profile.details }
+    //     });
+    //   }
+    // }, 2000);
   }
   componentWillUnmount() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   }
   _updateProfile = async () => {
     try {
@@ -171,12 +172,12 @@ class UserInfo extends React.Component {
       edit: { ...this.state.edit, description: x }
     });
   };
-  componentWillUpdate() {
-    // console.log("this.state.db.dateOfBirth", this.state.db.dateOfBirth);
-    return true;
-  }
-
   render() {
+    const isLoading = this.props.user.isLoading;
+    if (isLoading) {
+      console.log("isLoading true");
+      return <CustomActivityIndicator />;
+    }
     return (
       <KeyboardAvoidingView
         behavior="height"
@@ -245,37 +246,48 @@ class UserInfo extends React.Component {
               <Item stackedLabel style={{ flex: 1 }}>
                 <Label>Date Of Birth</Label>
                 {this.state.editing ? (
-                  <DatePicker
-                    defaultDate={
-                      this.state.db.dateOfBirth
-                        ? new Date(moment(this.state.db.dateOfBirth))
-                        : new Date(moment())
-                    }
-                    minimumDate={new Date(moment().subtract(18,"years"))}
-                    // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-                    maximumDate={new Date(moment())}
-                    locale={"en"}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={"fade"}
-                    androidMode={"default"}
-                    placeHolderText={"Select date"}
-                    onDateChange={this._dateOfBirthChange}
-                    disabled={!this.state.editing}
-                  />
+                  <View>
+                    <DatePicker
+                      defaultDate={
+                        this.state.db.dateOfBirth
+                          ? new Date(moment(this.state.db.dateOfBirth))
+                          : new Date(moment())
+                      }
+                      minimumDate={new Date(moment().subtract(18, "years"))}
+                      // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+                      maximumDate={new Date(moment())}
+                      locale={"en"}
+                      timeZoneOffsetInMinutes={undefined}
+                      modalTransparent={false}
+                      animationType={"fade"}
+                      androidMode={"default"}
+                      placeHolderText={
+                        moment(this.state.db.dateOfBirth).format("D/M/YYYY") ||
+                        "Select date"
+                      }
+                      onDateChange={this._dateOfBirthChange}
+                      disabled={!this.state.editing}
+                      style={{ height: 40, width: 150 }}
+                    />
+                  </View>
                 ) : (
-                  <Label>{moment(this.state.db.dateOfBirth).format("D/M/YYYY") }</Label>
+                  <Input
+                    value={moment(this.state.db.dateOfBirth).format("D/M/YYYY")}
+                    editable={false}
+                  />
                 )}
               </Item>
               <Item stackedLabel style={{ flex: 1 }}>
                 <Label>Preferred Meal</Label>
                 <Picker
-                  selectedValue={this.state.editing
-                    ? this.state.edit.preferredMeal
-                    : this.state.db.preferredMeal}
-                  style={{ height: 20, width: 150 }}
+                  selectedValue={
+                    this.state.editing
+                      ? this.state.edit.preferredMeal
+                      : this.state.db.preferredMeal
+                  }
+                  style={{ height: 40, width: 150 }}
                   onValueChange={this._preferredMealChange}
-                  enabled = {this.state.editing}
+                  enabled={this.state.editing}
                 >
                   <Picker.Item label="Veg" value="veg" />
                   <Picker.Item label="NonVeg" value="nonVeg" />

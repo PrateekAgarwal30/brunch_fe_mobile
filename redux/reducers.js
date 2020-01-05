@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { LOGIN, REGISTER, USER, PROFILE } from "./actions";
 const initialState = { err: null, isLoading: false };
 const userReducer = (state = initialState, action) => {
+  console.log(action.type);
   switch (action.type) {
     case LOGIN.LOGIN_SENT:
     case REGISTER.REGISTER_SENT:

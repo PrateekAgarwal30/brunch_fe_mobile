@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { register, textChange, changePassword } from "../redux/actions";
+import CustomActivityIndicator from './../components/CustomActivityIndicator';
 class ChangePassword extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -47,6 +48,7 @@ class ChangePassword extends React.Component {
         validConfirmP: null
       });
       ToastAndroid.show(a, ToastAndroid.SHORT);
+      this.props.navigation.navigate('Home');
     } catch (error) {
       ToastAndroid.show(error.message, ToastAndroid.SHORT);
     }
@@ -104,6 +106,10 @@ class ChangePassword extends React.Component {
     }
   };
   render() {
+    const isLoading = this.props.user.isLoading;
+    if(isLoading){
+      return <CustomActivityIndicator/>
+    }
     return (
       <View style={styles.wrapper}>
         {/* <View style={styles.logoWrapper}> */}
