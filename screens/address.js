@@ -58,9 +58,9 @@ class Address extends React.Component {
   };
   _selectLocation(x) {
     const selectedTechPark = this.state.tech_parks.filter(y => y._id === x);
-    // this.props.navigation.navigate('GetLocation');
-    // const {latitude,longitude} = _.get(selectedTechPark[0],"tPark_location");
-    // this.map.animateCamera({ center: selectedTechPark[0].tPark_location});
+    // this.props.navigation.navigate('GetLocation'); const {latitude,longitude} =
+    // _.get(selectedTechPark[0],"tPark_location"); this.map.animateCamera({ center:
+    // selectedTechPark[0].tPark_location});
     this.setState({
       ...this.state,
       selected: true,
@@ -90,22 +90,24 @@ class Address extends React.Component {
   centerMap() {
     let latitude = 0;
     let longitude = 0;
-    if(this.state.selected){
-      latitude = _.get(this.state.selectedItem[0],"tPark_location").latitude;
-      longitude  = _.get(this.state.selectedItem[0],"tPark_location").longitude;
-    }else{
+    if (this.state.selected) {
+      latitude = _.get(this.state.selectedItem[0], "tPark_location").latitude;
+      longitude = _.get(this.state.selectedItem[0], "tPark_location").longitude;
+    } else {
       latitude = this.state.region.latitude;
-      longitude  = this.state.region.longitude;
+      longitude = this.state.region.longitude;
     }
-    this.map.animateCamera({ center: { latitude, longitude } });
+    this.map.animateCamera({
+      center: {
+        latitude,
+        longitude
+      }
+    });
   }
   onConfirmLocation = async (stall_loc_id, tech_park_id) => {
     // console.log(stall_id,tech_park_id);
     this.props
-      .saveOfficeAddressForUser({
-        tech_park_id,
-        stall_loc_id
-      })
+      .saveOfficeAddressForUser({ tech_park_id, stall_loc_id })
       .then(message => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
         this.setState(prevState => ({
@@ -119,20 +121,25 @@ class Address extends React.Component {
   };
   render() {
     return (
-      <View style={{ flex: 1, zIndex: 0 }}>
+      <View
+        style={{
+          flex: 1,
+          zIndex: 0
+        }}
+      >
         {this.state.selected ? (
           <View>
-          <SelectStallLocation
-            selectedItem={this.state.selectedItem}
-            onConfirmLocation={this.onConfirmLocation}
-          />
-          <CurrentLocationButton
+            <SelectStallLocation
+              selectedItem={this.state.selectedItem}
+              onConfirmLocation={this.onConfirmLocation}
+            />
+            <CurrentLocationButton
               bottom={130}
               cb={() => {
                 this.centerMap();
               }}
             />
-            </View>
+          </View>
         ) : (
           <View>
             <LocationSearchButton _searchLocation={this._searchLocation} />
@@ -157,8 +164,14 @@ class Address extends React.Component {
           region={
             this.state.selected
               ? {
-                  latitude: _.get(this.state.selectedItem[0],"tPark_location.latitude"),
-                  longitude: _.get(this.state.selectedItem[0],"tPark_location.longitude"),
+                  latitude: _.get(
+                    this.state.selectedItem[0],
+                    "tPark_location.latitude"
+                  ),
+                  longitude: _.get(
+                    this.state.selectedItem[0],
+                    "tPark_location.longitude"
+                  ),
                   latitudeDelta: 0.00121,
                   longitudeDelta: 0.00121
                 }
@@ -179,16 +192,10 @@ class Address extends React.Component {
               }}
               title={x.techPark}
               pointerEvents="none"
-              onPress={x => {
-                // console.log(x);
-              }}
+              onPress={x => {}}
             ></MapView.Marker>
           ))}
         </MapView>
-        {/* <Text>{JSON.stringify(this.state)}</Text>
-        <Text>*******************************************************************</Text>
-        <Text>{JSON.stringify(this.props.profile)}</Text>
-        <Text>*******************************************************************</Text> */}
       </View>
     );
   }
@@ -199,10 +206,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({
-  profile: state.profile,
-  user: state.user
-});
+const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
 const mapActionsToProps = {
   getTechAddresses: getTechAddresses,

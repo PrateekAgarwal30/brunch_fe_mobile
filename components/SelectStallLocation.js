@@ -49,11 +49,15 @@ export const SelectStallLocation = function(props) {
       >
         {props.selectedItem[0].area}, {props.selectedItem[0].city}
       </Text>
-      <ScrollView style={{ marginTop: 20 }}>
+      <ScrollView style={{ marginTop: 20, width: "100%" }}>
         {props.selectedItem[0].stall_locations.map(x => {
           return (
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                margin: 5
+              }}
               key={x._id}
             >
               <Text
@@ -61,8 +65,7 @@ export const SelectStallLocation = function(props) {
                   fontFamily: "sans-serif-thin",
                   fontSize: 16,
                   color: "#858585",
-                  fontWeight: "900",
-                  marginRight: 20
+                  fontWeight: "900"
                 }}
               >
                 {x.tag}
