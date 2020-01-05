@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, ToastAndroid } from "react-native";
 import { connect } from "react-redux";
-import { getTechAddresses, saveOfficeAddressForUser } from "../redux/actions";
+import { getTechAddresses, saveOfficeAddressForUser,getProfile } from "../redux/actions";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -9,6 +9,7 @@ import { LocationSearchButton } from "../components/LocationSearchButton";
 import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
 import { SelectStallLocation } from "../components/SelectStallLocation";
+import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import _ from "lodash";
 class ChangeAddress extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -40,7 +41,7 @@ class ChangeAddress extends React.Component {
     this._getLocationAsync();
     this._selectLocation = this._selectLocation.bind(this);
   }
-  async componentWillMount() {
+  async componentDidMount() {
     await this.props.getTechAddresses();
     this.setState({
       ...this.state,
@@ -114,12 +115,18 @@ class ChangeAddress extends React.Component {
           ...prevState,
           selected: false
         }));
+        this.props.getProfile();
+        this.props.navigation.navigate("ManageAddress");
       })
       .catch(err => {
         ToastAndroid.show(err.message, ToastAndroid.SHORT);
       });
   };
   render() {
+    const isLoading = this.props.user.isLoading;
+    if (isLoading || !this.state.tech_parks.length) {
+      return <CustomActivityIndicator />;
+    }
     return (
       <View
         style={{
@@ -210,7 +217,8 @@ const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
 const mapActionsToProps = {
   getTechAddresses: getTechAddresses,
-  saveOfficeAddressForUser: saveOfficeAddressForUser
+  saveOfficeAddressForUser: saveOfficeAddressForUser,
+  getProfile : getProfile
 };
 export default connect(mapStateToProps, mapActionsToProps)(ChangeAddress);
 
