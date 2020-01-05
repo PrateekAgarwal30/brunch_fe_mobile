@@ -276,7 +276,6 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
     if (result._status === "success") {
       dispatch({
         type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED,
-        payload: { isLoading: false }
       });
       return Promise.resolve("Address Saved successfully!");
     } else {
