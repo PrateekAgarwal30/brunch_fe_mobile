@@ -9,7 +9,7 @@ const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   map: {
     width: width,
-    height: 200
+    height: 300
   },
   cardContainer: {
     marginTop: 10,
@@ -56,7 +56,7 @@ class ManageAddress extends React.Component {
       <View
         style={{
           flex: 1,
-          zIndex: 0
+          zIndex: 0,
         }}
       >
         <MapView

@@ -15,7 +15,9 @@ import {
   Button,
   Icon,
   DatePicker,
-  View
+  View,
+  Card,
+  Container
 } from "native-base";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -179,149 +181,155 @@ class UserInfo extends React.Component {
       return <CustomActivityIndicator />;
     }
     return (
-      <KeyboardAvoidingView
-        behavior="height"
-        style={{ justifyContent: "center", flex: 1, alignItems: "center" }}
-      >
-        <Content>
-          <Text style={{ color: "red" }}>{this.props.user.err}</Text>
-          <Form>
-            <Item style={{ flexDirection: "row" }}>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>First Name</Label>
-                <Input
-                  value={
-                    this.state.editing
-                      ? this.state.edit.firstName
-                      : this.state.db.firstName
-                  }
-                  editable={this.state.editing}
-                  onChangeText={this._firstNameChange}
-                />
-              </Item>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>Last Name</Label>
-                <Input
-                  value={
-                    this.state.editing
-                      ? this.state.edit.lastName
-                      : this.state.db.lastName
-                  }
-                  editable={this.state.editing}
-                  onChangeText={this._lastNameChange}
-                />
-              </Item>
-            </Item>
-            <Item stackedLabel>
-              <Label>Email</Label>
-              <Input value={this.state.db.email} editable={false} />
-            </Item>
-            <Item style={{ flexDirection: "row" }}>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>Mobile Number</Label>
-                <Input
-                  value={
-                    this.state.editing
-                      ? this.state.edit.phoneNumber
-                      : this.state.db.phoneNumber
-                  }
-                  editable={this.state.editing}
-                  onChangeText={this._phoneNumberChange}
-                />
-              </Item>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>Location</Label>
-                <Input
-                  value={
-                    this.state.editing
-                      ? this.state.edit.location
-                      : this.state.db.location
-                  }
-                  editable={this.state.editing}
-                  onChangeText={this._locationChange}
-                />
-              </Item>
-            </Item>
-            <Item style={{ flexDirection: "row" }}>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>Date Of Birth</Label>
-                {this.state.editing ? (
-                  <View>
-                    <DatePicker
-                      defaultDate={
-                        this.state.db.dateOfBirth
-                          ? new Date(moment(this.state.db.dateOfBirth))
-                          : new Date(moment())
+      <Container>
+        <KeyboardAvoidingView
+          behavior="height"
+          style={{ justifyContent: "center", flex: 1 }}
+          keyboardVerticalOffset={5}
+        >
+          <Content padder>
+            <Card style={{ elevation: 3 }}>
+              <Text style={{ color: "red" }}>{this.props.user.err}</Text>
+              <Form>
+                <Item style={{ flexDirection: "row" }}>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>First Name</Label>
+                    <Input
+                      value={
+                        this.state.editing
+                          ? this.state.edit.firstName
+                          : this.state.db.firstName
                       }
-                      minimumDate={new Date(moment().subtract(18, "years"))}
-                      // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-                      maximumDate={new Date(moment())}
-                      locale={"en"}
-                      timeZoneOffsetInMinutes={undefined}
-                      modalTransparent={false}
-                      animationType={"fade"}
-                      androidMode={"default"}
-                      placeHolderText={
-                        moment(this.state.db.dateOfBirth).format("D/M/YYYY") ||
-                        "Select date"
-                      }
-                      onDateChange={this._dateOfBirthChange}
-                      disabled={!this.state.editing}
-                      style={{ height: 40, width: 150 }}
+                      editable={this.state.editing}
+                      onChangeText={this._firstNameChange}
                     />
-                  </View>
-                ) : (
+                  </Item>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>Last Name</Label>
+                    <Input
+                      value={
+                        this.state.editing
+                          ? this.state.edit.lastName
+                          : this.state.db.lastName
+                      }
+                      editable={this.state.editing}
+                      onChangeText={this._lastNameChange}
+                    />
+                  </Item>
+                </Item>
+                <Item stackedLabel>
+                  <Label>Email</Label>
+                  <Input value={this.state.db.email} editable={false} />
+                </Item>
+                <Item style={{ flexDirection: "row" }}>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>Mobile Number</Label>
+                    <Input
+                      value={
+                        this.state.editing
+                          ? this.state.edit.phoneNumber
+                          : this.state.db.phoneNumber
+                      }
+                      editable={this.state.editing}
+                      onChangeText={this._phoneNumberChange}
+                    />
+                  </Item>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>Location</Label>
+                    <Input
+                      value={
+                        this.state.editing
+                          ? this.state.edit.location
+                          : this.state.db.location
+                      }
+                      editable={this.state.editing}
+                      onChangeText={this._locationChange}
+                    />
+                  </Item>
+                </Item>
+                <Item style={{ flexDirection: "row" }}>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>Date Of Birth</Label>
+                    {this.state.editing ? (
+                      <View>
+                        <DatePicker
+                          defaultDate={
+                            this.state.db.dateOfBirth
+                              ? new Date(moment(this.state.db.dateOfBirth))
+                              : new Date(moment())
+                          }
+                          minimumDate={new Date(moment().subtract(18, "years"))}
+                          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+                          maximumDate={new Date(moment())}
+                          locale={"en"}
+                          timeZoneOffsetInMinutes={undefined}
+                          modalTransparent={false}
+                          animationType={"fade"}
+                          androidMode={"default"}
+                          placeHolderText={
+                            moment(this.state.db.dateOfBirth).format(
+                              "D/M/YYYY"
+                            ) || "Select date"
+                          }
+                          onDateChange={this._dateOfBirthChange}
+                          disabled={!this.state.editing}
+                          style={{ height: 40, width: 150 }}
+                        />
+                      </View>
+                    ) : (
+                      <Input
+                        value={moment(this.state.db.dateOfBirth).format(
+                          "D/M/YYYY"
+                        )}
+                        editable={false}
+                      />
+                    )}
+                  </Item>
+                  <Item stackedLabel style={{ flex: 1 }}>
+                    <Label>Preferred Meal</Label>
+                    <Picker
+                      selectedValue={
+                        this.state.editing
+                          ? this.state.edit.preferredMeal
+                          : this.state.db.preferredMeal
+                      }
+                      style={{ height: 40, width: 150 }}
+                      onValueChange={this._preferredMealChange}
+                      enabled={this.state.editing}
+                    >
+                      <Picker.Item label="Veg" value="veg" />
+                      <Picker.Item label="NonVeg" value="nonVeg" />
+                    </Picker>
+                  </Item>
+                </Item>
+                <Item stackedLabel>
+                  <Label>Description</Label>
                   <Input
-                    value={moment(this.state.db.dateOfBirth).format("D/M/YYYY")}
-                    editable={false}
+                    value={
+                      this.state.editing
+                        ? this.state.edit.description
+                        : this.state.db.description
+                    }
+                    editable={this.state.editing}
+                    onChangeText={this._descriptionChange}
                   />
-                )}
-              </Item>
-              <Item stackedLabel style={{ flex: 1 }}>
-                <Label>Preferred Meal</Label>
-                <Picker
-                  selectedValue={
-                    this.state.editing
-                      ? this.state.edit.preferredMeal
-                      : this.state.db.preferredMeal
-                  }
-                  style={{ height: 40, width: 150 }}
-                  onValueChange={this._preferredMealChange}
-                  enabled={this.state.editing}
-                >
-                  <Picker.Item label="Veg" value="veg" />
-                  <Picker.Item label="NonVeg" value="nonVeg" />
-                </Picker>
-              </Item>
-            </Item>
-            <Item stackedLabel>
-              <Label>Description</Label>
-              <Input
-                value={
-                  this.state.editing
-                    ? this.state.edit.description
-                    : this.state.db.description
-                }
-                editable={this.state.editing}
-                onChangeText={this._descriptionChange}
-              />
-            </Item>
-          </Form>
-        </Content>
-        {/* <Text>{JSON.stringify(this.state)}</Text>
-        <Separator></Separator>
-        <Text>{JSON.stringify(this.props.profile)}</Text>
-        <Separator></Separator> */}
+                </Item>
+              </Form>
+            </Card>
+          </Content>
+        </KeyboardAvoidingView>
         {this.state.editing ? (
-          <Button
-            full
-            disabled={this.state.db === this.state.edit}
-            onPress={this._updateProfile}
-          >
-            <Text>Save</Text>
-          </Button>
+          <Content padder>
+            <Button
+              full
+              disabled={this.state.db === this.state.edit}
+              onPress={this._updateProfile}
+            >
+              <Text>Save</Text>
+            </Button>
+          </Content>
         ) : null}
-      </KeyboardAvoidingView>
+      </Container>
     );
   }
 }
