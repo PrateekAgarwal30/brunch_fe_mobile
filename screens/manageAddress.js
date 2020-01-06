@@ -1,14 +1,32 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { Button } from "native-base";
+import { Body, Button, Card, CardItem, Content, Label } from "native-base";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import MapView from "react-native-maps";
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   map: {
-    width: 300,
-    height: 300
+    width: width,
+    height: 200
+  },
+  cardContainer: {
+    marginTop: 10,
+    elevation: 3
+  },
+  textStyle: {
+    fontSize: 16
+  },
+  labelStyle: {
+    color: "#575757",
+    fontSize: 16,
+    textDecorationStyle: "solid"
+  },
+  cardBody: {
+    paddingTop: 3,
+    paddingBottom: 3
+    // elevation :4
   }
 });
 
@@ -19,7 +37,7 @@ class ManageAddress extends React.Component {
       headerStyle: {
         backgroundColor: "#16235A"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "white",
       headerTitleStyle: {
         fontWeight: "bold"
       }
@@ -38,18 +56,15 @@ class ManageAddress extends React.Component {
       <View
         style={{
           flex: 1,
-          zIndex: 0,
-          justifyContent: "space-between",
-          alignItems: "center"
+          zIndex: 0
         }}
       >
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 12,
-            longitude: 77,
-            latitudeDelta: 0.00121,
-            longitudeDelta: 0.00121
+            ...address.stall_loc_id.location,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.01121
           }}
           showsCompass={true}
           rotateEnabled={false}
@@ -63,6 +78,8 @@ class ManageAddress extends React.Component {
             this.map = map;
           }}
           customMapStyle={mapStyle}
+          zoomEnabled={false}
+          scrollEnabled={false}
         >
           {address.stall_loc_id.location && (
             <MapView.Marker
@@ -75,21 +92,50 @@ class ManageAddress extends React.Component {
             ></MapView.Marker>
           )}
         </MapView>
-
-        <Text>{`Tech Park : ${address.tech_park_id.techPark}`}</Text>
-        <Text>{`Address : ${address.tech_park_id.address}`}</Text>
-        <Text>{`Area : ${address.tech_park_id.area}`}</Text>
-        <Text>{`City : ${address.tech_park_id.city}`}</Text>
-        <Text>{`Tag : ${address.stall_loc_id.tag}`}</Text>
-        <Text>{`Stall Location : ${JSON.stringify(
-          address.stall_loc_id.location,
-          null,
-          2
-        )}`}</Text>
-        {/* <Text>{JSON.stringify(address, null, 2)}</Text> */}
-        <Button onPress={this._onChangeAddress}>
-          <Text>{"Change Address"}</Text>
-        </Button>
+        <Content padder>
+          <Card style={styles.cardContainer}>
+            <CardItem bordered style={styles.cardBody}>
+              <Body>
+                <Label style={styles.labelStyle}>{`Stall : `}</Label>
+                <Text
+                  style={styles.textStyle}
+                >{`${address.stall_loc_id.tag}`}</Text>
+              </Body>
+            </CardItem>
+            <CardItem bordered style={styles.cardBody}>
+              <Body>
+                <Label style={styles.labelStyle}>{`Tech Park : `}</Label>
+                <Text
+                  style={styles.textStyle}
+                >{`${address.tech_park_id.techPark}`}</Text>
+              </Body>
+            </CardItem>
+            <CardItem bordered style={styles.cardBody}>
+              <Body>
+                <Label style={styles.labelStyle}>{`Address : `}</Label>
+                <Text
+                  style={styles.textStyle}
+                >{`${address.tech_park_id.address}, ${address.tech_park_id.area}, ${address.tech_park_id.city}`}</Text>
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+        <Content
+          padder
+          style={{ position: "absolute", width: "100%", bottom: 0, left: 0 }}
+        >
+          <Button
+            style={{
+              textAlign: "center ",
+              justifyContent: "center"
+            }}
+            onPress={this._onChangeAddress}
+          >
+            <Text style={{ color: "white", fontSize: 16 }}>
+              {"Change Address"}
+            </Text>
+          </Button>
+        </Content>
       </View>
     );
   }

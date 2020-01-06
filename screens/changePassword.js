@@ -17,7 +17,7 @@ class ChangePassword extends React.Component {
       headerStyle: {
         backgroundColor: "#16235A"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "white",
       headerTitleStyle: {
         fontWeight: "bold"
       }

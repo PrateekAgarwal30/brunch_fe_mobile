@@ -32,13 +32,13 @@ const DrawerNavigator = createDrawerNavigator(
                             }
                         }
                         style={{ padding: 5, marginLeft: 10 }}
-                    ><Icon name="menu" style={{ color: '#fff' }} />
+                    ><Icon name="menu" style={{ color: 'white' }} />
                     </TouchableOpacity>
                 ),
                 headerStyle: {
                     backgroundColor: "#16235A"
                 },
-                headerTintColor: "#fff",
+                headerTintColor: "white",
                 headerTitleStyle: {
                     fontWeight: "bold"
                 }

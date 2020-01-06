@@ -2,7 +2,7 @@ import React from "react";
 import Login from "../screens/login";
 import Register from "../screens/register";
 import { createSwitchNavigator} from "react-navigation";
-export default AuthStack = createSwitchNavigator(
+const AuthStack = createSwitchNavigator(
     {
         Login: {
             screen: Login
@@ -15,3 +15,4 @@ export default AuthStack = createSwitchNavigator(
         initialRouteName: "Login"
     }
 );
+export default AuthStack;

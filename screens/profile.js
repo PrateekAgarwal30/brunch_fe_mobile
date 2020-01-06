@@ -27,13 +27,13 @@ class Profile extends React.Component {
           }}
           style={{ padding: 5, marginRight: 10 }}
         >
-          <Icon name="log-out" style={{ color: "#fff" }} />
+          <Icon name="log-out" style={{ color: "white" }} />
         </TouchableOpacity>
       ),
       headerStyle: {
         backgroundColor: "#16235A"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "white",
       headerTitleStyle: {
         fontWeight: "bold"
       }
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   // name: {
   //   fontSize: 22,
-  //   color: "#FFFFFF",
+  //   color: "white",
   //   fontWeight: "600"
   // },
   body: {

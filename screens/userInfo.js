@@ -39,13 +39,13 @@ class UserInfo extends React.Component {
           }}
           style={{ padding: 5, marginRight: 10 }}
         >
-          <Icon name="create" style={{ color: "#fff" }} />
+          <Icon name="create" style={{ color: "white" }} />
         </TouchableOpacity>
       ),
       headerStyle: {
         backgroundColor: "#16235A"
       },
-      headerTintColor: "#fff",
+      headerTintColor: "white",
       headerTitleStyle: {
         fontWeight: "bold"
       }
