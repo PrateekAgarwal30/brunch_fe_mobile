@@ -1,7 +1,6 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation'
 import { AppNavigator } from "./navigations/login_switch_nav";
-// import { AppLoading, Asset, Font, Icon } from "expo";
 import store from './redux/store';
 import { Provider } from 'react-redux'
 const AppContainer = createAppContainer(AppNavigator);

@@ -1,19 +1,13 @@
 import React from "react";
 import {
   StyleSheet,
-  Dimensions,
   View,
-  Image,
   Text,
-  Button,
   TouchableHighlight,
   TextInput, AsyncStorage
 } from "react-native";
-import { Ionicons as Icon } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import { Constants } from "expo";
 import { register, textChange } from "../redux/actions";
-// import {  } from "native-base";
 class Register extends React.Component {
   state = {
     email: null,

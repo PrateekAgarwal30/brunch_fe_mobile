@@ -11,15 +11,16 @@ import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
 import _ from "lodash";
+import CustomImagePicker from "../components/CustomImagePicker";
+import { ipAddress } from "../constants";
 class Drawer extends React.Component {
   render() {
+    const imageUrl =
+      _.get(this.props, "profile.details.userImageUrl", "") || "";
     return (
       <View style={styles.container}>
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={require("./../assets/male-avatar.png")}
-        />
+        <CustomImagePicker imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null} />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
             <Text style={styles.name}>
@@ -95,17 +96,6 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: "#16235A",
     height: 100
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 63,
-    borderWidth: 4,
-    borderColor: "white",
-    marginBottom: 10,
-    alignSelf: "center",
-    position: "absolute",
-    marginTop: 40
   },
   body: {
     marginTop: 20
