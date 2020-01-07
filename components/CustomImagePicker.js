@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Image, View, StyleSheet, Alert } from "react-native";
-import { Button } from "native-base";
+import { Image, View, StyleSheet, Alert, Text } from "react-native";
+import { Button, Icon } from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
@@ -35,6 +35,21 @@ export default class CustomImagePicker extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Button transparent disabled={disabled} onPress={this._pickImage}>
+          {disabled ? null : (
+            <Icon
+              name="create"
+              style={{
+                color: "#16235A",
+                fontSize: 25,
+                position: "absolute",
+                left: 0,
+                bottom: -35,
+                elevation: 3,
+                padding: 5
+              }}
+            />
+          )}
+
           {image ? (
             <Image
               source={{ uri: image }}
