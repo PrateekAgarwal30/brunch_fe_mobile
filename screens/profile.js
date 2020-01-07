@@ -12,7 +12,9 @@ import {
 import { connect } from "react-redux";
 import { logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
-import _ from 'lodash';
+import _ from "lodash";
+import CustomImagePicker from "../components/CustomImagePicker";
+import { ipAddress } from "../constants";
 class Profile extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -59,16 +61,23 @@ class Profile extends React.Component {
     });
   }
   render() {
+    const imageUrl =
+      _.get(this.props, "profile.details.userImageUrl", "") || "";
     return (
       <View style={styles.container}>
         <View style={styles.header} />
-        <Image
-          style={styles.avatar}
-          source={require("./../assets/male-avatar.png")}
+        <CustomImagePicker
+          imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>{_.get(this.props,"profile.details.firstName",this.props.profile.email) || "Guest"}</Text>
+            <Text style={styles.name}>
+              {_.get(
+                this.props,
+                "profile.details.firstName",
+                this.props.profile.email
+              ) || "Guest"}
+            </Text>
           </View>
           <Card style={styles.cardContainer}>
             <ScrollView style={styles.buttonContainer}>

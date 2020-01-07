@@ -275,7 +275,7 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
     const result = await res.json();
     if (result._status === "success") {
       dispatch({
-        type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED,
+        type: PROFILE.SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED
       });
       return Promise.resolve("Address Saved successfully!");
     } else {
@@ -287,5 +287,30 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
     }
   } catch (error) {
     return Promise.reject(error.message);
+  }
+};
+
+export const _uploadImage = async uploadUrl => {
+  try {
+    let uploadData = new FormData();
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    uploadData.append("submit", "ok");
+    uploadData.append("avatar", {
+      type: "image/png",
+      uri: uploadUrl,
+      name: "uploadimagetemp.png"
+    });
+    const res = await fetch(`${ipAddress}/api/me/user_image`, {
+      method: "post",
+      headers: {
+        "x-auth-token": jwtToken,
+        "Content-Type": "multipart/form-data"
+      },
+      body: uploadData
+    });
+    const data = await res.json();
+    return Promise.resolve(data);
+  } catch (err) {
+    return Promise.reject(err);
   }
 };

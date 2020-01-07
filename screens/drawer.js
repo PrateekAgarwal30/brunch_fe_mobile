@@ -20,7 +20,7 @@ class Drawer extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header} />
-        <CustomImagePicker imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null} />
+        <CustomImagePicker disabled={true} imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null} />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
             <Text style={styles.name}>
