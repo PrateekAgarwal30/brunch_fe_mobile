@@ -19,8 +19,8 @@ export default class CustomImagePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image : props.imageUrl
-    }
+      image: props.imageUrl
+    };
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.imageUrl !== this.props.imageUrl) {
@@ -36,7 +36,13 @@ export default class CustomImagePicker extends React.Component {
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Button transparent disabled={disabled} onPress={this._pickImage}>
           {image ? (
-            <Image source={{ uri: image }} style={styles.avatar} />
+            <Image
+              source={{ uri: image }}
+              style={styles.avatar}
+              onError={() => {
+                this.setState({ image: null });
+              }}
+            />
           ) : (
             <Image
               source={require("./../assets/male-avatar.png")}
