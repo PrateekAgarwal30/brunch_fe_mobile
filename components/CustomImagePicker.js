@@ -11,8 +11,23 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 63,
+  },
+  avatarWrapper : {
+    width: 108,
+    height: 108,
+    borderRadius: 63,
     borderWidth: 4,
-    borderColor: "white"
+    borderColor: "#A4A4BF",
+    backgroundColor : "#A4A4BF"
+  },
+  editIcon : {
+    color: "#A4A4BF",
+    fontSize: 28,
+    position: "absolute",
+    left: -6,
+    bottom: -12,
+    elevation: 3,
+    padding: 5
   }
 });
 export default class CustomImagePicker extends React.Component {
@@ -36,26 +51,14 @@ export default class CustomImagePicker extends React.Component {
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Button
           transparent
-          style={{
-            width: 100,
-            height: 100,
-            borderRadius: 63
-          }}
+          style={styles.avatarWrapper}
           disabled={disabled}
           onPress={this._pickImage}
         >
           {disabled ? null : (
             <Icon
               name="create"
-              style={{
-                color: "#16235A",
-                fontSize: 25,
-                position: "absolute",
-                left: 0,
-                bottom: -8,
-                elevation: 3,
-                padding: 5
-              }}
+              style={styles.editIcon}
             />
           )}
 
@@ -112,7 +115,7 @@ export default class CustomImagePicker extends React.Component {
         );
       } else {
         const response = await _uploadImage(result.uri);
-        console.log(response);
+        // console.log(response);
         if (response._status === "success") {
           this.setState({ image: result.uri });
           this.props.onUploadImageSuccess();

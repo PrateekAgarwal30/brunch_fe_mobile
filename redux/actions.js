@@ -291,7 +291,7 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
 };
 
 export const _uploadImage = async uploadUrl => {
-  console.log("uploadUrl", uploadUrl);
+  // console.log("uploadUrl", uploadUrl);
   try {
     let uploadData = new FormData();
     const jwtToken = await AsyncStorage.getItem("authToken");
