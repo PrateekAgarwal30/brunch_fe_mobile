@@ -4,7 +4,8 @@ import {
   TouchableOpacity,
   ToastAndroid,
   KeyboardAvoidingView,
-  Picker
+  Picker,
+  TextInput
 } from "react-native";
 import {
   Content,
@@ -93,23 +94,15 @@ class UserInfo extends React.Component {
         edit: { ...this.state.edit, ...this.props.profile.details }
       });
     }
-    // this.interval = setInterval(async () => {
-    //   if (this.state.editing) {
-    //     this.setState({
-    //       ...this.state,
-    //       db: { ...this.props.profile.details }
-    //     });
-    //   } else {
-    //     this.setState({
-    //       ...this.state,
-    //       db: { ...this.state.db, ...this.props.profile.details },
-    //       edit: { ...this.state.edit, ...this.props.profile.details }
-    //     });
-    //   }
-    // }, 2000);
   }
-  componentWillUnmount() {
-    // clearInterval(this.interval);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.profile.details !== this.props.profile.details) {
+      this.setState({
+        ...this.state,
+        db: { ...this.state.db, ...nextProps.profile.details },
+        edit: { ...this.state.edit, ...nextProps.profile.details }
+      });
+    }
   }
   _updateProfile = async () => {
     try {
@@ -174,6 +167,16 @@ class UserInfo extends React.Component {
       edit: { ...this.state.edit, description: x }
     });
   };
+  getPreferredMealLabel(x) {
+    switch (x) {
+      case "veg":
+        return "Veg";
+      case "nonVeg":
+        return "NonVeg";
+      default:
+        return "";
+    }
+  }
   render() {
     const isLoading = this.props.user.isLoading;
     if (isLoading) {
@@ -190,7 +193,7 @@ class UserInfo extends React.Component {
           <Content padder>
             <Card style={{ elevation: 3 }}>
               <Text style={{ color: "red" }}>{this.props.user.err}</Text>
-              <Form>
+              <Form style={{ marginRight: 10 }}>
                 <Item style={{ flexDirection: "row" }}>
                   <Item stackedLabel style={{ flex: 1 }}>
                     <Label>First Name</Label>
@@ -287,24 +290,34 @@ class UserInfo extends React.Component {
                   </Item>
                   <Item stackedLabel style={{ flex: 1 }}>
                     <Label>Preferred Meal</Label>
-                    <Picker
-                      selectedValue={
-                        this.state.editing
-                          ? this.state.edit.preferredMeal
-                          : this.state.db.preferredMeal
-                      }
-                      style={{ height: 40, width: 150 }}
-                      onValueChange={this._preferredMealChange}
-                      enabled={this.state.editing}
-                    >
-                      <Picker.Item label="Veg" value="veg" />
-                      <Picker.Item label="NonVeg" value="nonVeg" />
-                    </Picker>
+                    {this.state.editing ? (
+                      <Picker
+                        selectedValue={this.state.edit.preferredMeal}
+                        style={{ height: 40, width: 150 }}
+                        onValueChange={this._preferredMealChange}
+                        enabled={this.state.editing}
+                      >
+                        <Picker.Item label="Veg" value="veg" />
+                        <Picker.Item label="NonVeg" value="nonVeg" />
+                      </Picker>
+                    ) : (
+                      <Input
+                        value={this.getPreferredMealLabel(
+                          this.state.db.preferredMeal
+                        )}
+                        editable={false}
+                      />
+                    )}
                   </Item>
                 </Item>
                 <Item stackedLabel>
                   <Label>Description</Label>
-                  <Input
+                  <TextInput
+                    style={{
+                      fontSize: 15,
+                      alignSelf: "flex-start",
+                      minHeight: 100
+                    }}
                     value={
                       this.state.editing
                         ? this.state.edit.description
@@ -312,6 +325,7 @@ class UserInfo extends React.Component {
                     }
                     editable={this.state.editing}
                     onChangeText={this._descriptionChange}
+                    multiline={true}
                   />
                 </Item>
               </Form>
