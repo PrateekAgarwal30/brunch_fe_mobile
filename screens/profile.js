@@ -10,7 +10,7 @@ import {
   AsyncStorage
 } from "react-native";
 import { connect } from "react-redux";
-import { logOut } from "../redux/actions";
+import { logOut, getProfile } from "../redux/actions";
 import { Icon, Card } from "native-base";
 import _ from "lodash";
 import CustomImagePicker from "../components/CustomImagePicker";
@@ -60,6 +60,10 @@ class Profile extends React.Component {
       _logOut: this._logOut
     });
   }
+  _onUploadImageSuccess = () => {
+    // console.log("_onUploadImageSuccess");
+    this.props.getProfile();
+  }
   render() {
     const imageUrl =
       _.get(this.props, "profile.details.userImageUrl", "") || "";
@@ -68,6 +72,7 @@ class Profile extends React.Component {
         <View style={styles.header} />
         <CustomImagePicker
           imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
+          onUploadImageSuccess = {this._onUploadImageSuccess}
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
@@ -216,6 +221,7 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 const mapActionsToProps = {
-  logOut: logOut
+  logOut: logOut,
+  getProfile : getProfile
 };
 export default connect(mapStateToProps, mapActionsToProps)(Profile);

@@ -34,7 +34,16 @@ export default class CustomImagePicker extends React.Component {
     const { disabled } = this.props;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button transparent disabled={disabled} onPress={this._pickImage}>
+        <Button
+          transparent
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 63
+          }}
+          disabled={disabled}
+          onPress={this._pickImage}
+        >
           {disabled ? null : (
             <Icon
               name="create"
@@ -43,7 +52,7 @@ export default class CustomImagePicker extends React.Component {
                 fontSize: 25,
                 position: "absolute",
                 left: 0,
-                bottom: -35,
+                bottom: -8,
                 elevation: 3,
                 padding: 5
               }}
@@ -106,6 +115,7 @@ export default class CustomImagePicker extends React.Component {
         console.log(response);
         if (response._status === "success") {
           this.setState({ image: result.uri });
+          this.props.onUploadImageSuccess();
         } else {
           Alert.alert("Image Picker Error", response._message);
         }
