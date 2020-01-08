@@ -74,7 +74,7 @@ export default class CustomImagePicker extends React.Component {
   }
 
   getPermissionAsync = async () => {
-    if (Constants.platform.android) {
+    if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
@@ -94,10 +94,12 @@ export default class CustomImagePicker extends React.Component {
         // Alert.alert("User Cancelled Image Picker");
       } else if (result.error) {
         Alert.alert("Image Picker Error", result.error);
-      } else if (!_.endsWith(result.uri, ".png")) {
+      } else if (
+        !(_.endsWith(result.uri, ".png") || _.endsWith(result.uri, ".jpg"))
+      ) {
         Alert.alert(
           "Image Picker Error",
-          "Unsupported file.\nPlease upload only PNG file."
+          "Unsupported file.\nPlease upload only PNG/JPG file."
         );
       } else {
         const response = await _uploadImage(result.uri);

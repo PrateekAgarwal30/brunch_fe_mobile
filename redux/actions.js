@@ -291,15 +291,24 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
 };
 
 export const _uploadImage = async uploadUrl => {
+  console.log("uploadUrl", uploadUrl);
   try {
     let uploadData = new FormData();
     const jwtToken = await AsyncStorage.getItem("authToken");
     uploadData.append("submit", "ok");
-    uploadData.append("avatar", {
-      type: "image/png",
-      uri: uploadUrl,
-      name: "uploadimagetemp.png"
-    });
+    if (_.endsWith(uploadUrl, ".png")) {
+      uploadData.append("avatar", {
+        type: "image/png",
+        uri: uploadUrl,
+        name: "uploadimagetemp.png"
+      });
+    } else {
+      uploadData.append("avatar", {
+        type: "image/jpeg",
+        uri: uploadUrl,
+        name: "uploadimagetemp.jpeg"
+      });
+    }
     const res = await fetch(`${ipAddress}/api/me/user_image`, {
       method: "post",
       headers: {
