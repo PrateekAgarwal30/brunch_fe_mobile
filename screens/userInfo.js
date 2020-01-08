@@ -188,7 +188,7 @@ class UserInfo extends React.Component {
         <KeyboardAvoidingView
           behavior="height"
           style={{ justifyContent: "center", flex: 1 }}
-          keyboardVerticalOffset={5}
+          keyboardVerticalOffset={100}
         >
           <Content padder>
             <Card style={{ elevation: 3 }}>
@@ -333,13 +333,29 @@ class UserInfo extends React.Component {
           </Content>
         </KeyboardAvoidingView>
         {this.state.editing ? (
-          <Content padder>
+          // <Content padder>
+          //   <Button
+          //     full
+          //     disabled={this.state.db === this.state.edit}
+          //     onPress={this._updateProfile}
+          //   >
+          //     <Text>Save</Text>
+          //   </Button>
+          // </Content>
+
+          <Content
+            padder
+            style={{ position: "absolute", width: "100%", bottom: 0, left: 0 }}
+          >
             <Button
-              full
-              disabled={this.state.db === this.state.edit}
+              style={{
+                textAlign: "center ",
+                justifyContent: "center"
+              }}
               onPress={this._updateProfile}
+              disabled={this.state.db === this.state.edit}
             >
-              <Text>Save</Text>
+              <Text style={{ color: "white", fontSize: 16 }}>{"Save"}</Text>
             </Button>
           </Content>
         ) : null}
