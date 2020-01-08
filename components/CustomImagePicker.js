@@ -10,24 +10,27 @@ const styles = StyleSheet.create({
   avatar: {
     width: 100,
     height: 100,
-    borderRadius: 63,
+    borderRadius: 63
   },
-  avatarWrapper : {
+  avatarWrapper: {
     width: 108,
     height: 108,
     borderRadius: 63,
     borderWidth: 4,
     borderColor: "#A4A4BF",
-    backgroundColor : "#A4A4BF"
+    backgroundColor: "#A4A4BF"
   },
-  editIcon : {
+  editIcon: {
     color: "#A4A4BF",
     fontSize: 28,
     position: "absolute",
     left: -6,
     bottom: -12,
     elevation: 3,
-    padding: 5
+    padding: 5,
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: -1, height: 5 },
+    textShadowRadius: 10
   }
 });
 export default class CustomImagePicker extends React.Component {
@@ -55,12 +58,7 @@ export default class CustomImagePicker extends React.Component {
           disabled={disabled}
           onPress={this._pickImage}
         >
-          {disabled ? null : (
-            <Icon
-              name="create"
-              style={styles.editIcon}
-            />
-          )}
+          {disabled ? null : <Icon name="create" style={styles.editIcon} />}
 
           {image ? (
             <Image
