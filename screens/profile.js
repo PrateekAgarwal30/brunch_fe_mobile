@@ -3,11 +3,11 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ScrollView,
   ToastAndroid,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import { logOut, getProfile } from "../redux/actions";
@@ -63,7 +63,7 @@ class Profile extends React.Component {
   _onUploadImageSuccess = () => {
     // console.log("_onUploadImageSuccess");
     this.props.getProfile();
-  }
+  };
   render() {
     const imageUrl =
       _.get(this.props, "profile.details.userImageUrl", "") || "";
@@ -72,7 +72,7 @@ class Profile extends React.Component {
         <View style={styles.header} />
         <CustomImagePicker
           imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
-          onUploadImageSuccess = {this._onUploadImageSuccess}
+          onUploadImageSuccess={this._onUploadImageSuccess}
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
@@ -108,7 +108,7 @@ class Profile extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() => Alert.alert("Clicked")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="card" style={{ flex: 1 }} />
@@ -118,7 +118,7 @@ class Profile extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() => Alert.alert("Clicked")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="heart" style={{ flex: 1 }} />
@@ -222,6 +222,6 @@ const mapStateToProps = state => ({
 });
 const mapActionsToProps = {
   logOut: logOut,
-  getProfile : getProfile
+  getProfile: getProfile
 };
 export default connect(mapStateToProps, mapActionsToProps)(Profile);

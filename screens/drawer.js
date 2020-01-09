@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import { getProfile, logOut } from "../redux/actions";
@@ -20,7 +21,10 @@ class Drawer extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header} />
-        <CustomImagePicker disabled={true} imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null} />
+        <CustomImagePicker
+          disabled={true}
+          imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
+        />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
             <Text style={styles.name}>
@@ -56,7 +60,7 @@ class Drawer extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() => Alert.alert("Clicked")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="card" style={{ flex: 1 }} />
@@ -66,7 +70,7 @@ class Drawer extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => alert("Clicked")}
+                onPress={() => Alert.alert("Clicked")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="heart" style={{ flex: 1 }} />

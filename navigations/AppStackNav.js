@@ -4,78 +4,81 @@ import Profile from "../screens/profile";
 import ChangeAddress from "../screens/changeAddress";
 import ChangePassword from "../screens/changePassword";
 import ManageAddress from "../screens/manageAddress";
-import GetLocation from "../screens/location"
+import GetLocation from "../screens/location";
 import Drawer from "../screens/drawer";
-import UserInfo from "../screens/userInfo"
+import UserInfo from "../screens/userInfo";
+import Payments from "../screens/payments";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
-
 
 import { TouchableOpacity } from "react-native";
 import { Icon } from "native-base";
 
 const DrawerNavigator = createDrawerNavigator(
-    {
-        Home: {
-            screen: Home
-        }
-    },
-    {
-        initialRouteName: "Home",
-        contentComponent: Drawer,
-        navigationOptions: ({ navigation }) => {
-            return {
-                title: "Home",
-                headerLeft: (
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.isDrawerOpen ? navigation.closeDrawer() : navigation.openDrawer()
-                            }
-                        }
-                        style={{ padding: 5, marginLeft: 10 }}
-                    ><Icon name="menu" style={{ color: 'white' }} />
-                    </TouchableOpacity>
-                ),
-                headerStyle: {
-                    backgroundColor: "#16235A"
-                },
-                headerTintColor: "white",
-                headerTitleStyle: {
-                    fontWeight: "bold"
-                }
-            };
-        }
+  {
+    Home: {
+      screen: Home
     }
+  },
+  {
+    initialRouteName: "Home",
+    contentComponent: Drawer,
+    navigationOptions: ({ navigation }) => {
+      return {
+        title: "Home",
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.isDrawerOpen
+                ? navigation.closeDrawer()
+                : navigation.openDrawer();
+            }}
+            style={{ padding: 5, marginLeft: 10 }}
+          >
+            <Icon name="menu" style={{ color: "white" }} />
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          backgroundColor: "#16235A"
+        },
+        headerTintColor: "white",
+        headerTitleStyle: {
+          fontWeight: "bold"
+        }
+      };
+    }
+  }
 );
 
 const AppStack = createStackNavigator(
-    {
-        DrawerNavigator: {
-            screen: DrawerNavigator,
-
-        },
-        Profile: {
-            screen: Profile
-        },
-        ChangeAddress: {
-            screen: ChangeAddress
-        },
-        GetLocation: {
-            screen: GetLocation
-        },
-        ChangePassword: {
-            screen: ChangePassword
-        },
-        ManageAddress: {
-            screen: ManageAddress
-        },
-        UserInfo: {
-            screen: UserInfo
-        }
+  {
+    DrawerNavigator: {
+      screen: DrawerNavigator
     },
-    {
-        initialRouteName: "DrawerNavigator"
+    Profile: {
+      screen: Profile
+    },
+    ChangeAddress: {
+      screen: ChangeAddress
+    },
+    GetLocation: {
+      screen: GetLocation
+    },
+    ChangePassword: {
+      screen: ChangePassword
+    },
+    ManageAddress: {
+      screen: ManageAddress
+    },
+    UserInfo: {
+      screen: UserInfo
+    },
+    Payments: {
+      screen: Payments
     }
+  },
+  {
+    initialRouteName: "DrawerNavigator"
+  }
 );
 
 export default AppStack;
-

@@ -50,8 +50,8 @@ class Home extends React.Component {
           <Button onPress={() => this.props.navigation.navigate("Profile")}>
             <Text>Profile</Text>
           </Button>
-          <Button onPress={() => this.props.navigation.navigate("Profile")}>
-            <Text>Profile</Text>
+          <Button onPress={() => this.props.navigation.navigate("Payments")}>
+            <Text>Payments</Text>
           </Button>
           <Button onPress={() => this.props.navigation.navigate("Profile")}>
             <Text>Profile</Text>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
 import { MapView, Location, Permissions } from "expo";
 import { Marker } from "react-native-maps";
@@ -19,7 +19,7 @@ class GetLocation extends React.Component {
     // console.log(status);
 
     if (status !== "granted") {
-      alert(
+      Alert.alert(
         "Hey! You might want to enable notifications for my app, they are good."
       );
     }
@@ -44,7 +44,7 @@ class GetLocation extends React.Component {
         });
       }
     } catch (err) {
-      alert(err.message);
+      Alert.alert(err.message);
     }
   };
   render() {
