@@ -1,33 +1,40 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Modal,
-  Alert,
-  WebView
-} from "react-native";
+import { View, Text, Modal, Alert, WebView } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Button, Content } from "native-base";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import { ipAddress } from "../constants";
-
+import { AsyncStorage } from "react-native";
 class Payments extends React.Component {
   state = {
     modalVisible: false
   };
-
+  async componentDidMount() {
+    try {
+      const authToken = await AsyncStorage.getItem("authToken");
+      this.setState(prevState => ({
+        ...prevState,
+        authToken: authToken
+      }));
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-  _onloadingError = () => {
-    Alert.alert("Loading Error");
+  _onloadingError = (x) => {
+    Alert.alert("Loading Error",x);
     this.setModalVisible(false);
   };
   _handleTransaction = data => {
     const { loading, url, title } = data;
     console.log(data);
-    if (loading === false && _.startsWith(url,`${ipAddress}/api/txnPaytm/status`)) {
+    if (
+      loading === false &&
+      _.startsWith(url, `${ipAddress}/api/txnPaytm/status`)
+    ) {
       const jsonData = JSON.parse(title);
       console.log("jsonData", jsonData);
       this.setModalVisible(false);
@@ -35,7 +42,8 @@ class Payments extends React.Component {
   };
   render() {
     const isLoading = this.props.user.isLoading;
-    if (isLoading) {
+    const authToken = this.state.authToken;
+    if (isLoading || !authToken) {
       return <CustomActivityIndicator />;
     }
     return (
@@ -67,10 +75,9 @@ class Payments extends React.Component {
             source={{
               uri: `${ipAddress}/api/txnPaytm`,
               method: "post",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: `ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txnPaytm/status`
+              body: `x-auth-token=${
+                this.state.authToken
+              }&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txnPaytm/status`
             }}
             ref={webview => {
               this.webview = webview;
