@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.brunchpvtltd.brunch"
+    },
+    "android": {
+      "package": "com.brunchpvtltd.brunch"
     },
     "description": ""
   }
