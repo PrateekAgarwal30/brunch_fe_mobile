@@ -26,7 +26,8 @@ class Payments extends React.Component {
   };
   _handleTransaction = data => {
     const { loading, url, title } = data;
-    if (loading === false && url === `${ipAddress}/api/txnPaytm/status`) {
+    console.log(data);
+    if (loading === false && _.startsWith(url,`${ipAddress}/api/txnPaytm/status`)) {
       const jsonData = JSON.parse(title);
       console.log("jsonData", jsonData);
       this.setModalVisible(false);
