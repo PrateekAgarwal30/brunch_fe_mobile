@@ -15,21 +15,27 @@ class GetLocation extends React.Component {
     this.getLocationHandler();
   }
   alertIfRemoteNotificationsDisabledAsync = async () => {
-    const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    // console.log(status);
-
-    if (status !== "granted") {
-      Alert.alert(
-        "Hey! You might want to enable notifications for my app, they are good."
-      );
+    try {
+      const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      if (status !== "granted") {
+        Alert.alert(
+          "Hey! You might want to enable notifications for my app, they are good."
+        );
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
   getLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === "granted") {
-      return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-    } else {
-      throw new Error("Location permission not granted");
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status === "granted") {
+        return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+      } else {
+        throw new Error("Location permission not granted");
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
   getLocationHandler = async () => {

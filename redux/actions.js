@@ -320,6 +320,27 @@ export const _uploadImage = async uploadUrl => {
     const data = await res.json();
     return Promise.resolve(data);
   } catch (err) {
-    return Promise.reject(err);
+    return Promise.reject(err.message);
+  }
+};
+
+export const pushNotifToken = async token => {
+  try {
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    const bodyData = { "pushNotificationToken" : token };
+    const res = await fetch(`${ipAddress}/api/me/pushNotificationToken`, {
+      method: "post",
+      headers: {
+        "x-auth-token": jwtToken,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyData)
+    });
+    const data = await res.json();
+    console.log("DATA",data);
+    return Promise.resolve(data);
+  } catch (err) {
+    console.log("ERROR",err.message);
+    return Promise.reject(err.message);
   }
 };

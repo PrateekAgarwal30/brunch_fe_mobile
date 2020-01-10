@@ -8,13 +8,46 @@ import {
   ScrollView,
   Alert
 } from "react-native";
-import { connect } from "react-redux";
-import { getProfile, logOut } from "../redux/actions";
 import { Icon, Card } from "native-base";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import { connect } from "react-redux";
+import { getProfile, logOut, pushNotifToken } from "../redux/actions";
 import _ from "lodash";
 import CustomImagePicker from "../components/CustomImagePicker";
 import { ipAddress } from "../constants";
 class Drawer extends React.Component {
+  async componentDidMount() {
+    try {
+      const result = await this.registerForPushNotificationsAsync();
+      if (result) {
+        this.props.pushNotificationToken(result);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+  registerForPushNotificationsAsync = async () => {
+    try {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        return;
+      }
+      let token = await Notifications.getExpoPushTokenAsync();
+      return token;
+    } catch (err) {
+      return;
+    }
+  };
   render() {
     const imageUrl =
       _.get(this.props, "profile.details.userImageUrl", "") || "";
@@ -158,6 +191,7 @@ const mapStateToProps = state => ({
 });
 const mapActionsToProps = {
   getProfile: getProfile,
-  logOut: logOut
+  logOut: logOut,
+  pushNotificationToken: pushNotifToken
 };
 export default connect(mapStateToProps, mapActionsToProps)(Drawer);

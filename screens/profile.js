@@ -55,7 +55,7 @@ class Profile extends React.Component {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   };
-  async componentDidMount() {
+  componentDidMount() {
     this.props.navigation.setParams({
       _logOut: this._logOut
     });

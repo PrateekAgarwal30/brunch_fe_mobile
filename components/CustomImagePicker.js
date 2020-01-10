@@ -84,13 +84,17 @@ export default class CustomImagePicker extends React.Component {
   }
 
   getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== "granted") {
-        Alert.alert(
-          "Sorry, we need camera roll permissions to make this work!"
-        );
+    try {
+      if (Constants.platform.ios) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status !== "granted") {
+          Alert.alert(
+            "Sorry, we need camera roll permissions to make this work!"
+          );
+        }
       }
+    } catch (err) {
+      console.log(err.message);
     }
   };
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1096492641639",
+    "firebase_url": "https://brunch-pvt-ltd.firebaseio.com",
+    "project_id": "brunch-pvt-ltd",
+    "storage_bucket": "brunch-pvt-ltd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096492641639:android:f8eedaad426ac4f7fd93c2",
+        "android_client_info": {
+          "package_name": "com.brunchpvtltd.brunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096492641639-1bt98f6mq9tis8mif0vq8ftljkoeip7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe18ugswwCe9wG3S0Ed-yrzBovYpb877s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096492641639-1bt98f6mq9tis8mif0vq8ftljkoeip7f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

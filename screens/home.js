@@ -31,17 +31,24 @@ class Home extends React.Component {
     };
   };
   async componentDidMount() {
-    this.props.navigation.setParams({
-      _menu: this._menu
-    });
-    this.props.getProfile();
+    try {
+      this.props.navigation.setParams({
+        _menu: this._menu
+      });
+      this.props.getProfile();
+    } catch (err) {
+      console.log(err.message);
+    }
   }
   componentWillUnmount() {
     // clearInterval(this.interval);
   }
   _menu = async () => {
-    // console.log("clicked");
-    this.props.navigation.toggleDrawer();
+    try {
+      this.props.navigation.toggleDrawer();
+    } catch (err) {
+      console.log(err.message);
+    }
   };
   render() {
     return (

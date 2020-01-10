@@ -1,7 +1,11 @@
 import React from "react";
 import { StyleSheet, View, ToastAndroid } from "react-native";
 import { connect } from "react-redux";
-import { getTechAddresses, saveOfficeAddressForUser,getProfile } from "../redux/actions";
+import {
+  getTechAddresses,
+  saveOfficeAddressForUser,
+  getProfile
+} from "../redux/actions";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -42,11 +46,15 @@ class ChangeAddress extends React.Component {
     this._selectLocation = this._selectLocation.bind(this);
   }
   async componentDidMount() {
-    await this.props.getTechAddresses();
-    this.setState({
-      ...this.state,
-      tech_parks: this.props.profile.tech_addresses || []
-    });
+    try {
+      await this.props.getTechAddresses();
+      this.setState({
+        ...this.state,
+        tech_parks: this.props.profile.tech_addresses || []
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
   }
   _searchLocation = x => {
     let filtersParks = this.state.tech_parks.filter(tp => {
@@ -69,23 +77,27 @@ class ChangeAddress extends React.Component {
     });
   }
   _getLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status === "granted") {
-      let location = await Location.getCurrentPositionAsync({
-        enableHighAccuracy: true
-      });
-      let region = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0221,
-        longitudeDelta: 0.0221
-      };
-      this.setState({
-        ...this.state,
-        region: region
-      });
-    } else {
-      throw new Error("Location permission not granted");
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+      if (status === "granted") {
+        let location = await Location.getCurrentPositionAsync({
+          enableHighAccuracy: true
+        });
+        let region = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0221,
+          longitudeDelta: 0.0221
+        };
+        this.setState({
+          ...this.state,
+          region: region
+        });
+      } else {
+        throw new Error("Location permission not granted");
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
   centerMap() {
@@ -106,21 +118,21 @@ class ChangeAddress extends React.Component {
     });
   }
   onConfirmLocation = async (stall_loc_id, tech_park_id) => {
-    // console.log(stall_id,tech_park_id);
-    this.props
-      .saveOfficeAddressForUser({ tech_park_id, stall_loc_id })
-      .then(message => {
-        ToastAndroid.show(message, ToastAndroid.SHORT);
-        this.setState(prevState => ({
-          ...prevState,
-          selected: false
-        }));
-        this.props.getProfile();
-        this.props.navigation.navigate("ManageAddress");
-      })
-      .catch(err => {
-        ToastAndroid.show(err.message, ToastAndroid.SHORT);
+    try {
+      const message = await this.props.saveOfficeAddressForUser({
+        tech_park_id,
+        stall_loc_id
       });
+      ToastAndroid.show(message, ToastAndroid.SHORT);
+      this.setState(prevState => ({
+        ...prevState,
+        selected: false
+      }));
+      this.props.getProfile();
+      this.props.navigation.navigate("ManageAddress");
+    } catch (err) {
+      ToastAndroid.show(err.message, ToastAndroid.SHORT);
+    }
   };
   render() {
     const isLoading = this.props.user.isLoading;
@@ -218,7 +230,7 @@ const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 const mapActionsToProps = {
   getTechAddresses: getTechAddresses,
   saveOfficeAddressForUser: saveOfficeAddressForUser,
-  getProfile : getProfile
+  getProfile: getProfile
 };
 export default connect(mapStateToProps, mapActionsToProps)(ChangeAddress);
 
