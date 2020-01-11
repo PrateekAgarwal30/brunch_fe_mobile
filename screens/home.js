@@ -1,36 +1,12 @@
 import React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image } from "react-native";
 import { Button, Header } from "native-base";
 import { connect } from "react-redux";
 import { Icon } from "native-base";
 import { getProfile } from "../redux/actions";
-import {Notifications} from 'expo';
+import { Notifications } from "expo";
+import { NetworkConsumer } from "./../components/NetworkContext";
 class Home extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Home",
-      headerLeft: (
-        <TouchableOpacity
-          onPress={() => {
-            const _menu = navigation.getParam("_menu", null);
-            if (_menu) {
-              _menu();
-            }
-          }}
-          style={{ padding: 5, marginRight: 10 }}
-        >
-          <Icon name="menu" style={{ color: "white" }} />
-        </TouchableOpacity>
-      ),
-      headerStyle: {
-        backgroundColor: "#16235A"
-      },
-      headerTintColor: "white",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
-  };
   async componentDidMount() {
     try {
       this.props.navigation.setParams({
@@ -47,7 +23,7 @@ class Home extends React.Component {
   }
   _menu = async () => {
     try {
-      this.props.navigation.toggleDrawer();
+      this.props.navigation.openDrawer();
     } catch (err) {
       console.log(err.message);
     }
@@ -78,6 +54,32 @@ class Home extends React.Component {
     );
   }
 }
+Home.navigationOptions = ({ navigation }) => {
+  return {
+    title: "Home",
+    headerLeft: (
+      <Button
+        transparent
+        onPress={() => {
+          const _menu = navigation.getParam("_menu", null);
+          if (_menu) {
+            _menu();
+          }
+        }}
+      >
+        <Icon name="menu" style={{ color: "white", fontSize: 25 }} />
+      </Button>
+    ),
+    headerStyle: {
+      backgroundColor: "#16235A"
+    },
+    headerTintColor: "white",
+    headerTitleStyle: {
+      fontWeight: "bold"
+    }
+  };
+};
+Home.contextType = NetworkConsumer;
 
 const mapStateToProps = state => ({
   user: state.user,
