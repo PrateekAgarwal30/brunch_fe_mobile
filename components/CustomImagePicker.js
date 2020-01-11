@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Image, View, StyleSheet, Alert } from "react-native";
+import ImageLoad from "react-native-image-placeholder";
 import { Button, Icon } from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -61,17 +62,20 @@ export default class CustomImagePicker extends React.Component {
           {disabled ? null : <Icon name="create" style={styles.editIcon} />}
 
           {image ? (
-            <Image
+            <ImageLoad
               source={{ uri: image }}
               style={styles.avatar}
-              onError={() => {
-                this.setState({ image: null });
-              }}
+              borderRadius={65}
+              loadingStyle={{ size: "large", color: "white" }}
+              placeholderSource={require("./../assets/male-avatar.png")}
+              placeholderStyle={styles.avatar}
+              isShowActivity={true}
             />
           ) : (
-            <Image
+            <ImageLoad
               source={require("./../assets/male-avatar.png")}
               style={styles.avatar}
+              borderRadius={65}
             />
           )}
         </Button>
