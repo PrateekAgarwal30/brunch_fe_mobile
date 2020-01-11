@@ -16,7 +16,11 @@ export const LocationSearchResult = function(props) {
     >
       {props.results.map(x => {
         return (
-          <CardItem bordered style={{ paddingTop: 0, paddingBottom: 0 }}>
+          <CardItem
+            key={x._id}
+            bordered
+            style={{ paddingTop: 0, paddingBottom: 0 }}
+          >
             <TouchableOpacity
               style={{ padding: 10 }}
               key={x._id}

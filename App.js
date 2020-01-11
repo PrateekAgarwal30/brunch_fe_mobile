@@ -1,8 +1,8 @@
-import React from 'react';
-import { createAppContainer } from 'react-navigation'
-import { AppNavigator } from "./navigations/login_switch_nav";
-import store from './redux/store';
-import { Provider } from 'react-redux'
+import React from "react";
+import { createAppContainer } from "react-navigation";
+import {AppNavigator} from "./navigations/LoginSwitchNav";
+import store from "./redux/store";
+import { Provider } from "react-redux";
 const AppContainer = createAppContainer(AppNavigator);
 export default class App extends React.Component {
   render() {

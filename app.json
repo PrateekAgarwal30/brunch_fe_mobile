@@ -33,8 +33,9 @@
           "apiKey": "AIzaSyBNL6G0sXMPHCvBA_5hKdmVqeF9P5pkJNM"
         }
       },
-      "googleServicesFile":"./google-services.json"
+      "googleServicesFile": "./google-services.json"
     },
-    "description": ""
+    "description": "",
+    "scheme": "brunch"
   }
 }

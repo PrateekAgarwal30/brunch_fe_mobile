@@ -4,6 +4,7 @@ import { Button, Header } from "native-base";
 import { connect } from "react-redux";
 import { Icon } from "native-base";
 import { getProfile } from "../redux/actions";
+import {Notifications} from 'expo';
 class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -39,6 +40,7 @@ class Home extends React.Component {
     } catch (err) {
       console.log(err.message);
     }
+    Notifications.addListener(payload => console.log(JSON.stringify(payload)));
   }
   componentWillUnmount() {
     // clearInterval(this.interval);

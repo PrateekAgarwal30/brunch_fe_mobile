@@ -5,54 +5,14 @@ import ChangeAddress from "../screens/changeAddress";
 import ChangePassword from "../screens/changePassword";
 import ManageAddress from "../screens/manageAddress";
 import GetLocation from "../screens/location";
-import Drawer from "../screens/drawer";
 import UserInfo from "../screens/userInfo";
 import Payments from "../screens/payments";
-import { createStackNavigator, createDrawerNavigator } from "react-navigation";
-
-import { TouchableOpacity } from "react-native";
-import { Icon } from "native-base";
-
-const DrawerNavigator = createDrawerNavigator(
-  {
-    Home: {
-      screen: Home
-    }
-  },
-  {
-    initialRouteName: "Home",
-    contentComponent: Drawer,
-    navigationOptions: ({ navigation }) => {
-      return {
-        title: "Home",
-        headerLeft: (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.isDrawerOpen
-                ? navigation.closeDrawer()
-                : navigation.openDrawer();
-            }}
-            style={{ padding: 5, marginLeft: 10 }}
-          >
-            <Icon name="menu" style={{ color: "white" }} />
-          </TouchableOpacity>
-        ),
-        headerStyle: {
-          backgroundColor: "#16235A"
-        },
-        headerTintColor: "white",
-        headerTitleStyle: {
-          fontWeight: "bold"
-        }
-      };
-    }
-  }
-);
+import { createStackNavigator } from "react-navigation";
 
 const AppStack = createStackNavigator(
   {
-    DrawerNavigator: {
-      screen: DrawerNavigator
+    Home: {
+      screen: Home
     },
     Profile: {
       screen: Profile
@@ -77,7 +37,7 @@ const AppStack = createStackNavigator(
     }
   },
   {
-    initialRouteName: "DrawerNavigator"
+    initialRouteName: "Home"
   }
 );
 

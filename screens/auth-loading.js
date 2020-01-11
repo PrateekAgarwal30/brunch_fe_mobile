@@ -13,7 +13,7 @@ export default class AuthLoading extends React.Component {
   _bootstrapAsync = async () => {
     try {
       const authToken = await AsyncStorage.getItem("authToken");
-      this.props.navigation.navigate(authToken ? "AppStack" : "AuthStack");
+      this.props.navigation.navigate(authToken ? "AppDrawerNav" : "AuthStack");
     } catch (err) {
       console.log(err.message);
     }
