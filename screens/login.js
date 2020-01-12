@@ -2,18 +2,18 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Image,
   Text,
-  TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView,
   AsyncStorage,
-  ToastAndroid
+  ToastAndroid,
+  Image
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
-import * as Animatable from 'react-native-animatable'
+import { Card, Button } from "native-base";
+import * as Animatable from "react-native-animatable";
 class Login extends React.Component {
   state = {
     validEmail: true,
@@ -22,18 +22,17 @@ class Login extends React.Component {
     password: "12345",
     showPassword: false
   };
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
   _checkLogin = async () => {
+    console.log("Clicked");
     try {
       await this.props.login(this.state.email, this.state.password);
-      if (await AsyncStorage.getItem('authToken')) {
+      if (await AsyncStorage.getItem("authToken")) {
         this.props.navigation.navigate("AppStack");
       }
     } catch (error) {
-      console.log("Error ",error);
-      ToastAndroid.show("Server down. Please try later",ToastAndroid.SHORT);
+      console.log("Error ", error);
+      ToastAndroid.show("Server down. Please try later", ToastAndroid.SHORT);
     }
   };
   _validEmailInput = x => {
@@ -62,147 +61,204 @@ class Login extends React.Component {
     }
   };
   render() {
+    const { err } = this.props.user;
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.wrapper}>
-        <View style={styles.logoWrapper}>
-          <Animatable.View animation="zoomIn" iterationCount={1}>
-            <Image
-              style={styles.logo}
-              source={require("./../assets/logo.png")}
-            />
-          </Animatable.View>
-          <Text style={styles.welcomeText}>Welcome to Brunch App</Text>
-          <Text style={{ color: "red" }}>{this.props.user.err}</Text>
-          <TextInput
-            style={styles.textWrapper}
-            placeholder="Email Id"
-            value={this.state.email}
-            onChangeText={this._validEmailInput}
-          />
-          <View style={styles.passwordWrapper}>
-            <TextInput
-              style={{ fontSize: 16, flex: 8 }}
-              placeholder="Password"
-              value={this.state.password}
-              onChangeText={this._validPasswordInput}
-              secureTextEntry={!this.state.showPassword}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  ...this.state,
-                  showPassword: !this.state.showPassword
-                });
-              }}
-              style={{
-                justifyContent: "flex-end",
-                flex: 1,
-                display: "flex",
-                width: "10%"
-              }}
-            >
-              <Icon
-                name={this.state.showPassword ? "md-eye-off" : "md-eye"}
-                size={32}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            style={styles.loginWrapper}
-            onPress={this._checkLogin}
-          // disabled={!(this.state.validEmail && this.state.validPassword)}
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraHeight={165}
+        extraScrollHeight={45}
+        style={{ flex: 1 }}
+      >
+        <View style={{ backgroundColor: "#1721AC", flex: 1 }}>
+          <View
+            animation="zoomIn"
+            iterationCount={100}
+            style={{
+              // marginTop: 200,
+              height: 200,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
           >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <View style={styles.registerWrapper}>
-            <Text style={{ fontSize: 16, marginRight: 50, color: "white" }}>
-              Don't have Account ?
-            </Text>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Register")}
+            <Animatable.Image
+              style={{
+                width: 100,
+                height: 100
+              }}
+              source={require("./../assets/logo.png")}
+              animation="zoomIn"
+              iterationCount={1}
+            />
+            <Animatable.Text
+              animation="zoomIn"
+              iterationCount={1}
+              style={{ fontSize: 24 }}
             >
+              Brunch
+            </Animatable.Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: "white",
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+              flex: 1,
+              paddingTop: 25
+            }}
+          >
+            <View
+              style={{
+                width: "90%",
+                justifyContent: "center",
+                alignSelf: "center"
+              }}
+            >
+              <Text style={{ fontSize: 28, fontWeight: "bold", marginTop: 20 }}>
+                Welcome to Brunch
+              </Text>
               <Text
                 style={{
-                  fontSize: 16,
-                  color: "white",
-                  textDecorationLine: "underline"
+                  fontSize: 18,
+                  fontWeight: "100",
+                  marginTop: 30,
+                  marginBottom: 10
                 }}
               >
-                Register
+                Sign in to continue
               </Text>
-            </TouchableOpacity>
+              {err ? (
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "100",
+                    color: "red"
+                  }}
+                >
+                  {err}
+                </Text>
+              ) : null}
+
+              <Card
+                style={{
+                  elevation: 10,
+                  borderRadius: 10,
+                  flexDirection: "row"
+                }}
+              >
+                <Icon
+                  name="ios-mail"
+                  size={25}
+                  color="#000"
+                  style={{ alignSelf: "center", marginLeft: 15 }}
+                />
+                <TextInput
+                  style={styles.textWrapper}
+                  placeholder="Email Id"
+                  value={this.state.email}
+                  onChangeText={this._validEmailInput}
+                />
+              </Card>
+              <Card
+                style={{
+                  elevation: 10,
+                  borderRadius: 10,
+                  flexDirection: "row"
+                }}
+              >
+                <Icon
+                  name="ios-lock"
+                  size={25}
+                  color="#000"
+                  style={{ alignSelf: "center", marginLeft: 15 }}
+                />
+                <TextInput
+                  style={styles.textWrapper}
+                  placeholder="Password"
+                  value={this.state.password}
+                  onChangeText={this._validPasswordInput}
+                  secureTextEntry={!this.state.showPassword}
+                />
+                <Button
+                  transparent
+                  onPress={() => {
+                    this.setState({
+                      ...this.state,
+                      showPassword: !this.state.showPassword
+                    });
+                  }}
+                  style={{ alignSelf: "center" }}
+                >
+                  <Icon
+                    name={this.state.showPassword ? "md-eye-off" : "md-eye"}
+                    size={25}
+                    color="#000"
+                  />
+                </Button>
+              </Card>
+              <Card
+                style={{
+                  elevation: 10,
+                  borderRadius: 10,
+                  flexDirection: "row",
+                  marginTop: 30
+                }}
+              >
+                <Button
+                  style={{
+                    backgroundColor: "#1721AC",
+                    justifyContent: "center",
+                    flex: 1
+                  }}
+                  onPress={this._checkLogin}
+                  // disabled={true}
+                >
+                  <Text
+                    style={{ fontSize: 20, fontWeight: "800", color: "white" }}
+                  >
+                    Login
+                  </Text>
+                </Button>
+              </Card>
+              <Text
+                style={{
+                  fontSize: 18,
+                  justifyContent: "center",
+                  marginTop: 20
+                }}
+              >
+                Don't have a Account ?
+              </Text>
+              <Button
+                bordered
+                dark
+                style={{
+                  justifyContent: "center",
+                  borderRadius: 10,
+                  padding: 6,
+                  width: "100%"
+                }}
+                onPress={() => this.props.navigation.navigate("Register")}
+              >
+                <Text
+                  style={{ fontSize: 20, fontWeight: "600", color: "#A1A1A5" }}
+                >
+                  Sign Up
+                </Text>
+              </Button>
+            </View>
           </View>
         </View>
-        {/* <Text>{JSON.stringify(this.props.user)}</Text> */}
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   }
 }
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    display: "flex",
-    backgroundColor: "#A4A4BF"
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginTop: 50,
-    marginBottom: 40
-  },
-  logoWrapper: {
-    flex: 1,
-    display: "flex",
-    marginTop: 30,
-    alignItems: "center"
-  },
-  welcomeText: {
-    fontSize: 30,
-    fontWeight: "300",
-    color: "white",
-    marginBottom: 40
-  },
-  loginWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
-    padding: 15,
-    display: "flex",
-    borderColor: "white",
-    backgroundColor: "#595775",
-    width: "80%"
-  },
   textWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
     padding: 15,
     display: "flex",
-    borderColor: "white",
-    backgroundColor: "#F1E0D6",
-    width: "80%",
-    marginBottom: 20,
-    fontSize: 18
-  },
-  passwordWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
-    padding: 15,
-    display: "flex",
-    borderColor: "white",
-    backgroundColor: "#F1E0D6",
-    width: "80%",
-    marginBottom: 20,
-    flexDirection: "row"
-  },
-  buttonText: {
     fontSize: 18,
-    textAlign: "center",
-    width: "100%",
-    color: "white"
-  },
-  registerWrapper: {
-    flexDirection: "row",
-    padding: 15
+    zIndex: 10,
+    width: "80%"
   }
 });
 const mapStateToProps = state => ({
@@ -212,7 +268,4 @@ const mapActionsToProps = {
   login: login,
   textChange: textChange
 };
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(Login);
+export default connect(mapStateToProps, mapActionsToProps)(Login);
