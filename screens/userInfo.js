@@ -169,9 +169,9 @@ class UserInfo extends React.Component {
   };
   getPreferredMealLabel(x) {
     switch (x) {
-      case "veg":
+      case "Veg":
         return "Veg";
-      case "nonVeg":
+      case "NonVeg":
         return "NonVeg";
       default:
         return "";
@@ -297,8 +297,8 @@ class UserInfo extends React.Component {
                         onValueChange={this._preferredMealChange}
                         enabled={this.state.editing}
                       >
-                        <Picker.Item label="Veg" value="veg" />
-                        <Picker.Item label="NonVeg" value="nonVeg" />
+                        <Picker.Item label="Veg" value="Veg" />
+                        <Picker.Item label="NonVeg" value="NonVeg" />
                       </Picker>
                     ) : (
                       <Input

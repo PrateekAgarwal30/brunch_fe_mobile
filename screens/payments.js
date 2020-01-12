@@ -24,8 +24,8 @@ class Payments extends React.Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-  _onloadingError = (x) => {
-    Alert.alert("Loading Error",x);
+  _onloadingError = x => {
+    Alert.alert("Loading Error", x);
     this.setModalVisible(false);
   };
   _handleTransaction = data => {
@@ -33,7 +33,7 @@ class Payments extends React.Component {
     console.log(data);
     if (
       loading === false &&
-      _.startsWith(url, `${ipAddress}/api/txnPaytm/status`)
+      _.startsWith(url, `${ipAddress}/api/txn/paytm/status`)
     ) {
       const jsonData = JSON.parse(title);
       console.log("jsonData", jsonData);
@@ -73,11 +73,11 @@ class Payments extends React.Component {
             <View> */}
           <WebView
             source={{
-              uri: `${ipAddress}/api/txnPaytm`,
+              uri: `${ipAddress}/api/txn/paytm`,
               method: "post",
               body: `x-auth-token=${
                 this.state.authToken
-              }&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txnPaytm/status`
+              }&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txn/paytm/status`
             }}
             ref={webview => {
               this.webview = webview;

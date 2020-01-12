@@ -75,7 +75,7 @@ export const register = (email, password) => async dispatch => {
   try {
     dispatch({ type: REGISTER.REGISTER_SENT, payload: { isLoading: true } });
     let jwtToken = null;
-    const res = await fetch(ipAddress + "/api/register", {
+    const res = await fetch(ipAddress + "/api/auth/register", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json"
@@ -231,7 +231,7 @@ export const getTechAddresses = () => async dispatch => {
         isLoading: true
       }
     });
-    const res = await fetch(ipAddress + "/api/tech_address", {
+    const res = await fetch(ipAddress + "/api/general/techparks", {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
@@ -264,7 +264,7 @@ export const saveOfficeAddressForUser = Obj => async dispatch => {
       payload: { isLoading: true, err: null }
     });
     const jwtToken = await AsyncStorage.getItem("authToken");
-    const res = await fetch(ipAddress + "/api/address", {
+    const res = await fetch(ipAddress + "/api/me/user_address", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
@@ -328,7 +328,7 @@ export const pushNotifToken = async token => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     const bodyData = { "pushNotificationToken" : token };
-    const res = await fetch(`${ipAddress}/api/me/pushNotificationToken`, {
+    const res = await fetch(`${ipAddress}/api/me/user_push_notif_token`, {
       method: "post",
       headers: {
         "x-auth-token": jwtToken,

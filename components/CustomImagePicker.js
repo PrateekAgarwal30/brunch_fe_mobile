@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Image, View, StyleSheet, Alert } from "react-native";
-import ImageLoad from "react-native-image-placeholder";
+import { View, StyleSheet, Alert } from "react-native";
 import { Button, Icon } from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { _uploadImage } from "../redux/actions";
 import _ from "lodash";
+import ProgressiveImage from "./ProgressiveImage";
 const styles = StyleSheet.create({
   avatar: {
     width: 100,
@@ -38,18 +38,17 @@ export default class CustomImagePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: props.imageUrl
+      uri: props.imageUrl
     };
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.imageUrl !== this.props.imageUrl) {
       this.setState({
-        image: nextProps.imageUrl
+        uri: nextProps.imageUrl
       });
     }
   }
   render() {
-    const { image } = this.state;
     const { disabled } = this.props;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -60,24 +59,12 @@ export default class CustomImagePicker extends React.Component {
           onPress={this._pickImage}
         >
           {disabled ? null : <Icon name="create" style={styles.editIcon} />}
-
-          {image ? (
-            <ImageLoad
-              source={{ uri: image }}
-              style={styles.avatar}
-              borderRadius={65}
-              loadingStyle={{ size: "large", color: "white" }}
-              placeholderSource={require("./../assets/male-avatar.png")}
-              placeholderStyle={styles.avatar}
-              isShowActivity={true}
-            />
-          ) : (
-            <ImageLoad
-              source={require("./../assets/male-avatar.png")}
-              style={styles.avatar}
-              borderRadius={65}
-            />
-          )}
+          <ProgressiveImage
+            thumbnailSource={require("./../assets/male-avatar.png")}
+            source={this.state}
+            style={styles.avatar}
+            backgroundStyle={styles.avatar}
+          />
         </Button>
       </View>
     );
@@ -125,7 +112,7 @@ export default class CustomImagePicker extends React.Component {
         const response = await _uploadImage(result.uri);
         // console.log(response);
         if (response._status === "success") {
-          this.setState({ image: result.uri });
+          this.setState({ uri: result.uri });
           this.props.onUploadImageSuccess();
         } else {
           Alert.alert("Image Picker Error", response._message);
