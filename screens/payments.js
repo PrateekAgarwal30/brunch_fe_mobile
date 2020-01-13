@@ -1,14 +1,16 @@
 import React from "react";
-import { View, Text, Modal, Alert, WebView } from "react-native";
+import { View, Text } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Button, Content } from "native-base";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
-import { ipAddress } from "../constants";
 import { AsyncStorage } from "react-native";
+import PaytmPaymentModal from "../components/PaytmPaymentModal";
+import PaypalPaymentModal from "../components/PaypalPaymentModal";
 class Payments extends React.Component {
   state = {
-    modalVisible: false
+    paytmModalVisible: false,
+    paypalModalVisible: false
   };
   async componentDidMount() {
     try {
@@ -21,24 +23,17 @@ class Payments extends React.Component {
       console.log(error.message);
     }
   }
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-  _onloadingError = x => {
-    Alert.alert("Loading Error", x);
-    this.setModalVisible(false);
+  togglePaytmModalVisible = visible => {
+    this.setState(prevState => ({
+      ...prevState,
+      paytmModalVisible: visible
+    }));
   };
-  _handleTransaction = data => {
-    const { loading, url, title } = data;
-    console.log(data);
-    if (
-      loading === false &&
-      _.startsWith(url, `${ipAddress}/api/txn/paytm/status`)
-    ) {
-      const jsonData = JSON.parse(title);
-      console.log("jsonData", jsonData);
-      this.setModalVisible(false);
-    }
+  togglePaypalModalVisible = visible => {
+    this.setState(prevState => ({
+      ...prevState,
+      paypalModalVisible: visible
+    }));
   };
   render() {
     const isLoading = this.props.user.isLoading;
@@ -53,42 +48,16 @@ class Payments extends React.Component {
           zIndex: 0
         }}
       >
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            this.setModalVisible(false);
-          }}
-          //   hardwareAccelerated={true}
-          onDismiss={() => {
-            console.log("Modal has been onDismiss.");
-          }}
-          onShow={() => {
-            console.log("Modal has been onShow.");
-          }}
-          presentationStyle={"fullScreen"}
-        >
-          {/* <View style={{ marginTop: 22 }}>
-            <View> */}
-          <WebView
-            source={{
-              uri: `${ipAddress}/api/txn/paytm`,
-              method: "post",
-              body: `x-auth-token=${
-                this.state.authToken
-              }&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txn/paytm/status`
-            }}
-            ref={webview => {
-              this.webview = webview;
-            }}
-            onError={this._onloadingError}
-            onNavigationStateChange={data => {
-              this._handleTransaction(data);
-            }}
-          />
-        </Modal>
-
+        <PaytmPaymentModal
+          authToken={authToken}
+          modalVisible={this.state.paytmModalVisible}
+          toggleModalVisiblity={this.togglePaytmModalVisible}
+        />
+        <PaypalPaymentModal
+          authToken={authToken}
+          modalVisible={this.state.paypalModalVisible}
+          toggleModalVisiblity={this.togglePaypalModalVisible}
+        />
         <Content
           padder
           style={{ position: "absolute", width: "100%", bottom: 0, left: 0 }}
@@ -96,12 +65,24 @@ class Payments extends React.Component {
           <Button
             style={{
               textAlign: "center ",
-              justifyContent: "center"
+              justifyContent: "center",
+              marginBottom: 10
             }}
-            onPress={() => this.setModalVisible(true)}
+            onPress={() => this.togglePaytmModalVisible(true)}
           >
             <Text style={{ color: "white", fontSize: 16 }}>
-              {"Pay With Paytm"}
+              {"Pay With PayTm"}
+            </Text>
+          </Button>
+          <Button
+            style={{
+              textAlign: "center ",
+              justifyContent: "center"
+            }}
+            onPress={() => this.togglePaypalModalVisible(true)}
+          >
+            <Text style={{ color: "white", fontSize: 16 }}>
+              {"Pay With PayPal"}
             </Text>
           </Button>
         </Content>
