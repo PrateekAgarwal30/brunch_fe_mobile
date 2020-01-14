@@ -7,10 +7,12 @@ import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import { AsyncStorage } from "react-native";
 import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
+import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
 class Payments extends React.Component {
   state = {
     paytmModalVisible: false,
-    paypalModalVisible: false
+    paypalModalVisible: false,
+    razorpayModalVisible: false
   };
   async componentDidMount() {
     try {
@@ -33,6 +35,12 @@ class Payments extends React.Component {
     this.setState(prevState => ({
       ...prevState,
       paypalModalVisible: visible
+    }));
+  };
+  toggleRazorpayModalVisible = visible => {
+    this.setState(prevState => ({
+      ...prevState,
+      razorpayModalVisible: visible
     }));
   };
   render() {
@@ -58,6 +66,11 @@ class Payments extends React.Component {
           modalVisible={this.state.paypalModalVisible}
           toggleModalVisiblity={this.togglePaypalModalVisible}
         />
+        <RazorpayPaymentModal
+          authToken={authToken}
+          modalVisible={this.state.razorpayModalVisible}
+          toggleModalVisiblity={this.toggleRazorpayModalVisible}
+        />
         <Content
           padder
           style={{ position: "absolute", width: "100%", bottom: 0, left: 0 }}
@@ -72,6 +85,18 @@ class Payments extends React.Component {
           >
             <Text style={{ color: "white", fontSize: 16 }}>
               {"Pay With PayTm"}
+            </Text>
+          </Button>
+          <Button
+            style={{
+              textAlign: "center ",
+              justifyContent: "center",
+              marginBottom: 10
+            }}
+            onPress={() => this.toggleRazorpayModalVisible(true)}
+          >
+            <Text style={{ color: "white", fontSize: 16 }}>
+              {"Pay With Razorpay"}
             </Text>
           </Button>
           <Button
