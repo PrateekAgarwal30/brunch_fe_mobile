@@ -92,7 +92,7 @@ class Login extends React.Component {
             <Animatable.Text
               animation="zoomIn"
               iterationCount={1}
-              style={{ fontSize: 24 }}
+              style={{ fontSize: 32, fontFamily: "diavlo" }}
             >
               Brunch
             </Animatable.Text>
