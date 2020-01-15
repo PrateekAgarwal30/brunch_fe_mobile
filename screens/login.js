@@ -66,7 +66,7 @@ class Login extends React.Component {
       <KeyboardAwareScrollView
         enableOnAndroid={true}
         extraHeight={165}
-        extraScrollHeight={45}
+        extraScrollHeight={20}
         style={{ flex: 1 }}
       >
         <View style={{ backgroundColor: "#1721AC", flex: 1 }}>
@@ -235,7 +235,8 @@ class Login extends React.Component {
                   justifyContent: "center",
                   borderRadius: 10,
                   padding: 6,
-                  width: "100%"
+                  width: "100%",
+                  marginBottom: 10
                 }}
                 onPress={() => this.props.navigation.navigate("Register")}
               >
