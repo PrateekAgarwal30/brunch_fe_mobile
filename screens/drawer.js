@@ -50,12 +50,17 @@ class Drawer extends React.Component {
   render() {
     const imageUrl =
       _.get(this.props, "profile.details.userImageUrl", "") || "";
+    const imageThumbnail =
+      _.get(this.props, "profile.details.userImageThumbnail", "") || "";
     return (
       <View style={styles.container}>
         <View style={styles.header} />
         <CustomImagePicker
           disabled={true}
-          imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
+          imageUrl={imageUrl ? `${ipAddress}\\${imageUrl}` : null}
+          imageThumbnail={
+            imageThumbnail ? `${ipAddress}\\${imageThumbnail}` : null
+          }
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>

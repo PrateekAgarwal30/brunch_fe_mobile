@@ -67,11 +67,16 @@ class Profile extends React.Component {
   render() {
     const imageUrl =
       _.get(this.props, "profile.details.userImageUrl", "") || "";
+    const imageThumbnail =
+      _.get(this.props, "profile.details.userImageThumbnail", "") || "";
     return (
       <View style={styles.container}>
         <View style={styles.header} />
         <CustomImagePicker
-          imageUrl={imageUrl ? `${ipAddress}${imageUrl}` : null}
+          imageUrl={imageUrl ? `${ipAddress}\\${imageUrl}` : null}
+          imageThumbnail={
+            imageThumbnail ? `${ipAddress}\\${imageThumbnail}` : null
+          }
           onUploadImageSuccess={this._onUploadImageSuccess}
         />
         <View style={styles.body}>

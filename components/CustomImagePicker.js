@@ -38,13 +38,18 @@ export default class CustomImagePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uri: props.imageUrl
+      imageUrl: props.imageUrl,
+      imageThumbnail: props.imageThumbnail
     };
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.imageUrl !== this.props.imageUrl) {
+    if (
+      nextProps.imageUrl !== this.props.imageUrl ||
+      nextProps.imageThumbnail !== this.props.imageThumbnail
+    ) {
       this.setState({
-        uri: nextProps.imageUrl
+        imageUrl: nextProps.imageUrl,
+        imageThumbnail: nextProps.imageThumbnail
       });
     }
   }
@@ -60,8 +65,8 @@ export default class CustomImagePicker extends React.Component {
         >
           {disabled ? null : <Icon name="create" style={styles.editIcon} />}
           <ProgressiveImage
-            thumbnailSource={require("./../assets/male-avatar.png")}
-            source={this.state}
+            thumbnailSource={{ uri: this.props.imageThumbnail }}
+            source={{ uri: this.props.imageUrl }}
             style={styles.avatar}
             backgroundStyle={styles.avatar}
           />
@@ -112,7 +117,7 @@ export default class CustomImagePicker extends React.Component {
         const response = await _uploadImage(result.uri);
         // console.log(response);
         if (response._status === "success") {
-          this.setState({ uri: result.uri });
+          // this.setState({ uri: result.uri });
           this.props.onUploadImageSuccess();
         } else {
           Alert.alert("Image Picker Error", response._message);
