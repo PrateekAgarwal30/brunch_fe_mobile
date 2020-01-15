@@ -11,7 +11,7 @@ const DrawerNavigator = createDrawerNavigator(
   {
     initialRouteName: "AppStack",
     contentComponent: Drawer,
-    drawerType: "slide",
+    drawerType: "front",
     hideStatusBar: true,
     statusBarAnimation: true
   }
