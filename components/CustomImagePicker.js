@@ -2,6 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, Icon } from "native-base";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { _uploadImage } from "../redux/actions";
@@ -114,7 +115,13 @@ export default class CustomImagePicker extends React.Component {
           "Unsupported file.\nPlease upload only PNG/JPG file."
         );
       } else {
-        const response = await _uploadImage(result.uri);
+        const manipResult = await ImageManipulator.manipulateAsync(
+          result.uri,
+          [{ resize: { width: 600, height: 600 } }],
+          { compress: 1 }
+        );
+        console.log("manipResult", manipResult);
+        const response = await _uploadImage(manipResult.uri);
         // console.log(response);
         if (response._status === "success") {
           // this.setState({ uri: result.uri });
