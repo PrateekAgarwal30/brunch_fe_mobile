@@ -5,8 +5,7 @@ import {
   Text,
   TextInput,
   AsyncStorage,
-  ToastAndroid,
-  Image
+  ToastAndroid
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from "react-redux";

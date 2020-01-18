@@ -97,11 +97,11 @@ class Drawer extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonWrapper}
-                onPress={() => Alert.alert("Clicked")}
+                onPress={() => this.props.navigation.navigate("Wallet")}
               >
                 <View style={styles.buttonInsideView}>
                   <Icon name="card" style={{ flex: 1 }} />
-                  <Text style={styles.textWrapper}>Payment</Text>
+                  <Text style={styles.textWrapper}>Wallet</Text>
                   <Icon name="ios-arrow-forward" style={{ flex: 1 }} />
                 </View>
               </TouchableOpacity>
