@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
-import { AsyncStorage, TextInput } from "react-native";
+import { AsyncStorage, TextInput, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import _ from "lodash";
 import {
@@ -39,10 +39,15 @@ class Wallet extends React.Component {
     }
   }
   togglePaytmModalVisible = visible => {
-    this.setState(prevState => ({
-      ...prevState,
-      paytmModalVisible: visible
-    }));
+    if (visible && +this.state.addMoneyValue < 10) {
+      Alert.alert("Mininum Transaction Amount is 10Rs");
+      this.addMoneyInput.focus();
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        paytmModalVisible: visible
+      }));
+    }
   };
   togglePaypalModalVisible = visible => {
     this.setState(prevState => ({
@@ -58,15 +63,21 @@ class Wallet extends React.Component {
   };
 
   onAddMoneyChange = x => {
-    if (!isNaN(+x) && !_.includes(x, ".") && +x <= 10000) {
-      this.setState(prevState => ({
-        ...prevState,
-        addMoneyValue: x
-      }));
+    if (!isNaN(+x) && !_.includes(x, ".")) {
+      if (+x > 10000) {
+        Alert.alert("Max Transaction Amount is 10000Rs");
+      } else {
+        this.setState(prevState => ({
+          ...prevState,
+          addMoneyValue: +x + ""
+        }));
+      }
     }
   };
   onAddMoneyButtonClick = x => {
-    if (+this.state.addMoneyValue + x <= 10000) {
+    if (+this.state.addMoneyValue + x > 10000) {
+      Alert.alert("Max Transaction Amount is 10000Rs");
+    } else {
       this.setState(prevState => ({
         ...prevState,
         addMoneyValue: +prevState.addMoneyValue + x + ""
@@ -84,7 +95,7 @@ class Wallet extends React.Component {
         style={{
           flex: 1,
           zIndex: 0,
-          backgroundColor: "#E1E0E2"
+          backgroundColor: "white"
           // marginTop: Contants.statusBarHeight
         }}
       >
@@ -233,16 +244,19 @@ class Wallet extends React.Component {
           authToken={authToken}
           modalVisible={this.state.paytmModalVisible}
           toggleModalVisiblity={this.togglePaytmModalVisible}
+          txnAmount={this.state.addMoneyValue}
         />
         <PaypalPaymentModal
           authToken={authToken}
           modalVisible={this.state.paypalModalVisible}
           toggleModalVisiblity={this.togglePaypalModalVisible}
+          txnAmount={this.state.addMoneyValue}
         />
         <RazorpayPaymentModal
           authToken={authToken}
           modalVisible={this.state.razorpayModalVisible}
           toggleModalVisiblity={this.toggleRazorpayModalVisible}
+          txnAmount={this.state.addMoneyValue}
         />
         {this.state.activeTab === 1 ? (
           <View style={{ flex: 1 }}>
@@ -252,11 +266,12 @@ class Wallet extends React.Component {
               </Label>
               <TextInput
                 style={styles.textWrapper}
-                placeholder="Add "
+                placeholder="Add Money"
                 value={this.state.addMoneyValue}
                 onChangeText={this.onAddMoneyChange}
                 keyboardAppearance={"dark"}
                 keyboardType={"numeric"}
+                ref={addMoneyInput => (this.addMoneyInput = addMoneyInput)}
               />
             </View>
             <View
@@ -300,43 +315,83 @@ class Wallet extends React.Component {
               >
                 Payment Gateways
               </Text>
-              <Button
+
+              <View
                 style={{
-                  // textAlign: "center ",
-                  justifyContent: "center",
-                  marginBottom: 10,
-                  elevation: 2,
-                  backgroundColor: "#E1E0E2"
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around"
                 }}
-                onPress={() => this.togglePaytmModalVisible(true)}
               >
-                <Text style={{ color: "#1721AC", fontSize: 16 }}>
-                  {"Pay With PayTm"}
-                </Text>
-              </Button>
-              <Button
-                style={{
-                  textAlign: "center ",
-                  justifyContent: "center",
-                  marginBottom: 10
-                }}
-                onPress={() => this.toggleRazorpayModalVisible(true)}
-              >
-                <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
-                  {"Pay With Razorpay"}
-                </Text>
-              </Button>
-              <Button
-                style={{
-                  textAlign: "center ",
-                  justifyContent: "center"
-                }}
-                onPress={() => this.togglePaypalModalVisible(true)}
-              >
-                <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
-                  {"Pay With PayPal"}
-                </Text>
-              </Button>
+                <Button
+                  style={{
+                    textAlign: "center ",
+                    justifyContent: "center",
+                    margin: 10,
+                    elevation: 3,
+                    backgroundColor: "#E1E0E2",
+                    borderBottomWidth: 5,
+                    flex: 1
+                  }}
+                  onPress={() => this.togglePaytmModalVisible(true)}
+                >
+                  <Image
+                    style={{ width: 50, height: 20 }}
+                    source={require("./../assets/paytm.png")}
+                  />
+                  {/* <Text
+                    style={{
+                      color: "#1721AC",
+                      fontSize: 16,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {"Pay With PayTm"}
+                  </Text> */}
+                </Button>
+                <Button
+                  style={{
+                    textAlign: "center ",
+                    justifyContent: "center",
+                    margin: 10,
+                    elevation: 3,
+                    backgroundColor: "#E1E0E2",
+                    borderBottomWidth: 5,
+                    flex: 1
+                  }}
+                  onPress={() => this.toggleRazorpayModalVisible(true)}
+                >
+                  <Image
+                    style={{ width: 50, height: 20 }}
+                    source={require("./../assets/razorpay.png")}
+                  />
+
+                  {/* <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
+                    {"Pay With Razorpay"}
+                  </Text> */}
+                </Button>
+                <Button
+                  style={{
+                    textAlign: "center ",
+                    justifyContent: "center",
+                    margin: 10,
+                    elevation: 3,
+                    backgroundColor: "#E1E0E2",
+                    borderBottomWidth: 5,
+                    flex: 1
+                  }}
+                  onPress={() => this.togglePaypalModalVisible(true)}
+                >
+                  <Image
+                    style={{ width: 50, height: 19 }}
+                    source={require("./../assets/paypal.png")}
+                  />
+
+                  {/* <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
+                    {"Pay With PayPal"}
+                  </Text> */}
+                </Button>
+              </View>
             </View>
           </View>
         ) : (

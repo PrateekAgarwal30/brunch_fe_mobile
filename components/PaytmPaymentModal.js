@@ -19,11 +19,12 @@ class PaytmPaymentModal extends React.Component {
       this.props.toggleModalVisiblity(false);
     }
   };
-  _onRequestClose = () => {
+  _onRequestClose = (e) => {
+    console.log('e',e);
     this.props.toggleModalVisiblity(false);
   };
   render() {
-    const { authToken, modalVisible } = this.props;
+    const { authToken, modalVisible,txnAmount } = this.props;
     return (
       <Modal
         animationType="slide"
@@ -42,7 +43,7 @@ class PaytmPaymentModal extends React.Component {
           source={{
             uri: `${ipAddress}/api/txn/paytm`,
             method: "post",
-            body: `x-auth-token=${authToken}&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=1&CALLBACK_URL=${ipAddress}/api/txn/paytm/status`
+            body: `x-auth-token=${authToken}&ORDER_ID=${Date.now().toString()}&CUST_ID=p2@gmail.com&TXN_AMOUNT=${txnAmount}&CALLBACK_URL=${ipAddress}/api/txn/paytm/status`
           }}
           ref={webview => {
             this.webview = webview;
