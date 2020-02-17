@@ -46,14 +46,14 @@ export default class MyCarousel extends React.Component {
   render() {
     // const screenWidth = '50%';
     return (
-        <Carousel
-          sliderWidth={screenWidth}
-          sliderHeight={screenWidth}
-          itemWidth={screenWidth}
-          data={this.state.entries}
-          renderItem={this._renderItem}
-          hasParallaxImages={true}
-        />
+      <Carousel
+        sliderWidth={screenWidth}
+        sliderHeight={screenWidth}
+        itemWidth={screenWidth}
+        data={this.state.entries}
+        renderItem={this._renderItem}
+        hasParallaxImages={true}
+      />
     );
   }
 }
@@ -61,14 +61,16 @@ export default class MyCarousel extends React.Component {
 const styles = StyleSheet.create({
   item: {
     width: screenWidth,
-    height: 250 - 5,
+    height: 200
   },
   imageContainer: {
     flex: 1,
     marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
     backgroundColor: "#E1E0E2",
     borderRadius: 8,
-    elevation:2,
+    elevation: 2,
+    width: screenWidth - 12,
+    alignSelf: "center"
   },
   image: {
     ...StyleSheet.absoluteFillObject,
