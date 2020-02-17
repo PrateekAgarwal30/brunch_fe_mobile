@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Image } from "react-native";
+import { Text, TextInput } from "react-native";
 import {
   Container,
   Header,
@@ -7,18 +7,20 @@ import {
   Icon,
   Left,
   Right,
-  Label
+  Body,
+  Card
 } from "native-base";
 import { connect } from "react-redux";
 import { getProfile } from "../redux/actions";
-import { Notifications } from "expo";
+// import { Notifications } from "expo";
 import { NetworkConsumer } from "./../components/NetworkContext";
 import Colors from "./../components/Colors";
 import BannerCarousel from "./../components/BannerCarousel";
-import Constants from "expo-constants";
+// import Constants from "expo-constants";
 class Home extends React.Component {
   state = {
-    colorViewOpen: false
+    colorViewOpen: false,
+    searchText: ""
   };
 
   toogleColorViewOpen = () => {
@@ -38,23 +40,98 @@ class Home extends React.Component {
   componentWillUnmount() {
     // clearInterval(this.interval);
   }
+  _SearchTextHandler = text => {
+    this.setState(prevState => ({
+      ...prevState,
+      searchText: text
+    }));
+  };
   render() {
     return (
       <Container
         style={{
           flex: 1,
           zIndex: 0,
-          backgroundColor: "white",
-          marginTop: Constants.statusBarHeight
+          backgroundColor: "#EDEEF1"
         }}
       >
-        <Button
-          transparent
-          style={{ position: "absolute", top: 0, zIndex: 1,marginTop:5,marginLeft:2.5,elevation:1,backgroundColor:'#16235A'}}
-          onPress={() => this.props.navigation.openDrawer()}
-        >
-          <Icon name="menu" style={{ color: "#E1E0E2", fontSize: 25,margin:0,padding:0 }} />
-        </Button>
+        <Header transparent style={{ alignContent: "flex-start",marginBottom:5 }}>
+          <Left style={{ flex: 1 }}>
+            <Button
+              transparent
+              style={{
+                marginTop: 5,
+                marginLeft: 2.5,
+                paddingLeft: 12.5,
+                paddingRight: 12.5,
+                backgroundColor: "#16235A"
+              }}
+              onPress={() => this.props.navigation.openDrawer()}
+            >
+              <Icon
+                name="menu"
+                style={{
+                  color: "#E1E0E2",
+                  fontSize: 20,
+                  margin: 0,
+                  padding: 0
+                }}
+              />
+            </Button>
+          </Left>
+          <Body
+            style={{
+              flex: 6
+            }}
+          >
+            <Card
+              padd
+              style={{
+                flexDirection: "row",
+                marginBottom: 0,
+                marginRight: 0
+              }}
+            >
+              <TextInput
+                style={{
+                  padding: 8,
+                  display: "flex",
+                  fontSize: 15,
+                  width: "88%"
+                }}
+                maxLength={25}
+                placeholder="Search Meal Box..."
+                value={this.state.searchText}
+                onChangeText={this._SearchTextHandler}
+              />
+              {this.state.searchText ? (
+                <Icon
+                  name="md-close"
+                  size={20}
+                  color="#000"
+                  style={{
+                    alignSelf: "center",
+                    marginRight: 15
+                  }}
+                  onPress={() => {
+                    this._SearchTextHandler("");
+                  }}
+                />
+              ) : (
+                <Icon
+                  name="ios-search"
+                  size={20}
+                  color="#000"
+                  style={{
+                    alignSelf: "center",
+                    marginRight: 10
+                  }}
+                />
+              )}
+            </Card>
+          </Body>
+          <Right style={{ flex: 0 }} />
+        </Header>
         <BannerCarousel />
         <Button onPress={() => this.props.navigation.navigate("Profile")}>
           <Text>Profile</Text>
@@ -81,10 +158,7 @@ Home.navigationOptions = {
 };
 Home.contextType = NetworkConsumer;
 
-const mapStateToProps = state => ({
-  user: state.user,
-  profile: state.profile
-});
+const mapStateToProps = state => ({ user: state.user, profile: state.profile });
 const mapActionsToProps = {
   getProfile: getProfile
 };
