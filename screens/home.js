@@ -1,83 +1,83 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
-import { Button, Header } from "native-base";
+import {
+  Container,
+  Header,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Label
+} from "native-base";
 import { connect } from "react-redux";
-import { Icon } from "native-base";
 import { getProfile } from "../redux/actions";
 import { Notifications } from "expo";
 import { NetworkConsumer } from "./../components/NetworkContext";
+import Colors from "./../components/Colors";
+import BannerCarousel from "./../components/BannerCarousel";
+import Constants from "expo-constants";
 class Home extends React.Component {
+  state = {
+    colorViewOpen: false
+  };
+
+  toogleColorViewOpen = () => {
+    this.setState(prevSate => ({
+      colorViewOpen: !prevSate.colorViewOpen
+    }));
+  };
+
   async componentDidMount() {
     try {
-      this.props.navigation.setParams({
-        _menu: this._menu
-      });
       this.props.getProfile();
     } catch (err) {
       console.log(err.message);
     }
-    Notifications.addListener(payload => console.log(JSON.stringify(payload)));
+    // Notifications.addListener(payload => console.log(JSON.stringify(payload)));
   }
   componentWillUnmount() {
     // clearInterval(this.interval);
   }
-  _menu = async () => {
-    try {
-      this.props.navigation.openDrawer();
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Header>
-          <Button onPress={() => this.props.navigation.navigate("Profile")}>
-            <Text>Profile</Text>
-          </Button>
-          <Button onPress={() => this.props.navigation.navigate("Wallet")}>
-            <Text>Wallet</Text>
-          </Button>
-          <Button onPress={() => this.props.navigation.navigate("Profile")}>
-            <Text>Profile</Text>
-          </Button>
-          <Button onPress={this._menu}>
-            <Text>Menu</Text>
-          </Button>
-        </Header>
-        <Image
-          style={{ width: 400, height: 400 }}
-          source={require("../assets/workInProgress.png")}
-        />
-        {/* <Text>{JSON.stringify(this.props.navigation)}</Text> */}
-      </View>
+      <Container
+        style={{
+          flex: 1,
+          zIndex: 0,
+          backgroundColor: "white",
+          marginTop: Constants.statusBarHeight
+        }}
+      >
+        <Button
+          transparent
+          style={{ position: "absolute", top: 0, zIndex: 1,marginTop:5,marginLeft:2.5,elevation:1,backgroundColor:'#16235A'}}
+          onPress={() => this.props.navigation.openDrawer()}
+        >
+          <Icon name="menu" style={{ color: "#E1E0E2", fontSize: 25,margin:0,padding:0 }} />
+        </Button>
+        <BannerCarousel />
+        <Button onPress={() => this.props.navigation.navigate("Profile")}>
+          <Text>Profile</Text>
+        </Button>
+        <Button onPress={() => this.props.navigation.navigate("Wallet")}>
+          <Text>Wallet</Text>
+        </Button>
+        <Button onPress={this.toogleColorViewOpen}>
+          <Text>Colors</Text>
+        </Button>
+        <Button onPress={this._menu}>
+          <Text>Menu</Text>
+        </Button>
+
+        {this.state.colorViewOpen ? (
+          <Colors toogleColorViewOpen={this.toogleColorViewOpen} />
+        ) : null}
+      </Container>
     );
   }
 }
-Home.navigationOptions = ({ navigation }) => {
-  return {
-    title: "Home",
-    headerLeft: (
-      <Button
-        transparent
-        onPress={() => {
-          const _menu = navigation.getParam("_menu", null);
-          if (_menu) {
-            _menu();
-          }
-        }}
-      >
-        <Icon name="menu" style={{ color: "white", fontSize: 25 }} />
-      </Button>
-    ),
-    headerStyle: {
-      backgroundColor: "#16235A"
-    },
-    headerTintColor: "white",
-    headerTitleStyle: {
-      fontWeight: "bold"
-    }
-  };
+Home.navigationOptions = {
+  header: null
 };
 Home.contextType = NetworkConsumer;
 
