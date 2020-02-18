@@ -87,6 +87,7 @@ class Wallet extends React.Component {
   render() {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
+    const walletBalance = _.get(this.props.profile,'wallet.walletBalance',0.00) || 0.00;
     if (isLoading || !authToken) {
       return <CustomActivityIndicator />;
     }
@@ -147,7 +148,7 @@ class Wallet extends React.Component {
                   marginLeft: 20
                 }}
               >
-                5000.00
+                {walletBalance}
               </Label>
               <Label
                 style={{
