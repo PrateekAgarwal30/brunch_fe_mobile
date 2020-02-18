@@ -17,6 +17,7 @@ class PaytmPaymentModal extends React.Component {
       const jsonData = JSON.parse(title);
       console.log("jsonData", jsonData);
       this.props.toggleModalVisiblity(false);
+      this.props.getProfile();
     }
   };
   _onRequestClose = (e) => {

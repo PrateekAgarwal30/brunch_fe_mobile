@@ -18,6 +18,7 @@ import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
 import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
+import { getProfile } from "../redux/actions";
 
 class Wallet extends React.Component {
   state = {
@@ -246,18 +247,21 @@ class Wallet extends React.Component {
           modalVisible={this.state.paytmModalVisible}
           toggleModalVisiblity={this.togglePaytmModalVisible}
           txnAmount={this.state.addMoneyValue}
+          getProfile={this.props.getProfile}
         />
         <PaypalPaymentModal
           authToken={authToken}
           modalVisible={this.state.paypalModalVisible}
           toggleModalVisiblity={this.togglePaypalModalVisible}
           txnAmount={this.state.addMoneyValue}
+          getProfile={this.props.getProfile}
         />
         <RazorpayPaymentModal
           authToken={authToken}
           modalVisible={this.state.razorpayModalVisible}
           toggleModalVisiblity={this.toggleRazorpayModalVisible}
           txnAmount={this.state.addMoneyValue}
+          getProfile={this.props.getProfile}
         />
         {this.state.activeTab === 1 ? (
           <View style={{ flex: 1 }}>
@@ -433,5 +437,7 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
-const mapActionsToProps = {};
+const mapActionsToProps = {
+  getProfile : getProfile
+};
 export default connect(mapStateToProps, mapActionsToProps)(Wallet);
