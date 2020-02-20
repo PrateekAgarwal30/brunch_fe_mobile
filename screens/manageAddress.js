@@ -1,16 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, Dimensions, Image } from "react-native";
+import { Text, StyleSheet, Dimensions, Image, View } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
-import {
-  Body,
-  Button,
-  Card,
-  CardItem,
-  Content,
-  Label,
-  Container
-} from "native-base";
+import { Body, Button, Card, CardItem, Content, Label } from "native-base";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import MapView from "react-native-maps";
 const { width } = Dimensions.get("window");
@@ -68,109 +60,117 @@ class ManageAddress extends React.Component {
       return <CustomActivityIndicator />;
     }
     return (
-      <Container
+      <View
         style={{
           flex: 1,
-          zIndex: 0
+          zIndex: 0,
+          backgroundColor: "white"
         }}
       >
-        {address ? (
-          <Container>
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                ...address.stall_loc_id.location,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.01121
-              }}
-              showsCompass={true}
-              rotateEnabled={false}
-              showsUserLocation={true}
-              region={{
-                ...address.stall_loc_id.location,
-                latitudeDelta: 0.01121,
-                longitudeDelta: 0.01121
-              }}
-              ref={map => {
-                this.map = map;
-              }}
-              customMapStyle={mapStyle}
-              zoomEnabled={false}
-              scrollEnabled={false}
-            >
-              {address.stall_loc_id.location && (
-                <MapView.Marker
-                  // key={x._id}
-                  zIndex={9}
-                  coordinate={address.stall_loc_id.location}
-                  title={`${address.stall_loc_id.tag}, ${address.tech_park_id.techPark}`}
-                  pointerEvents="none"
-                  onPress={x => {}}
-                ></MapView.Marker>
-              )}
-            </MapView>
-            <Content padder>
-              <Card style={styles.cardContainer}>
-                <CardItem bordered style={styles.cardBody}>
-                  <Body>
-                    <Label style={styles.labelStyle}>{`Stall : `}</Label>
-                    <Text
-                      style={styles.textStyle}
-                    >{`${address.stall_loc_id.tag}`}</Text>
-                  </Body>
-                </CardItem>
-                <CardItem bordered style={styles.cardBody}>
-                  <Body>
-                    <Label style={styles.labelStyle}>{`Tech Park : `}</Label>
-                    <Text
-                      style={styles.textStyle}
-                    >{`${address.tech_park_id.techPark}`}</Text>
-                  </Body>
-                </CardItem>
-                <CardItem
-                  bordered
-                  style={{ ...styles.cardBody, paddingBottom: 6 }}
-                >
-                  <Body>
-                    <Label style={styles.labelStyle}>{`Address : `}</Label>
-                    <Text
-                      style={styles.textStyle}
-                    >{`${address.tech_park_id.address}, ${address.tech_park_id.area}, ${address.tech_park_id.city}`}</Text>
-                  </Body>
-                </CardItem>
-              </Card>
-            </Content>
-          </Container>
-        ) : (
-          <Container>
-            <Content padder>
-              <Card style={styles.noImageFoundCard}>
-                <Image
-                  style={{ height: 100, width: 100 }}
-                  source={require("./../assets/company.png")}
-                />
-                <Text>{"No Address Found!"}</Text>
-              </Card>
-            </Content>
-          </Container>
-        )}
-        <Content
-          padder
-          style={{ position: "absolute", width: "100%", bottom: 0, left: 0 }}
-        >
-          <Button
-            style={{
-              textAlign: "center ",
-              justifyContent: "center"
-            }}
-            onPress={this._onChangeAddress}
-          >
-            <Text style={{ color: "white", fontSize: 16 }}>
-              {address ? "Change Address" : "Add Address"}
-            </Text>
-          </Button>
+        <Content>
+          {address ? (
+            <View>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  ...address.stall_loc_id.location,
+                  latitudeDelta: 0.005,
+                  longitudeDelta: 0.01121
+                }}
+                showsCompass={true}
+                rotateEnabled={false}
+                showsUserLocation={true}
+                region={{
+                  ...address.stall_loc_id.location,
+                  latitudeDelta: 0.01121,
+                  longitudeDelta: 0.01121
+                }}
+                ref={map => {
+                  this.map = map;
+                }}
+                customMapStyle={mapStyle}
+                zoomEnabled={false}
+                scrollEnabled={false}
+              >
+                {address.stall_loc_id.location && (
+                  <MapView.Marker
+                    // key={x._id}
+                    zIndex={9}
+                    coordinate={address.stall_loc_id.location}
+                    title={`${address.stall_loc_id.tag}, ${address.tech_park_id.techPark}`}
+                    pointerEvents="none"
+                    onPress={x => {}}
+                  ></MapView.Marker>
+                )}
+              </MapView>
+              <View
+                style={{
+                  padding: 10,
+                  marginTop: -35,
+                  backgroundColor: "white",
+                  borderTopLeftRadius: 25,
+                  borderTopRightRadius: 25,
+                  borderRightColor: "red"
+                }}
+              >
+                <Card style={styles.cardContainer}>
+                  <CardItem bordered style={styles.cardBody}>
+                    <Body>
+                      <Label style={styles.labelStyle}>{`Stall : `}</Label>
+                      <Text
+                        style={styles.textStyle}
+                      >{`${address.stall_loc_id.tag}`}</Text>
+                    </Body>
+                  </CardItem>
+                  <CardItem bordered style={styles.cardBody}>
+                    <Body>
+                      <Label style={styles.labelStyle}>{`Tech Park : `}</Label>
+                      <Text
+                        style={styles.textStyle}
+                      >{`${address.tech_park_id.techPark}`}</Text>
+                    </Body>
+                  </CardItem>
+                  <CardItem
+                    bordered
+                    style={{ ...styles.cardBody, paddingBottom: 6 }}
+                  >
+                    <Body>
+                      <Label style={styles.labelStyle}>{`Address : `}</Label>
+                      <Text
+                        style={styles.textStyle}
+                      >{`${address.tech_park_id.address}, ${address.tech_park_id.area}, ${address.tech_park_id.city}`}</Text>
+                    </Body>
+                  </CardItem>
+                </Card>
+              </View>
+            </View>
+          ) : (
+            <View>
+              <Content padder>
+                <Card style={styles.noImageFoundCard}>
+                  <Image
+                    style={{ height: 100, width: 100 }}
+                    source={require("./../assets/company.png")}
+                  />
+                  <Text>{"No Address Found!"}</Text>
+                </Card>
+              </Content>
+            </View>
+          )}
         </Content>
-      </Container>
+        <Button
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            margin: 10
+          }}
+          onPress={this._onChangeAddress}
+        >
+          <Text style={{ color: "white", fontSize: 16 }}>
+            {address ? "Change Address" : "Add Address"}
+          </Text>
+        </Button>
+      </View>
     );
   }
 }
