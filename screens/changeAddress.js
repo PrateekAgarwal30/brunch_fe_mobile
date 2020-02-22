@@ -38,16 +38,16 @@ class ChangeAddress extends React.Component {
         longitudeDelta: 0.0921
       },
       tech_parks: [],
-      filtersParks: [],
       selected: false,
-      selectedItem: []
+      selectedItem: [],
+      searchAddressQuery : "" 
     };
     this._getLocationAsync();
     this._selectLocation = this._selectLocation.bind(this);
   }
   async componentDidMount() {
     try {
-      await this.props.getTechAddresses();
+      await this.props.getTechAddresses(this.state.searchAddressQuery, true);
       this.setState({
         ...this.state,
         tech_parks: this.props.user.tech_addresses || []
@@ -56,13 +56,15 @@ class ChangeAddress extends React.Component {
       console.log(err.message);
     }
   }
-  _searchLocation = x => {
-    let filtersParks = this.state.tech_parks.filter(tp => {
-      return tp.techPark.toLowerCase().indexOf(x.toLowerCase()) > -1;
-    });
+  _searchLocation = async (x) => {
     this.setState({
       ...this.state,
-      filtersParks: filtersParks
+      searchAddressQuery: x
+    });
+    await this.props.getTechAddresses(x, false);
+    this.setState({
+      ...this.state,
+      tech_parks: this.props.user.tech_addresses || []
     });
   };
   _selectLocation(x) {
@@ -136,7 +138,7 @@ class ChangeAddress extends React.Component {
   };
   render() {
     const isLoading = this.props.user.isLoading;
-    if (isLoading || !this.state.tech_parks.length) {
+    if (isLoading) {
       return <CustomActivityIndicator />;
     }
     return (
@@ -163,7 +165,7 @@ class ChangeAddress extends React.Component {
           <View>
             <LocationSearchButton _searchLocation={this._searchLocation} />
             <LocationSearchResult
-              results={this.state.filtersParks}
+              results={this.state.tech_parks}
               _selectLocation={x => this._selectLocation(x)}
             />
             <CurrentLocationButton

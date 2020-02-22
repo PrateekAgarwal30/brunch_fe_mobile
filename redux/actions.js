@@ -222,16 +222,17 @@ export const updateProfile = Obj => async dispatch => {
   }
 };
 
-export const getTechAddresses = () => async dispatch => {
+export const getTechAddresses = (searchAddressQuery, initialLoad) => async dispatch => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
       type: PROFILE.GET_TP_ADDRESSES_SENT,
       payload: {
-        isLoading: true
+        isLoading: initialLoad
       }
-    });
-    const res = await fetch(ipAddress + "/api/general/techparks", {
+    })
+    const url = `${ipAddress}/api/general/techparks${searchAddressQuery ? ('?searchAddressQuery='+searchAddressQuery):""}`;
+    const res = await fetch(url, {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
       headers: {
         "Content-Type": "application/json",
