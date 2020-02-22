@@ -50,7 +50,7 @@ class ChangeAddress extends React.Component {
       await this.props.getTechAddresses();
       this.setState({
         ...this.state,
-        tech_parks: this.props.profile.tech_addresses || []
+        tech_parks: this.props.user.tech_addresses || []
       });
     } catch (err) {
       console.log(err.message);

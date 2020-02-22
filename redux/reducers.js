@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 import { LOGIN, REGISTER, USER, PROFILE } from "./actions";
 const initialState = { err: null, isLoading: false };
 const userReducer = (state = initialState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case LOGIN.LOGIN_SENT:
     case REGISTER.REGISTER_SENT:
@@ -20,7 +19,8 @@ const userReducer = (state = initialState, action) => {
     case PROFILE.GET_TP_ADDRESSES_FULFILLED:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        tech_addresses: action.payload
       };
     case USER.GET_PROFILE_REJECTED:
     case PROFILE.GET_TP_ADDRESSES_SENT:
@@ -57,11 +57,6 @@ const profileReducer = (state = {}, action) => {
       return {
         ...state,
         ...action.payload
-      };
-    case PROFILE.GET_TP_ADDRESSES_FULFILLED:
-      return {
-        ...state,
-        tech_addresses: action.payload
       };
     case USER.LOGOUT_FULFILLED:
       return {};

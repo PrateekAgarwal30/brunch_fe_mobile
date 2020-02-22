@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextInput } from "react-native";
+import { Text, TextInput,View } from "react-native";
 import {
   Container,
   Header,
@@ -48,7 +48,7 @@ class Home extends React.Component {
   };
   render() {
     return (
-      <Container
+      <View
         style={{
           flex: 1,
           zIndex: 0,
@@ -149,7 +149,7 @@ class Home extends React.Component {
         {this.state.colorViewOpen ? (
           <Colors toogleColorViewOpen={this.toogleColorViewOpen} />
         ) : null}
-      </Container>
+      </View>
     );
   }
 }
