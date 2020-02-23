@@ -294,55 +294,57 @@ class Wallet extends React.Component {
         />
         {this.state.activeTab === 1 ? (
           <View style={{ flex: 1 }}>
-            <View style={{ padding: 10 }}>
-              <Label style={{ fontWeight: "bold" }}>
-                Recharge Brunch Wallet
-              </Label>
-              <TextInput
-                style={styles.textWrapper}
-                placeholder="Add Money"
-                value={this.state.addMoneyValue}
-                onChangeText={this.onAddMoneyChange}
-                keyboardAppearance={"dark"}
-                keyboardType={"numeric"}
-                ref={addMoneyInput => (this.addMoneyInput = addMoneyInput)}
-              />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flex: 4,
-                flexDirection: "row",
-                justifyContent: "space-around",
-                paddingLeft: 10,
-                paddingRight: 10
-              }}
-            >
-              <Button
-                style={styles.addMoneyButtons}
-                onPress={() => this.onAddMoneyButtonClick(100)}
+            <Content>
+              <View style={{ padding: 10 }}>
+                <Label style={{ fontWeight: "bold" }}>
+                  Recharge Brunch Wallet
+                </Label>
+                <TextInput
+                  style={styles.textWrapper}
+                  placeholder="Add Money"
+                  value={this.state.addMoneyValue}
+                  onChangeText={this.onAddMoneyChange}
+                  keyboardAppearance={"dark"}
+                  keyboardType={"numeric"}
+                  ref={addMoneyInput => (this.addMoneyInput = addMoneyInput)}
+                />
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flex: 4,
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  paddingLeft: 10,
+                  paddingRight: 10
+                }}
               >
-                <Text style={styles.addMoneyText}>+100</Text>
-              </Button>
-              <Button
-                style={styles.addMoneyButtons}
-                onPress={() => this.onAddMoneyButtonClick(200)}
-              >
-                <Text style={styles.addMoneyText}>+200</Text>
-              </Button>
-              <Button
-                style={styles.addMoneyButtons}
-                onPress={() => this.onAddMoneyButtonClick(500)}
-              >
-                <Text style={styles.addMoneyText}>+500</Text>
-              </Button>
-              <Button
-                style={styles.addMoneyButtons}
-                onPress={() => this.onAddMoneyButtonClick(1000)}
-              >
-                <Text style={styles.addMoneyText}>+1000</Text>
-              </Button>
-            </View>
+                <Button
+                  style={styles.addMoneyButtons}
+                  onPress={() => this.onAddMoneyButtonClick(100)}
+                >
+                  <Text style={styles.addMoneyText}>+100</Text>
+                </Button>
+                <Button
+                  style={styles.addMoneyButtons}
+                  onPress={() => this.onAddMoneyButtonClick(200)}
+                >
+                  <Text style={styles.addMoneyText}>+200</Text>
+                </Button>
+                <Button
+                  style={styles.addMoneyButtons}
+                  onPress={() => this.onAddMoneyButtonClick(500)}
+                >
+                  <Text style={styles.addMoneyText}>+500</Text>
+                </Button>
+                <Button
+                  style={styles.addMoneyButtons}
+                  onPress={() => this.onAddMoneyButtonClick(1000)}
+                >
+                  <Text style={styles.addMoneyText}>+1000</Text>
+                </Button>
+              </View>
+            </Content>
             <View style={{ padding: 10 }}>
               <Text
                 style={{ fontSize: 16, fontWeight: "bold", marginBottom: 5 }}
@@ -437,9 +439,7 @@ class Wallet extends React.Component {
               stickySectionHeadersEnabled={true}
               ListEmptyComponent={
                 <View style={{ flex: 1, alignItems: "center" }}>
-                  <Text style={[styles.headerText, { marginLeft: 0 }]}>
-                    No Transactions
-                  </Text>
+                  <Text style={styles.noTxnText}>No Transactions Found</Text>
                 </View>
               }
               // ListFooterComponent={(<Text>{`End of Transactions`}</Text>)}
@@ -507,6 +507,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     marginLeft: 10
+  },
+  noTxnText: {
+    fontSize: 20
   }
 });
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
