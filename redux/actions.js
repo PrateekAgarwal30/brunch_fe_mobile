@@ -23,7 +23,10 @@ export const PROFILE = {
   SAVE_OFFICE_ADDRESS_FOR_USER_SENT: "SAVE_OFFICE_ADDRESS_FOR_USER_SENT",
   SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED:
     "SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED",
-  SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED: "SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED"
+  SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED: "SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED",
+  GET_USER_TRANSACTIONS_SENT: "GET_USER_TRANSACTIONS_SENT",
+  GET_USER_TRANSACTIONS_FULFILLED: "GET_USER_TRANSACTIONS_FULFILLED",
+  GET_USER_TRANSACTIONS_REJECTED: "GET_USER_TRANSACTIONS_REJECTED",
 };
 export const USER = {
   GET_PROFILE_SENT: "GET_PROFILE_SENT",
@@ -343,5 +346,38 @@ export const pushNotifToken = async token => {
   } catch (err) {
     console.log("ERROR",err.message);
     return Promise.reject(err.message);
+  }
+};
+
+export const getUserTransactions = () => async dispatch => {
+  try {
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    dispatch({
+      type: PROFILE.GET_TP_ADDRESSES_SENT
+    })
+    const url = `${ipAddress}/api/me/transactions`;
+    const res = await fetch(url, {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": jwtToken
+      }
+    });
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: PROFILE.GET_USER_TRANSACTIONS_FULFILLED,
+        payload: result._data
+      });
+      return Promise.resolve("FULFILLED");
+    } else {
+      dispatch({
+        type: PROFILE.GET_USER_TRANSACTIONS_REJECTED,
+        payload: { err: result._message, isLoading: false }
+      });
+      return Promise.resolve("REJECTED");
+    }
+  } catch (error) {
+    return Promise.reject(error.message);
   }
 };

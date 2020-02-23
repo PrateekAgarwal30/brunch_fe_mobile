@@ -60,6 +60,22 @@ const profileReducer = (state = {}, action) => {
       };
     case USER.LOGOUT_FULFILLED:
       return {};
+    case PROFILE.GET_USER_TRANSACTIONS_SENT:
+      return {
+        ...state,
+        isTransactionsLoading : true
+      };
+    case PROFILE.GET_USER_TRANSACTIONS_FULFILLED:
+      return {
+        ...state,
+        isTransactionsLoading : false,
+        transactions : action.payload
+      };
+    case PROFILE.GET_USER_TRANSACTIONS_REJECTED:
+      return {
+        ...state,
+        isTransactionsLoading : false
+      };
     default:
       // console.log(action.type);
       return { ...state };

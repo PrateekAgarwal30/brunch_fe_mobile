@@ -11,11 +11,9 @@ class RazorpayPaymentModal extends React.Component {
     };
     _handleTransaction = data => {
         const {loading, url, title} = data;
-        console.log(data);
-        console.log(ipAddress);
         if (loading === false && _.startsWith(url, `${ipAddress}/api/txn/razorpay/status`)) {
             const jsonData = JSON.parse(title);
-            console.log("jsonData", jsonData);
+            // console.log("jsonData", jsonData);
             this
                 .props
                 .toggleModalVisiblity(false);

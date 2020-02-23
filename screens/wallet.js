@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
-import { AsyncStorage, TextInput, Image } from "react-native";
+import { AsyncStorage, TextInput, Image, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import _ from "lodash";
 import {
@@ -11,15 +11,27 @@ import {
   Icon,
   Left,
   Right,
-  Label
+  Label,
+  Content,
+  Card
 } from "native-base";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
 import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
-import { getProfile } from "../redux/actions";
+import { getProfile, getUserTransactions } from "../redux/actions";
+import * as Animatable from "react-native-animatable";
 
+const renderItem = data => {
+  return (
+    <Animatable.View animation="fadeIn" iterationCount={1}>
+      <Card>
+        <Text>{JSON.stringify(data, null, 2)}</Text>
+      </Card>
+    </Animatable.View>
+  );
+};
 class Wallet extends React.Component {
   state = {
     paytmModalVisible: false,
@@ -30,6 +42,7 @@ class Wallet extends React.Component {
   };
   async componentDidMount() {
     try {
+      this.props.getUserTransactions();
       const authToken = await AsyncStorage.getItem("authToken");
       this.setState(prevState => ({
         ...prevState,
@@ -85,10 +98,12 @@ class Wallet extends React.Component {
       }));
     }
   };
+  txnKeyExtractor = x => x._id;
   render() {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
     const walletBalance = _.get(this.props.profile,'wallet.walletBalance',0.00) || 0.00;
+    const userTransactions = _.get(this.props.profile,'transactions',[]) || [];
     if (isLoading || !authToken) {
       return <CustomActivityIndicator />;
     }
@@ -236,7 +251,7 @@ class Wallet extends React.Component {
                   }}
                 />
                 <Text style={{ color: "#E1E0E2", fontSize: 14 }}>
-                  {"Transaction History"}
+                  {"Recharge History"}
                 </Text>
               </Button>
             </View>
@@ -400,7 +415,13 @@ class Wallet extends React.Component {
             </View>
           </View>
         ) : (
-          <View></View>
+          <Content padder>
+            <FlatList
+              data={userTransactions}
+              renderItem={renderItem}
+              keyExtractor={this.txnKeyExtractor}
+              />
+          </Content>
         )}
       </Container>
     );
@@ -438,6 +459,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
 const mapActionsToProps = {
-  getProfile : getProfile
+  getProfile : getProfile,
+  getUserTransactions : getUserTransactions
 };
 export default connect(mapStateToProps, mapActionsToProps)(Wallet);

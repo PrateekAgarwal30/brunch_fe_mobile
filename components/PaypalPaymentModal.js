@@ -11,9 +11,9 @@ class PaytmPaymentModal extends React.Component {
     };
     _handleTransaction = data => {
         const {loading, url, title} = data;
-        console.log(data);
+        // console.log(data);
         if (loading === false && _.startsWith(url, `${ipAddress}/api/txn/paypal/status`)) {
-            const jsonData = JSON.parse(title);
+            // const jsonData = JSON.parse(title);
             console.log("jsonData", jsonData);
             this
                 .props
