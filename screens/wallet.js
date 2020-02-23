@@ -1,9 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
-import { AsyncStorage, TextInput, Image, FlatList } from "react-native";
+import {
+  AsyncStorage,
+  TextInput,
+  Image,
+  FlatList,
+  SectionList
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import _ from "lodash";
+import moment from "moment";
 import {
   Container,
   Header,
@@ -21,17 +28,19 @@ import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
 import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
 import { getProfile, getUserTransactions } from "../redux/actions";
+import txnSectionGenerator from "../utils/txnSectionGenerator";
 import * as Animatable from "react-native-animatable";
 
-const renderItem = data => {
+const Item = ({ title }) => {
   return (
     <Animatable.View animation="fadeInDownBig" iterationCount={1}>
       <Card>
-        <Text>{JSON.stringify(data, null, 2)}</Text>
+        <Text>{JSON.stringify(title, null, 2)}</Text>
       </Card>
     </Animatable.View>
   );
 };
+
 class Wallet extends React.Component {
   state = {
     paytmModalVisible: false,
@@ -76,13 +85,15 @@ class Wallet extends React.Component {
     }));
   };
   setActiveTab = x => () => {
-    if (x === 2) {
-      this.props.getUserTransactions();
+    if (this.state.activeTab !== x) {
+      if (x === 2) {
+        this.props.getUserTransactions();
+      }
+      this.setState(prevState => ({
+        ...prevState,
+        activeTab: x
+      }));
     }
-    this.setState(prevState => ({
-      ...prevState,
-      activeTab: x
-    }));
   };
   onAddMoneyChange = x => {
     if (!isNaN(+x) && !_.includes(x, ".")) {
@@ -111,11 +122,12 @@ class Wallet extends React.Component {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
     const isTransactionsLoading = this.props.profile.isTransactionsLoading;
-    console.log('isTransactionsLoading',isTransactionsLoading);
+    console.log("isTransactionsLoading", isTransactionsLoading);
     const walletBalance =
       _.get(this.props.profile, "wallet.walletBalance", 0.0) || 0.0;
-    const userTransactions =
-      _.get(this.props.profile, "transactions", []) || [];
+    const userTransactions = txnSectionGenerator(
+      _.get(this.props.profile, "transactions", []) || []
+    );
     if (isLoading || !authToken) {
       return <CustomActivityIndicator />;
     }
@@ -417,23 +429,49 @@ class Wallet extends React.Component {
             </View>
           </View>
         ) : (
-          <Content padder>
-            {isTransactionsLoading ? (
-              <ActivityIndicator size="large" color="#16235A" />
-            ) : (
-              <FlatList
-                data={userTransactions}
-                renderItem={renderItem}
-                keyExtractor={this.txnKeyExtractor}
-              />
-            )}
-          </Content>
+          <View style={{ flex: 1 }}>
+            <SectionList
+              sections={userTransactions}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => <Item title={item} />}
+              stickySectionHeadersEnabled={true}
+              ListEmptyComponent={
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <Text style={[styles.headerText, { marginLeft: 0 }]}>
+                    No Transactions
+                  </Text>
+                </View>
+              }
+              // ListFooterComponent={(<Text>{`End of Transactions`}</Text>)}
+              // ListHeaderComponent={(<Text>ListHeaderComponent</Text>)}
+              contentContainerStyle={{ paddingBottom: 10 }}
+              onRefresh={() => this.props.getUserTransactions()}
+              refreshing={isTransactionsLoading}
+              renderSectionHeader={({ section: { title } }) => (
+                <Animatable.View
+                  animation="fadeInDownBig"
+                  iterationCount={1}
+                  style={styles.header}
+                >
+                  <Text style={styles.headerText}>
+                    {moment(title, "DD-MM-YYYY").calendar(null, {
+                      sameDay: "[Today]",
+                      nextDay: "[Tomorrow]",
+                      nextWeek: "dddd",
+                      lastDay: "[Yesterday]",
+                      lastWeek: "[Last] dddd",
+                      sameElse: "DD/MM/YYYY"
+                    })}
+                  </Text>
+                </Animatable.View>
+              )}
+            />
+          </View>
         )}
       </Container>
     );
   }
 }
-
 Wallet.navigationOptions = {
   header: null
 };
@@ -460,6 +498,15 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomWidth: 5,
     borderBottomColor: "#C0BEC4"
+  },
+  header: {
+    backgroundColor: "#EDEEF1",
+    paddingVertical: 5,
+    borderRadius: 5
+  },
+  headerText: {
+    fontSize: 24,
+    marginLeft: 10
   }
 });
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
