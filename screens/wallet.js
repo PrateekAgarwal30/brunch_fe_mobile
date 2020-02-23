@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { AsyncStorage, TextInput, Image, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,7 +25,7 @@ import * as Animatable from "react-native-animatable";
 
 const renderItem = data => {
   return (
-    <Animatable.View animation="fadeIn" iterationCount={1}>
+    <Animatable.View animation="fadeInDownBig" iterationCount={1}>
       <Card>
         <Text>{JSON.stringify(data, null, 2)}</Text>
       </Card>
@@ -75,7 +75,15 @@ class Wallet extends React.Component {
       razorpayModalVisible: visible
     }));
   };
-
+  setActiveTab = x => () => {
+    if (x === 2) {
+      this.props.getUserTransactions();
+    }
+    this.setState(prevState => ({
+      ...prevState,
+      activeTab: x
+    }));
+  };
   onAddMoneyChange = x => {
     if (!isNaN(+x) && !_.includes(x, ".")) {
       if (+x > 10000) {
@@ -102,8 +110,12 @@ class Wallet extends React.Component {
   render() {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
-    const walletBalance = _.get(this.props.profile,'wallet.walletBalance',0.00) || 0.00;
-    const userTransactions = _.get(this.props.profile,'transactions',[]) || [];
+    const isTransactionsLoading = this.props.profile.isTransactionsLoading;
+    console.log('isTransactionsLoading',isTransactionsLoading);
+    const walletBalance =
+      _.get(this.props.profile, "wallet.walletBalance", 0.0) || 0.0;
+    const userTransactions =
+      _.get(this.props.profile, "transactions", []) || [];
     if (isLoading || !authToken) {
       return <CustomActivityIndicator />;
     }
@@ -203,12 +215,7 @@ class Wallet extends React.Component {
                         padding: 5
                       }
                 }
-                onPress={() =>
-                  this.setState(prevState => ({
-                    ...prevState,
-                    activeTab: 1
-                  }))
-                }
+                onPress={this.setActiveTab(1)}
               >
                 <Icon
                   name="ios-flash"
@@ -234,12 +241,7 @@ class Wallet extends React.Component {
                         padding: 5
                       }
                 }
-                onPress={() =>
-                  this.setState(prevState => ({
-                    ...prevState,
-                    activeTab: 2
-                  }))
-                }
+                onPress={this.setActiveTab(2)}
               >
                 <MaterialIcons
                   name="history"
@@ -416,11 +418,15 @@ class Wallet extends React.Component {
           </View>
         ) : (
           <Content padder>
-            <FlatList
-              data={userTransactions}
-              renderItem={renderItem}
-              keyExtractor={this.txnKeyExtractor}
+            {isTransactionsLoading ? (
+              <ActivityIndicator size="large" color="#16235A" />
+            ) : (
+              <FlatList
+                data={userTransactions}
+                renderItem={renderItem}
+                keyExtractor={this.txnKeyExtractor}
               />
+            )}
           </Content>
         )}
       </Container>
@@ -459,7 +465,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
 const mapActionsToProps = {
-  getProfile : getProfile,
-  getUserTransactions : getUserTransactions
+  getProfile: getProfile,
+  getUserTransactions: getUserTransactions
 };
 export default connect(mapStateToProps, mapActionsToProps)(Wallet);

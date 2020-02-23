@@ -14,7 +14,7 @@ class PaytmPaymentModal extends React.Component {
         // console.log(data);
         if (loading === false && _.startsWith(url, `${ipAddress}/api/txn/paypal/status`)) {
             // const jsonData = JSON.parse(title);
-            console.log("jsonData", jsonData);
+            // console.log("jsonData", jsonData);
             this
                 .props
                 .toggleModalVisiblity(false);

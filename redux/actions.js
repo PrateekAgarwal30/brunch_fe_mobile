@@ -353,7 +353,7 @@ export const getUserTransactions = () => async dispatch => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
-      type: PROFILE.GET_TP_ADDRESSES_SENT
+      type: PROFILE.GET_USER_TRANSACTIONS_SENT
     })
     const url = `${ipAddress}/api/me/transactions`;
     const res = await fetch(url, {
