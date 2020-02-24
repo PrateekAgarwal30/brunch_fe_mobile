@@ -8,6 +8,7 @@ import {getProfile, logOut, pushNotifToken} from "../redux/actions";
 import _ from "lodash";
 import CustomImagePicker from "../components/CustomImagePicker";
 import {ipAddress} from "../constants";
+import EntypoIcon from '@expo/vector-icons/Entypo';
 class Drawer extends React.Component {
     async componentDidMount() {
         try {
@@ -65,7 +66,7 @@ class Drawer extends React.Component {
                             style={styles.buttonWrapper}
                             onPress={() => this.props.navigation.navigate("Profile")}>
                             <View style={styles.buttonInsideView}>
-                                <Icon name="person" style={styles.iconStyle}/>
+                                <Icon name="ios-person" style={styles.iconStyle}/>
                                 <Text style={styles.textWrapper}>Profile</Text>
                                 <Icon name="ios-arrow-forward" style={styles.iconStyle}/>
                             </View>
@@ -83,8 +84,17 @@ class Drawer extends React.Component {
                             style={styles.buttonWrapper}
                             onPress={() => this.props.navigation.navigate("Wallet")}>
                             <View style={styles.buttonInsideView}>
-                                <Icon name="card" style={styles.iconStyle}/>
+                                <Icon name="wallet" style={styles.iconStyle}/>
                                 <Text style={styles.textWrapper}>Wallet</Text>
+                                <Icon name="ios-arrow-forward" style={styles.iconStyle}/>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.buttonWrapper}
+                            onPress={() => this.props.navigation.navigate("ManageOrders")}>
+                            <View style={styles.buttonInsideView}>
+                                <Icon name="list-box" style={styles.iconStyle}/>
+                                <Text style={styles.textWrapper}>Manage Orders</Text>
                                 <Icon name="ios-arrow-forward" style={styles.iconStyle}/>
                             </View>
                         </TouchableOpacity>

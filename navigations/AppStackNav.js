@@ -6,6 +6,7 @@ import ChangePassword from "../screens/ChangePassword";
 import ManageAddress from "../screens/ManageAddress";
 import UserInfo from "../screens/UserInfo";
 import Wallet from "../screens/Wallet";
+import ManageOrders from "../screens/ManageOrders";
 import { createStackNavigator } from "react-navigation";
 
 const AppStack = createStackNavigator(
@@ -30,6 +31,9 @@ const AppStack = createStackNavigator(
     },
     Wallet: {
       screen: Wallet
+    },
+    ManageOrders: {
+      screen: ManageOrders
     }
   },
   {
