@@ -69,9 +69,6 @@ class ChangeAddress extends React.Component {
   };
   _selectLocation(x) {
     const selectedTechPark = this.state.tech_parks.filter(y => y._id === x);
-    // this.props.navigation.navigate('GetLocation'); const {latitude,longitude} =
-    // _.get(selectedTechPark[0],"tPark_location"); this.map.animateCamera({ center:
-    // selectedTechPark[0].tPark_location});
     this.setState({
       ...this.state,
       selected: true,

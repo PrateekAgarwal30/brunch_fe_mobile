@@ -1,6 +1,6 @@
 import React from "react";
-import Login from "../screens/login";
-import Register from "../screens/register";
+import Login from "../screens/Login";
+import Register from "../screens/Register";
 import createAnimatedSwitchNavigator from "react-navigation-animated-switch";
 import { Transition } from "react-native-reanimated";
 const AuthStack = createAnimatedSwitchNavigator(

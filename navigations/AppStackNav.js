@@ -1,12 +1,11 @@
 import React from "react";
-import Home from "../screens/home";
-import Profile from "../screens/profile";
-import ChangeAddress from "../screens/changeAddress";
-import ChangePassword from "../screens/changePassword";
-import ManageAddress from "../screens/manageAddress";
-import GetLocation from "../screens/location";
-import UserInfo from "../screens/userInfo";
-import Wallet from "../screens/wallet";
+import Home from "../screens/Home";
+import Profile from "../screens/Profile";
+import ChangeAddress from "../screens/ChangeAddress";
+import ChangePassword from "../screens/ChangePassword";
+import ManageAddress from "../screens/ManageAddress";
+import UserInfo from "../screens/UserInfo";
+import Wallet from "../screens/Wallet";
 import { createStackNavigator } from "react-navigation";
 
 const AppStack = createStackNavigator(
@@ -19,9 +18,6 @@ const AppStack = createStackNavigator(
     },
     ChangeAddress: {
       screen: ChangeAddress
-    },
-    GetLocation: {
-      screen: GetLocation
     },
     ChangePassword: {
       screen: ChangePassword
