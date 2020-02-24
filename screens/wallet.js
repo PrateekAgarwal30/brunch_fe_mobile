@@ -5,7 +5,6 @@ import {
   AsyncStorage,
   TextInput,
   Image,
-  FlatList,
   SectionList
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -132,7 +131,7 @@ class Wallet extends React.Component {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
     const isTransactionsLoading = this.props.profile.isTransactionsLoading;
-    console.log("isTransactionsLoading", isTransactionsLoading);
+    // console.log("isTransactionsLoading", isTransactionsLoading);
     const walletBalance =
       _.get(this.props.profile, "wallet.walletBalance", 0.0) || 0.0;
     const userTransactions = txnSectionGenerator(
@@ -146,14 +145,14 @@ class Wallet extends React.Component {
         style={{
           flex: 1,
           zIndex: 0,
-          backgroundColor: "white"
+          backgroundColor: "#EDEEF1"
           // marginTop: Contants.statusBarHeight
         }}
       >
         <LinearGradient
           colors={["#1721AC", "#16235A"]}
           style={{
-            minHeight: 250,
+            minHeight: 220,
             borderBottomLeftRadius: 25,
             borderBottomRightRadius: 25,
             elevation: 2
@@ -515,7 +514,7 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 20,
     marginLeft: 10
   },
   noTxnText: {
