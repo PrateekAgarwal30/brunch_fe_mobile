@@ -73,16 +73,26 @@ class Wallet extends React.Component {
     }
   };
   togglePaypalModalVisible = visible => {
-    this.setState(prevState => ({
-      ...prevState,
-      paypalModalVisible: visible
-    }));
+    if (visible && +this.state.addMoneyValue < 10) {
+      Alert.alert("Mininum Transaction Amount is 10Rs");
+      this.addMoneyInput.focus();
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        paypalModalVisible: visible
+      }));
+    }
   };
   toggleRazorpayModalVisible = visible => {
-    this.setState(prevState => ({
-      ...prevState,
-      razorpayModalVisible: visible
-    }));
+    if (visible && +this.state.addMoneyValue < 10) {
+      Alert.alert("Mininum Transaction Amount is 10Rs");
+      this.addMoneyInput.focus();
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        razorpayModalVisible: visible
+      }));
+    }
   };
   setActiveTab = x => () => {
     if (this.state.activeTab !== x) {
@@ -188,7 +198,7 @@ class Wallet extends React.Component {
                   marginLeft: 20
                 }}
               >
-                {walletBalance}
+                {walletBalance.toFixed(2)}
               </Label>
               <Label
                 style={{
