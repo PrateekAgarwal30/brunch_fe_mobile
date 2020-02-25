@@ -1,7 +1,7 @@
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import moment from "moment";
-import {Text, StyleSheet, View} from "react-native";
+import {Text, StyleSheet, View, TouchableHighlight} from "react-native";
 import AntDesignIcon from "@expo/vector-icons/AntDesign";
 const styles = StyleSheet.create({
     header: {
@@ -23,7 +23,9 @@ const styles = StyleSheet.create({
 export const TxnListItem = ({txnData}) => {
     return (
         <Animatable.View animation="fadeInDownBig" iterationCount={1}>
-            <View
+            <TouchableHighlight
+                onPress={()=>{console.log(txnData._id)}}
+                underlayColor={"#E1E0E2"}
                 style={{
                 borderRadius: 10,
                 backgroundColor: 'white',
@@ -64,7 +66,7 @@ export const TxnListItem = ({txnData}) => {
                         marginLeft: 20
                     }}>{`+${txnData.transactionAmount} ₹`}</Text>
                 </View>
-            </View>
+            </TouchableHighlight>
         </Animatable.View>
     );
 };

@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, TextInput,View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import {
-  Container,
   Header,
   Button,
   Icon,
@@ -55,7 +54,7 @@ class Home extends React.Component {
           backgroundColor: "#EDEEF1"
         }}
       >
-        <Header transparent style={{ alignContent: "flex-start",marginBottom:5 }}>
+        <Header transparent style={{ alignContent: "flex-start", marginBottom: 5 }}>
           <Left style={{ flex: 1 }}>
             <Button
               transparent
@@ -64,7 +63,8 @@ class Home extends React.Component {
                 marginLeft: 2.5,
                 paddingLeft: 12.5,
                 paddingRight: 12.5,
-                backgroundColor: "#16235A"
+                backgroundColor: "#16235A",
+                minWidth: 45
               }}
               onPress={() => this.props.navigation.openDrawer()}
             >

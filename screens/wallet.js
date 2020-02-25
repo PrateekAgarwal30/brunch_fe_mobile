@@ -33,6 +33,7 @@ class Wallet extends React.Component {
   };
   async componentDidMount() {
     try {
+      this.props.getProfile();
       this.props.getUserTransactions();
       const authToken = await AsyncStorage.getItem("authToken");
       this.setState(prevState => ({
