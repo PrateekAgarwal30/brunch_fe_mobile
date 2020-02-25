@@ -1,15 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { connect } from "react-redux";
-import {
-  AsyncStorage,
-  TextInput,
-  Image,
-  SectionList
-} from "react-native";
+import { AsyncStorage, TextInput, Image, SectionList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import _ from "lodash";
-import moment from "moment";
 import {
   Container,
   Header,
@@ -18,27 +12,16 @@ import {
   Left,
   Right,
   Label,
-  Content,
-  Card
+  Content
 } from "native-base";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
 import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
+import { TxnListItem, TxnHeaderComponent, NoTxnFound } from "../components/TxnListItem";
 import { getProfile, getUserTransactions } from "../redux/actions";
 import txnSectionGenerator from "../utils/txnSectionGenerator";
-import * as Animatable from "react-native-animatable";
-
-const Item = ({ title }) => {
-  return (
-    <Animatable.View animation="fadeInDownBig" iterationCount={1}>
-      <Card>
-        <Text>{JSON.stringify(title, null, 2)}</Text>
-      </Card>
-    </Animatable.View>
-  );
-};
 
 class Wallet extends React.Component {
   state = {
@@ -384,15 +367,6 @@ class Wallet extends React.Component {
                     style={{ width: 50, height: 20 }}
                     source={require("./../assets/paytm.png")}
                   />
-                  {/* <Text
-                    style={{
-                      color: "#1721AC",
-                      fontSize: 16,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {"Pay With PayTm"}
-                  </Text> */}
                 </Button>
                 <Button
                   style={{
@@ -410,10 +384,6 @@ class Wallet extends React.Component {
                     style={{ width: 50, height: 20 }}
                     source={require("./../assets/razorpay.png")}
                   />
-
-                  {/* <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
-                    {"Pay With Razorpay"}
-                  </Text> */}
                 </Button>
                 <Button
                   style={{
@@ -431,10 +401,6 @@ class Wallet extends React.Component {
                     style={{ width: 50, height: 19 }}
                     source={require("./../assets/paypal.png")}
                   />
-
-                  {/* <Text style={{ color: "#E1E0E2", fontSize: 16 }}>
-                    {"Pay With PayPal"}
-                  </Text> */}
                 </Button>
               </View>
             </View>
@@ -444,35 +410,17 @@ class Wallet extends React.Component {
             <SectionList
               sections={userTransactions}
               keyExtractor={item => item._id}
-              renderItem={({ item }) => <Item title={item} />}
+              renderItem={({ item }) => <TxnListItem txnData={item} />}
               stickySectionHeadersEnabled={true}
-              ListEmptyComponent={
-                <View style={{ flex: 1, alignItems: "center" }}>
-                  <Text style={styles.noTxnText}>No Transactions Found</Text>
-                </View>
-              }
+              ListEmptyComponent={<NoTxnFound/>}
+              initialNumToRender={2}
               // ListFooterComponent={(<Text>{`End of Transactions`}</Text>)}
               // ListHeaderComponent={(<Text>ListHeaderComponent</Text>)}
               contentContainerStyle={{ paddingBottom: 10 }}
               onRefresh={() => this.props.getUserTransactions()}
-              refreshing={isTransactionsLoading}
+              refreshing={isTransactionsLoading || false}
               renderSectionHeader={({ section: { title } }) => (
-                <Animatable.View
-                  animation="fadeInDownBig"
-                  iterationCount={1}
-                  style={styles.header}
-                >
-                  <Text style={styles.headerText}>
-                    {moment(title, "DD-MM-YYYY").calendar(null, {
-                      sameDay: "[Today]",
-                      nextDay: "[Tomorrow]",
-                      nextWeek: "dddd",
-                      lastDay: "[Yesterday]",
-                      lastWeek: "[Last] dddd",
-                      sameElse: "DD/MM/YYYY"
-                    })}
-                  </Text>
-                </Animatable.View>
+                <TxnHeaderComponent headerData={title} />
               )}
             />
           </View>
@@ -507,18 +455,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomWidth: 5,
     borderBottomColor: "#C0BEC4"
-  },
-  header: {
-    backgroundColor: "#EDEEF1",
-    paddingVertical: 5,
-    borderRadius: 5
-  },
-  headerText: {
-    fontSize: 20,
-    marginLeft: 10
-  },
-  noTxnText: {
-    fontSize: 20
   }
 });
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
