@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { register, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { Card, Button } from "native-base";
+import * as Animatable from "react-native-animatable";
 class Register extends React.Component {
   state = {
     email: null,
@@ -114,19 +115,37 @@ class Register extends React.Component {
             animation="zoomIn"
             iterationCount={1}
             style={{
-              // marginTop: 200,
               height: 100,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              flexDirection: "row",
+              marginTop: 10
             }}
-          ></View>
+          >
+            <Animatable.Image
+              style={{
+                width: 60,
+                height: 60,
+                marginRight: 10
+              }}
+              source={require("./../assets/logo_transparent.png")}
+              animation="zoomIn"
+              iterationCount={1}
+            />
+            <Animatable.Text
+              animation="zoomIn"
+              iterationCount={1}
+              style={{ fontSize: 32, fontFamily: "diavlo", color: "white" }}
+            >
+              Brunch
+            </Animatable.Text>
+          </View>
           <View
             style={{
               backgroundColor: "white",
               borderTopRightRadius: 20,
               borderTopLeftRadius: 20,
-              flex: 1,
-              paddingTop: 25
+              flex: 1
             }}
           >
             <View
@@ -163,7 +182,6 @@ class Register extends React.Component {
 
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -183,7 +201,6 @@ class Register extends React.Component {
               </Card>
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -204,7 +221,6 @@ class Register extends React.Component {
 
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -225,7 +241,6 @@ class Register extends React.Component {
               </Card>
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -247,7 +262,6 @@ class Register extends React.Component {
 
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row",
                   marginTop: 30

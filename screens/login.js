@@ -84,14 +84,14 @@ class Login extends React.Component {
                 width: 100,
                 height: 100
               }}
-              source={require("./../assets/logo.png")}
+              source={require("./../assets/logo_transparent.png")}
               animation="zoomIn"
               iterationCount={1}
             />
             <Animatable.Text
               animation="zoomIn"
               iterationCount={1}
-              style={{ fontSize: 32, fontFamily: "diavlo" }}
+              style={{ fontSize: 32, fontFamily: "diavlo", color: "white" }}
             >
               Brunch
             </Animatable.Text>
@@ -139,7 +139,6 @@ class Login extends React.Component {
 
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -159,7 +158,6 @@ class Login extends React.Component {
               </Card>
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row"
                 }}
@@ -196,7 +194,6 @@ class Login extends React.Component {
               </Card>
               <Card
                 style={{
-                  elevation: 10,
                   borderRadius: 10,
                   flexDirection: "row",
                   marginTop: 30
