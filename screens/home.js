@@ -1,18 +1,10 @@
 import React from "react";
 import { Text, TextInput, View } from "react-native";
-import {
-  Header,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
-  Card
-} from "native-base";
+import { Header, Button, Icon, Left, Right, Body, Card } from "native-base";
 import { connect } from "react-redux";
 import { getProfile } from "../redux/actions";
 // import { Notifications } from "expo";
-import { NetworkConsumer } from "./../components/NetworkContext";
+import { withAppContextConsumer } from "./../components/AppContext";
 import Colors from "./../components/Colors";
 import BannerCarousel from "./../components/BannerCarousel";
 // import Constants from "expo-constants";
@@ -54,7 +46,10 @@ class Home extends React.Component {
           backgroundColor: "#EDEEF1"
         }}
       >
-        <Header transparent style={{ alignContent: "flex-start", marginBottom: 5 }}>
+        <Header
+          transparent
+          style={{ alignContent: "flex-start", marginBottom: 5 }}
+        >
           <Left style={{ flex: 1 }}>
             <Button
               transparent
@@ -156,10 +151,12 @@ class Home extends React.Component {
 Home.navigationOptions = {
   header: null
 };
-Home.contextType = NetworkConsumer;
 
 const mapStateToProps = state => ({ user: state.user, profile: state.profile });
 const mapActionsToProps = {
   getProfile: getProfile
 };
-export default connect(mapStateToProps, mapActionsToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(Home));

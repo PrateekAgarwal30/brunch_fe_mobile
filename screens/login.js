@@ -13,6 +13,7 @@ import { login, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { Card, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
+import { withAppContextConsumer } from "./../components/AppContext";
 class Login extends React.Component {
   state = {
     validEmail: true,
@@ -265,4 +266,7 @@ const mapActionsToProps = {
   login: login,
   textChange: textChange
 };
-export default connect(mapStateToProps, mapActionsToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(Login));

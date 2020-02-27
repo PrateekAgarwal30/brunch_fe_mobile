@@ -19,10 +19,14 @@ import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import PaytmPaymentModal from "../components/PaytmPaymentModal";
 import PaypalPaymentModal from "../components/PaypalPaymentModal";
 import RazorpayPaymentModal from "../components/RazorpayPaymentModal";
-import { TxnListItem, TxnHeaderComponent, NoTxnFound } from "../components/TxnListItem";
+import {
+  TxnListItem,
+  TxnHeaderComponent,
+  NoTxnFound
+} from "../components/TxnListItem";
 import { getProfile, getUserTransactions } from "../redux/actions";
 import txnSectionGenerator from "../utils/txnSectionGenerator";
-
+import { withAppContextConsumer } from "./../components/AppContext";
 class Wallet extends React.Component {
   state = {
     paytmModalVisible: false,
@@ -413,7 +417,7 @@ class Wallet extends React.Component {
               keyExtractor={item => item._id}
               renderItem={({ item }) => <TxnListItem txnData={item} />}
               stickySectionHeadersEnabled={true}
-              ListEmptyComponent={<NoTxnFound/>}
+              ListEmptyComponent={<NoTxnFound />}
               initialNumToRender={2}
               // ListFooterComponent={(<Text>{`End of Transactions`}</Text>)}
               // ListHeaderComponent={(<Text>ListHeaderComponent</Text>)}
@@ -464,4 +468,7 @@ const mapActionsToProps = {
   getProfile: getProfile,
   getUserTransactions: getUserTransactions
 };
-export default connect(mapStateToProps, mapActionsToProps)(Wallet);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(Wallet));
