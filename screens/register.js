@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { connect } from "react-redux";
 import { register, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
-import { Card, Button } from "native-base";
+import { Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 import { withAppContextConsumer } from "../components/AppContext";
 class Register extends React.Component {
@@ -110,7 +110,7 @@ class Register extends React.Component {
         enableOnAndroid={true}
         extraHeight={140}
         extraScrollHeight={30}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: "#EDEEF1" }}
       >
         <View style={{ backgroundColor: themes["light"].primary, flex: 1 }}>
           <View
@@ -144,7 +144,7 @@ class Register extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#EDEEF1",
               borderTopRightRadius: 20,
               borderTopLeftRadius: 20,
               flex: 1
@@ -182,10 +182,13 @@ class Register extends React.Component {
                 </Text>
               ) : null}
 
-              <Card
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -200,11 +203,14 @@ class Register extends React.Component {
                   value={this.state.email}
                   onChangeText={this._validEmailInput}
                 />
-              </Card>
-              <Card
+              </View>
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -219,12 +225,15 @@ class Register extends React.Component {
                   value={this.state.mobileNo}
                   onChangeText={this._validMobileInput}
                 />
-              </Card>
+              </View>
 
-              <Card
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -240,11 +249,14 @@ class Register extends React.Component {
                   onChangeText={this._validPasswordInput}
                   secureTextEntry={true}
                 />
-              </Card>
-              <Card
+              </View>
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -260,9 +272,9 @@ class Register extends React.Component {
                   onChangeText={this._validConfirmPasswordInput}
                   secureTextEntry={true}
                 />
-              </Card>
+              </View>
 
-              <Card
+              <View
                 style={{
                   borderRadius: 10,
                   flexDirection: "row",
@@ -285,7 +297,7 @@ class Register extends React.Component {
                     Register
                   </Text>
                 </Button>
-              </Card>
+              </View>
               <Text
                 style={{
                   fontSize: 18,

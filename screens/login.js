@@ -11,7 +11,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { connect } from "react-redux";
 import { login, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
-import { Card, Button } from "native-base";
+import { Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 import { withAppContextConsumer } from "./../components/AppContext";
 class Login extends React.Component {
@@ -68,7 +68,7 @@ class Login extends React.Component {
         enableOnAndroid={true}
         extraHeight={165}
         extraScrollHeight={20}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: "#EDEEF1" }}
       >
         <View style={{ backgroundColor: themes["light"].primary, flex: 1 }}>
           <View
@@ -97,7 +97,7 @@ class Login extends React.Component {
           </View>
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: "#EDEEF1",
               borderTopRightRadius: 20,
               borderTopLeftRadius: 20,
               flex: 1,
@@ -136,10 +136,13 @@ class Login extends React.Component {
                 </Text>
               ) : null}
 
-              <Card
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -154,11 +157,14 @@ class Login extends React.Component {
                   value={this.state.email}
                   onChangeText={this._validEmailInput}
                 />
-              </Card>
-              <Card
+              </View>
+              <View
                 style={{
                   borderRadius: 10,
-                  flexDirection: "row"
+                  backgroundColor: "white",
+                  marginVertical: 5,
+                  flexDirection: "row",
+                  elevation: 1
                 }}
               >
                 <Icon
@@ -190,8 +196,8 @@ class Login extends React.Component {
                     color="#000"
                   />
                 </Button>
-              </Card>
-              <Card
+              </View>
+              <View
                 style={{
                   borderRadius: 10,
                   flexDirection: "row",
@@ -205,7 +211,6 @@ class Login extends React.Component {
                     flex: 1
                   }}
                   onPress={this._checkLogin}
-                  // disabled={true}
                 >
                   <Text
                     style={{ fontSize: 20, fontWeight: "800", color: "white" }}
@@ -213,7 +218,7 @@ class Login extends React.Component {
                     Login
                   </Text>
                 </Button>
-              </Card>
+              </View>
               <Text
                 style={{
                   fontSize: 18,
