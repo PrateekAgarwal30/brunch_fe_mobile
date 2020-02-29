@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ToastAndroid } from "react-native";
+import { StyleSheet, View, ToastAndroid, Text } from "react-native";
 import { connect } from "react-redux";
 import {
   getTechAddresses,
@@ -14,19 +14,13 @@ import { CurrentLocationButton } from "../components/CurrentLocationButton";
 import { LocationSearchResult } from "../components/LocationSearchResult";
 import { SelectStallLocation } from "../components/SelectStallLocation";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
+import { Header, Body, Button, Icon, Left, Right } from "native-base";
+import { LinearGradient } from "expo-linear-gradient";
 import _ from "lodash";
+import { withAppContextConsumer } from "../components/AppContext";
 class ChangeAddress extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Select Office",
-      headerStyle: {
-        backgroundColor: "#16235A"
-      },
-      headerTintColor: "white",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
+  static navigationOptions = {
+    header: null
   };
   constructor(props) {
     super(props);
@@ -40,7 +34,7 @@ class ChangeAddress extends React.Component {
       tech_parks: [],
       selected: false,
       selectedItem: [],
-      searchAddressQuery : "" 
+      searchAddressQuery: ""
     };
     this._getLocationAsync();
     this._selectLocation = this._selectLocation.bind(this);
@@ -56,7 +50,7 @@ class ChangeAddress extends React.Component {
       console.log(err.message);
     }
   }
-  _searchLocation = async (x) => {
+  _searchLocation = async x => {
     this.setState({
       ...this.state,
       searchAddressQuery: x
@@ -135,6 +129,7 @@ class ChangeAddress extends React.Component {
   };
   render() {
     const isLoading = this.props.user.isLoading;
+    const { themes } = this.props;
     if (isLoading) {
       return <CustomActivityIndicator />;
     }
@@ -145,6 +140,36 @@ class ChangeAddress extends React.Component {
           zIndex: 0
         }}
       >
+        <LinearGradient
+          colors={[themes["light"].secondary, themes["light"].primary]}
+          style={{
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            elevation: 2
+          }}
+        >
+          <Header transparent>
+            <Left style={{ flex: 2 }}>
+              <Button
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon
+                  name="arrow-back"
+                  style={{ color: "white", fontSize: 25 }}
+                />
+              </Button>
+            </Left>
+            <Body style={{ flex: 7 }}>
+              <Text
+                style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
+              >
+                Change Office Address
+              </Text>
+            </Body>
+            <Right style={{ flex: 2 }} />
+          </Header>
+        </LinearGradient>
         {this.state.selected ? (
           <View>
             <SelectStallLocation
@@ -152,6 +177,7 @@ class ChangeAddress extends React.Component {
               onConfirmLocation={this.onConfirmLocation}
             />
             <CurrentLocationButton
+              themes={themes}
               bottom={130}
               cb={() => {
                 this.centerMap();
@@ -166,6 +192,7 @@ class ChangeAddress extends React.Component {
               _selectLocation={x => this._selectLocation(x)}
             />
             <CurrentLocationButton
+              themes={themes}
               bottom={130}
               cb={() => {
                 this.centerMap();
@@ -231,7 +258,10 @@ const mapActionsToProps = {
   saveOfficeAddressForUser: saveOfficeAddressForUser,
   getProfile: getProfile
 };
-export default connect(mapStateToProps, mapActionsToProps)(ChangeAddress);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(ChangeAddress));
 
 var mapStyle = [
   {
