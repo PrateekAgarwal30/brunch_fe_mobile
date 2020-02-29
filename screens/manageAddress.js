@@ -2,8 +2,21 @@ import React from "react";
 import { Text, StyleSheet, Dimensions, Image, View } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
-import { Body, Button, Card, CardItem, Content, Label } from "native-base";
+import {
+  Header,
+  Body,
+  Button,
+  Card,
+  CardItem,
+  Content,
+  Icon,
+  Left,
+  Right,
+  Label
+} from "native-base";
 import CustomActivityIndicator from "../components/CustomActivityIndicator";
+import { withAppContextConsumer } from "../components/AppContext";
+import { LinearGradient } from "expo-linear-gradient";
 import MapView from "react-native-maps";
 const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -38,17 +51,8 @@ const styles = StyleSheet.create({
 });
 
 class ManageAddress extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Manage Office Address",
-      headerStyle: {
-        backgroundColor: "#16235A"
-      },
-      headerTintColor: "white",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
+  static navigationOptions = {
+    header: null
   };
   _onChangeAddress = () => {
     this.props.navigation.navigate("ChangeAddress");
@@ -56,6 +60,7 @@ class ManageAddress extends React.Component {
   render() {
     const address = this.props.profile.addresses;
     const isLoading = this.props.user.isLoading;
+    const { themes } = this.props;
     if (isLoading) {
       return <CustomActivityIndicator />;
     }
@@ -67,9 +72,39 @@ class ManageAddress extends React.Component {
           backgroundColor: "white"
         }}
       >
+        <LinearGradient
+          colors={[themes["light"].secondary, themes["light"].primary]}
+          style={{
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            elevation: 2
+          }}
+        >
+          <Header transparent>
+            <Left>
+              <Button
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon
+                  name="arrow-back"
+                  style={{ color: "white", fontSize: 25 }}
+                />
+              </Button>
+            </Left>
+            <Body>
+              <Text
+                style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
+              >
+                Office Address
+              </Text>
+            </Body>
+            <Right />
+          </Header>
+        </LinearGradient>
         <Content>
           {address ? (
-            <View>
+            <View style={{ marginTop: -10 }}>
               <MapView
                 style={styles.map}
                 initialRegion={{
@@ -162,7 +197,8 @@ class ManageAddress extends React.Component {
           style={{
             textAlign: "center",
             justifyContent: "center",
-            margin: 10
+            margin: 10,
+            backgroundColor: themes["light"].primary
           }}
           onPress={this._onChangeAddress}
         >
@@ -178,7 +214,10 @@ class ManageAddress extends React.Component {
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 
 const mapActionsToProps = {};
-export default connect(mapStateToProps, mapActionsToProps)(ManageAddress);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(ManageAddress));
 
 const mapStyle = [
   {
