@@ -3,7 +3,8 @@ import { AsyncStorage, Alert, View, ActivityIndicator } from "react-native";
 // import CustomActivityIndicator from "../components/CustomActivityIndicator";
 import * as Animatable from "react-native-animatable";
 import * as Font from "expo-font";
-export default class AuthLoading extends React.Component {
+import { withAppContextConsumer } from "../components/AppContext";
+class AuthLoading extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -34,11 +35,12 @@ export default class AuthLoading extends React.Component {
       });
   };
   render() {
+    const themes = this.props.themes;
     return (
       <View
         style={{
           flex: 1,
-          backgroundColor: "#E19D40",
+          backgroundColor: themes["light"].primary,
           justifyContent: "center",
           alignItems: "center"
         }}
@@ -74,3 +76,5 @@ export default class AuthLoading extends React.Component {
     );
   }
 }
+
+export default withAppContextConsumer(AuthLoading);

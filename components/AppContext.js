@@ -10,8 +10,8 @@ const defaultValue = {
   },
   themes: {
     light: {
-      primary: "#000000",
-      secondary: "#eeeeee"
+      primary: "#E19D40",
+      secondary: "#E19C10"
     },
     dark: {
       foreground: "#ffffff",

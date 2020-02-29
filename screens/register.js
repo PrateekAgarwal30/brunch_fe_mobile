@@ -6,6 +6,7 @@ import { register, textChange } from "../redux/actions";
 import { Ionicons as Icon } from "@expo/vector-icons";
 import { Card, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
+import { withAppContextConsumer } from "../components/AppContext";
 class Register extends React.Component {
   state = {
     email: null,
@@ -97,6 +98,7 @@ class Register extends React.Component {
   };
   render() {
     const { err } = this.props.user;
+    const { themes } = this.props;
     const disabled = !(
       this.state.validEmail &&
       this.state.validPassword &&
@@ -110,7 +112,7 @@ class Register extends React.Component {
         extraScrollHeight={30}
         style={{ flex: 1 }}
       >
-        <View style={{ backgroundColor: "#E19D40", flex: 1 }}>
+        <View style={{ backgroundColor: themes["light"].primary, flex: 1 }}>
           <View
             animation="zoomIn"
             iterationCount={1}
@@ -269,7 +271,7 @@ class Register extends React.Component {
               >
                 <Button
                   style={{
-                    backgroundColor: "#E19D40",
+                    backgroundColor: themes["light"].primary,
                     justifyContent: "center",
                     flex: 1,
                     opacity: disabled ? 0.75 : 1
@@ -335,4 +337,7 @@ const mapActionsToProps = {
   register: register,
   textChange: textChange
 };
-export default connect(mapStateToProps, mapActionsToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(Register));

@@ -62,6 +62,7 @@ class Login extends React.Component {
   };
   render() {
     const { err } = this.props.user;
+    const { themes } = this.props;
     return (
       <KeyboardAwareScrollView
         enableOnAndroid={true}
@@ -69,7 +70,7 @@ class Login extends React.Component {
         extraScrollHeight={20}
         style={{ flex: 1 }}
       >
-        <View style={{ backgroundColor: "#E19D40", flex: 1 }}>
+        <View style={{ backgroundColor: themes["light"].primary, flex: 1 }}>
           <View
             style={{
               height: 200,
@@ -199,7 +200,7 @@ class Login extends React.Component {
               >
                 <Button
                   style={{
-                    backgroundColor: "#E19D40",
+                    backgroundColor: themes["light"].primary,
                     justifyContent: "center",
                     flex: 1
                   }}

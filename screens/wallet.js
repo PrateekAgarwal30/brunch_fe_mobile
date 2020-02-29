@@ -119,7 +119,7 @@ class Wallet extends React.Component {
     const isLoading = this.props.user.isLoading;
     const authToken = this.state.authToken;
     const isTransactionsLoading = this.props.profile.isTransactionsLoading;
-    // console.log("isTransactionsLoading", isTransactionsLoading);
+    const themes = this.props.themes;
     const walletBalance =
       _.get(this.props.profile, "wallet.walletBalance", 0.0) || 0.0;
     const userTransactions = txnSectionGenerator(
@@ -138,7 +138,7 @@ class Wallet extends React.Component {
         }}
       >
         <LinearGradient
-          colors={["#1721AC", "#16235A"]}
+          colors={[themes["light"].secondary, themes["light"].primary]}
           style={{
             minHeight: 220,
             borderBottomLeftRadius: 25,
