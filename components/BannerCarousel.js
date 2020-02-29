@@ -1,8 +1,10 @@
 import React from "react";
 import { Text, View, Platform } from "react-native";
-import Carousel, { ParallaxImage } from "react-native-snap-carousel";
+import Carousel, {
+  ParallaxImage,
+  Pagination
+} from "react-native-snap-carousel";
 import { Dimensions, StyleSheet } from "react-native";
-import { Content } from "native-base";
 const { width: screenWidth } = Dimensions.get("window");
 
 export default class MyCarousel extends React.Component {
@@ -42,18 +44,50 @@ export default class MyCarousel extends React.Component {
       </View>
     );
   }
+  pagination = () => {
+    const { entries, activeSlide } = this.state;
+    return (
+      <Pagination
+        dotsLength={entries.length}
+        activeDotIndex={activeSlide || 0}
+        containerStyle={{
+          paddingVertical: 7
+        }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: "#E19D40"
+        }}
+        inactiveDotStyle={
+          {
+            // Define styles for inactive dots here
+          }
+        }
+        inactiveDotOpacity={0.6}
+        inactiveDotScale={0.5}
+      />
+    );
+  };
 
   render() {
-    // const screenWidth = '50%';
     return (
-      <Carousel
-        sliderWidth={screenWidth}
-        sliderHeight={screenWidth}
-        itemWidth={screenWidth}
-        data={this.state.entries}
-        renderItem={this._renderItem}
-        hasParallaxImages={true}
-      />
+      <View>
+        <Carousel
+          sliderWidth={screenWidth}
+          sliderHeight={screenWidth}
+          itemWidth={screenWidth}
+          data={this.state.entries}
+          renderItem={this._renderItem}
+          hasParallaxImages={true}
+          onSnapToItem={index =>
+            this.setState({ ...this.state, activeSlide: index })
+          }
+          containerCustomStyle={{ marginBottom: -20 }}
+        />
+        {this.pagination()}
+      </View>
     );
   }
 }
