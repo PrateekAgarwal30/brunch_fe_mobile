@@ -165,7 +165,7 @@ export const changePassword = (oldp, confirmp, newp) => async dispatch => {
         type: USER.CHANGE_PASS_REJECTED,
         payload: { err: result._message, isLoading: false }
       });
-      return "Change Password Failed";
+      return Promise.reject("Change Password Failed");
     }
   } catch (error) {
     return Promise.reject(error.message);

@@ -1,27 +1,14 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableHighlight,
-  TextInput,
-  ToastAndroid
-} from "react-native";
+import { StyleSheet, View, Text, TextInput, ToastAndroid } from "react-native";
 import { connect } from "react-redux";
+import { Header, Body, Button, Content, Icon, Left, Right } from "native-base";
+import { LinearGradient } from "expo-linear-gradient";
 import { register, textChange, changePassword } from "../redux/actions";
-import CustomActivityIndicator from './../components/CustomActivityIndicator';
+import CustomActivityIndicator from "./../components/CustomActivityIndicator";
+import { withAppContextConsumer } from "../components/AppContext";
 class ChangePassword extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "Change Password",
-      headerStyle: {
-        backgroundColor: "#16235A"
-      },
-      headerTintColor: "white",
-      headerTitleStyle: {
-        fontWeight: "bold"
-      }
-    };
+  static navigationOptions = {
+    header: null
   };
   state = {
     newP: null,
@@ -34,7 +21,7 @@ class ChangePassword extends React.Component {
 
   _changePassword = async x => {
     try {
-      const a = await this.props.changePassword(
+      const result = await this.props.changePassword(
         this.state.oldP,
         this.state.confirmP,
         this.state.newP
@@ -47,8 +34,8 @@ class ChangePassword extends React.Component {
         validOldP: null,
         validConfirmP: null
       });
-      ToastAndroid.show(a, ToastAndroid.SHORT);
-      this.props.navigation.navigate('Home');
+      ToastAndroid.show(result, ToastAndroid.SHORT);
+      this.props.navigation.navigate("Home");
     } catch (error) {
       ToastAndroid.show(error.message, ToastAndroid.SHORT);
     }
@@ -107,132 +94,131 @@ class ChangePassword extends React.Component {
   };
   render() {
     const isLoading = this.props.user.isLoading;
-    if(isLoading){
-      return <CustomActivityIndicator/>
+    const { themes } = this.props;
+    if (isLoading) {
+      return <CustomActivityIndicator />;
     }
+    const disabled = !(
+      this.state.validOldP &&
+      this.state.validNewP &&
+      this.state.validConfirmP
+    );
     return (
-      <View style={styles.wrapper}>
-        {/* <View style={styles.logoWrapper}> */}
-        <Text style={{ color: "red", marginTop: 30 }}>
-          {this.props.user.err}
-        </Text>
-        <TextInput
-          style={styles.textWrapper}
-          placeholder="Old Password"
-          value={this.state.oldP}
-          onChangeText={this._validOldPasswordInput}
-          secureTextEntry={true}
-        />
-        <TextInput
-          style={styles.textWrapper}
-          placeholder="New Password"
-          value={this.state.newP}
-          onChangeText={this._validNewPasswordInput}
-          secureTextEntry={true}
-        />
-        <TextInput
-          style={styles.textWrapper}
-          placeholder="Confirm New Password"
-          value={this.state.confirmP}
-          onChangeText={this._validConfirmPasswordInput}
-          secureTextEntry={true}
-        />
-        <TouchableHighlight
-          style={styles.loginWrapper}
-          onPress={this._changePassword}
-          disabled={
-            !(
-              this.state.validOldP &&
-              this.state.validNewP &&
-              this.state.validConfirmP
-            )
-          }
+      <View
+        style={{
+          flex: 1,
+          zIndex: 0,
+          backgroundColor: "#EDEEF1"
+        }}
+      >
+        <LinearGradient
+          colors={[themes["light"].secondary, themes["light"].primary]}
+          style={{
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            elevation: 2
+          }}
         >
-          <Text
-            style={isDisabled(
-              !(
-                this.state.validOldP &&
-                this.state.validNewP &&
-                this.state.validConfirmP
-              )
-            )}
-          >
-            Change Password
+          <Header transparent>
+            <Left style={{ flex: 2 }}>
+              <Button
+                transparent
+                onPress={() => this.props.navigation.goBack()}
+              >
+                <Icon
+                  name="arrow-back"
+                  style={{ color: "white", fontSize: 25 }}
+                />
+              </Button>
+            </Left>
+            <Body style={{ flex: 7 }}>
+              <Text
+                style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
+              >
+                Change Password
+              </Text>
+            </Body>
+            <Right style={{ flex: 2 }} />
+          </Header>
+        </LinearGradient>
+        <Content padder contentContainerStyle={styles.wrapper}>
+          <Text style={{ color: "red", marginTop: 30 }}>
+            {this.props.user.err}
           </Text>
-        </TouchableHighlight>
+          <View style={styles.textInputView}>
+            <TextInput
+              style={styles.textInputWrapper}
+              placeholder="Old Password"
+              value={this.state.oldP}
+              onChangeText={this._validOldPasswordInput}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.textInputView}>
+            <TextInput
+              style={styles.textInputWrapper}
+              placeholder="New Password"
+              value={this.state.newP}
+              onChangeText={this._validNewPasswordInput}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.textInputView}>
+            <TextInput
+              style={styles.textInputWrapper}
+              placeholder="Confirm New Password"
+              value={this.state.confirmP}
+              onChangeText={this._validConfirmPasswordInput}
+              secureTextEntry={true}
+            />
+          </View>
+          <View
+            style={{
+              borderRadius: 10,
+              flexDirection: "row",
+              marginTop: 30
+            }}
+          >
+            <Button
+              style={{
+                backgroundColor: themes["light"].primary,
+                justifyContent: "center",
+                flex: 1,
+                opacity: disabled ? 0.75 : 1
+              }}
+              onPress={this._changePassword}
+              disabled={disabled}
+            >
+              <Text style={{ fontSize: 20, fontWeight: "800", color: "white" }}>
+                Confirm
+              </Text>
+            </Button>
+          </View>
+        </Content>
       </View>
     );
   }
 }
 
-const isDisabled = bool => {
-  if (bool) {
-    return styles.buttonText;
-  } else {
-    return { ...styles.buttonText, opacity: 1 };
-  }
-};
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     display: "flex",
-    backgroundColor: "#A4A4BF",
-    alignItems: "center"
+    backgroundColor: "#EDEEF1",
+    paddingHorizontal: 15
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginTop: 50,
-    marginBottom: 40
+  textInputView: {
+    borderRadius: 10,
+    backgroundColor: "white",
+    marginVertical: 5,
+    marginHorizontal: 10
   },
-  logoWrapper: {},
-  welcomeText: {
-    fontSize: 30,
-    fontWeight: "300",
-    color: "white",
-    marginBottom: 40
-  },
-  loginWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
+  textInputWrapper: {
     padding: 15,
     display: "flex",
-    borderColor: "white",
-    backgroundColor: "#595775",
-    width: "80%"
-  },
-  textWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
-    padding: 15,
-    display: "flex",
-    borderColor: "white",
-    backgroundColor: "#F1E0D6",
-    width: "80%",
-    marginBottom: 20,
-    fontSize: 18
-  },
-  passwordWrapper: {
-    borderRadius: 50,
-    borderWidth: 1,
-    padding: 15,
-    display: "flex",
-    borderColor: "white",
-    backgroundColor: "#F1E0D6",
-    width: "80%",
-    marginBottom: 20,
-    flexDirection: "row"
-  },
-  buttonText: {
     fontSize: 18,
-    textAlign: "center",
-    width: "100%",
-    color: "white",
-    opacity: 0.5
-  },
-  registerWrapper: {
-    flexDirection: "row",
-    padding: 15
+    zIndex: 10,
+    width: "80%"
   }
 });
 
@@ -244,4 +230,7 @@ const mapActionsToProps = {
   textChange: textChange,
   changePassword: changePassword
 };
-export default connect(mapStateToProps, mapActionsToProps)(ChangePassword);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withAppContextConsumer(ChangePassword));
