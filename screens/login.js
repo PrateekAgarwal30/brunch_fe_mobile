@@ -69,12 +69,9 @@ class Login extends React.Component {
         extraScrollHeight={20}
         style={{ flex: 1 }}
       >
-        <View style={{ backgroundColor: "#1721AC", flex: 1 }}>
+        <View style={{ backgroundColor: "#E19D40", flex: 1 }}>
           <View
-            animation="zoomIn"
-            iterationCount={100}
             style={{
-              // marginTop: 200,
               height: 200,
               justifyContent: "center",
               alignItems: "center"
@@ -202,7 +199,7 @@ class Login extends React.Component {
               >
                 <Button
                   style={{
-                    backgroundColor: "#1721AC",
+                    backgroundColor: "#E19D40",
                     justifyContent: "center",
                     flex: 1
                   }}

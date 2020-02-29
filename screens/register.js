@@ -110,7 +110,7 @@ class Register extends React.Component {
         extraScrollHeight={30}
         style={{ flex: 1 }}
       >
-        <View style={{ backgroundColor: "#1721AC", flex: 1 }}>
+        <View style={{ backgroundColor: "#E19D40", flex: 1 }}>
           <View
             animation="zoomIn"
             iterationCount={1}
@@ -269,7 +269,7 @@ class Register extends React.Component {
               >
                 <Button
                   style={{
-                    backgroundColor: "#1721AC",
+                    backgroundColor: "#E19D40",
                     justifyContent: "center",
                     flex: 1,
                     opacity: disabled ? 0.75 : 1
