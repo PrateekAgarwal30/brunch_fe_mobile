@@ -2,10 +2,11 @@ import React from "react";
 import * as Animatable from "react-native-animatable";
 import { Text, View, TouchableHighlight, Dimensions } from "react-native";
 import { ipAddress } from "../constants";
+import QuantityBox from "./QuantityBox";
 const { width } = Dimensions.get("screen");
 export const MealsListItem = ({ mealData }) => {
   return (
-    <Animatable.View animation="fadeInDownBig" iterationCount={1}>
+    <Animatable.View animation="fadeIn" iterationCount={1}>
       <TouchableHighlight
         onPress={() => {
           console.log(mealData._id);
@@ -19,26 +20,45 @@ export const MealsListItem = ({ mealData }) => {
           width: width / 2 - 5
         }}
       >
-        <View
-          style={{
-            alignItems: "center"
-          }}
-        >
+        <View>
           <Animatable.Image
             source={{ uri: `${ipAddress}/${mealData.mealImageUrl}` }}
-            style={{ height: 100, width: "100%", borderRadius: 10 }}
+            style={{ height: 125, width: "100%", borderRadius: 10 }}
             iterationCount={1}
-            animation={"zoomIn"}
+            animation={"fadeIn"}
           />
           <Text
             style={{
               color: "grey",
-              fontSize: 18,
-              marginLeft: 20
+              fontSize: 13,
+              marginLeft: 10,
+              fontWeight: "bold"
             }}
           >
-            {JSON.stringify(mealData)}
+            {mealData.name}
           </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginHorizontal: 5,
+              alignItems: "center",
+              marginVertical: 10
+            }}
+          >
+            <Text
+              style={{
+                color: "grey",
+                fontSize: 18,
+                marginLeft: 10,
+                fontWeight: "bold"
+              }}
+            >
+              {mealData.price} ₹
+            </Text>
+            <QuantityBox />
+          </View>
         </View>
       </TouchableHighlight>
     </Animatable.View>

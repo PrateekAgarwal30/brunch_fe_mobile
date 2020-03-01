@@ -143,7 +143,13 @@ class Home extends React.Component {
           ListHeaderComponent={<BannerCarousel />}
           numColumns={2}
         />
-        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginTop: 10
+          }}
+        >
           <Button
             style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
             onPress={() => this.props.navigation.navigate("Profile")}
@@ -164,7 +170,7 @@ class Home extends React.Component {
           </Button>
           <Button
             style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
-            onPress={this._menu}
+            onPress={() => this.props.navigation.openDrawer()}
           >
             <Text>Menu</Text>
           </Button>
