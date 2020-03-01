@@ -25,64 +25,98 @@ export default class QuantityBox extends React.Component {
     }
   };
   render() {
-    return (
-      <View
-        style={{
-          flex: 7,
-          flexDirection: "row",
-          height: 30,
-          borderColor: "#E19D40",
-          borderWidth: 1.5,
-          maxWidth: 70,
-          borderRadius: 5,
-          backgroundColor: "white"
-        }}
-      >
-        <Button
-          transparent
-          style={{ flex: 2, height: 25, justifyContent: "center" }}
-          onPress={() => this.handleQty("-")}
-        >
-          <Text
-            style={{
-              color: this.state.quantity === 0 ? "grey" : "#E19D40",
-              fontSize: 16,
-              fontWeight: "bold"
-            }}
-          >
-            -
-          </Text>
-        </Button>
-        <Animatable.View
-          animation={"fadeIn"}
+    if (this.state.quantity === 0) {
+      return (
+        <View
           style={{
-            flex: 3,
-            height: 26.5,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#E19D40"
+            flex: 7,
+            flexDirection: "row",
+            height: 30,
+            borderColor: "#E19D40",
+            borderWidth: 1.5,
+            maxWidth: 70,
+            borderRadius: 5,
+            backgroundColor: "white"
           }}
         >
-          <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            {this.state.quantity}
-          </Text>
-        </Animatable.View>
-        <Button
-          transparent
-          style={{ flex: 2, height: 25, justifyContent: "center" }}
-          onPress={() => this.handleQty("+")}
+          <Button
+            transparent
+            style={{ flex: 2, height: 25, justifyContent: "center" }}
+            onPress={() => this.handleQty("+")}
+          >
+            <Text
+              style={{
+                color: this.state.quantity === 5 ? "grey" : "#E19D40",
+                fontSize: 16,
+                fontWeight: "bold"
+              }}
+            >
+              Buy
+            </Text>
+          </Button>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 7,
+            flexDirection: "row",
+            height: 30,
+            borderColor: "#E19D40",
+            borderWidth: 1.5,
+            maxWidth: 70,
+            borderRadius: 5,
+            backgroundColor: "white"
+          }}
         >
-          <Text
+          <Button
+            transparent
+            style={{ flex: 2, height: 25, justifyContent: "center" }}
+            onPress={() => this.handleQty("-")}
+          >
+            <Text
+              style={{
+                color: this.state.quantity === 0 ? "grey" : "#E19D40",
+                fontSize: 16,
+                fontWeight: "bold"
+              }}
+            >
+              -
+            </Text>
+          </Button>
+          <Animatable.View
+            animation={"bounceIn"}
+            duration={500}
             style={{
-              color: this.state.quantity === 5 ? "grey" : "#E19D40",
-              fontSize: 16,
-              fontWeight: "bold"
+              flex: 3,
+              height: 26.5,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#E19D40"
             }}
           >
-            +
-          </Text>
-        </Button>
-      </View>
-    );
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "200" }}>
+              {this.state.quantity}
+            </Text>
+          </Animatable.View>
+          <Button
+            transparent
+            style={{ flex: 2, height: 25, justifyContent: "center" }}
+            onPress={() => this.handleQty("+")}
+          >
+            <Text
+              style={{
+                color: this.state.quantity === 5 ? "grey" : "#E19D40",
+                fontSize: 16,
+                fontWeight: "bold"
+              }}
+            >
+              +
+            </Text>
+          </Button>
+        </View>
+      );
+    }
   }
 }
