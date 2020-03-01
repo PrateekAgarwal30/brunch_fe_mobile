@@ -1,13 +1,14 @@
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, FlatList } from "react-native";
 import { Header, Button, Icon, Left, Right, Body, Card } from "native-base";
 import { connect } from "react-redux";
-import { getProfile } from "../redux/actions";
+import { getProfile, getMeals } from "../redux/actions";
 // import { Notifications } from "expo";
 import { withAppContextConsumer } from "./../components/AppContext";
 import Colors from "./../components/Colors";
 import BannerCarousel from "./../components/BannerCarousel";
 // import Constants from "expo-constants";
+import { MealsListItem } from "../components/MealListItems";
 class Home extends React.Component {
   state = {
     colorViewOpen: false,
@@ -23,6 +24,7 @@ class Home extends React.Component {
   async componentDidMount() {
     try {
       this.props.getProfile();
+      this.props.getMeals();
     } catch (err) {
       console.log(err.message);
     }
@@ -38,6 +40,9 @@ class Home extends React.Component {
     }));
   };
   render() {
+    const { isLoading, meals } = this.props.user;
+    // console.log("isLoading", isLoading);
+    // console.log("meals", meals);
     return (
       <View
         style={{
@@ -127,20 +132,43 @@ class Home extends React.Component {
           </Body>
           <Right style={{ flex: 0 }} />
         </Header>
-        <BannerCarousel />
-        <Button onPress={() => this.props.navigation.navigate("Profile")}>
-          <Text>Profile</Text>
-        </Button>
-        <Button onPress={() => this.props.navigation.navigate("Wallet")}>
-          <Text>Wallet</Text>
-        </Button>
-        <Button onPress={this.toogleColorViewOpen}>
-          <Text>Colors</Text>
-        </Button>
-        <Button onPress={this._menu}>
-          <Text>Menu</Text>
-        </Button>
-
+        <FlatList
+          data={meals}
+          renderItem={({ item }) => <MealsListItem mealData={item} />}
+          keyExtractor={itemData => itemData._id}
+          onRefresh={() => {
+            this.props.getMeals();
+          }}
+          refreshing={isLoading}
+          ListHeaderComponent={<BannerCarousel />}
+          numColumns={2}
+        />
+        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+          <Button
+            style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
+            onPress={() => this.props.navigation.navigate("Profile")}
+          >
+            <Text>Profile</Text>
+          </Button>
+          <Button
+            style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
+            onPress={() => this.props.navigation.navigate("Wallet")}
+          >
+            <Text>Wallet</Text>
+          </Button>
+          <Button
+            style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
+            onPress={this.toogleColorViewOpen}
+          >
+            <Text>Colors</Text>
+          </Button>
+          <Button
+            style={{ flex: 1, justifyContent: "center", marginHorizontal: 2 }}
+            onPress={this._menu}
+          >
+            <Text>Menu</Text>
+          </Button>
+        </View>
         {this.state.colorViewOpen ? (
           <Colors toogleColorViewOpen={this.toogleColorViewOpen} />
         ) : null}
@@ -154,7 +182,8 @@ Home.navigationOptions = {
 
 const mapStateToProps = state => ({ user: state.user, profile: state.profile });
 const mapActionsToProps = {
-  getProfile: getProfile
+  getProfile: getProfile,
+  getMeals: getMeals
 };
 export default connect(
   mapStateToProps,

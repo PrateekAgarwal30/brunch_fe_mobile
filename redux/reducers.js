@@ -22,6 +22,12 @@ const userReducer = (state = initialState, action) => {
         isLoading: false,
         tech_addresses: action.payload
       };
+    case USER.GET_MEALS_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+        meals: action.payload
+      };
     case USER.GET_PROFILE_REJECTED:
     case PROFILE.GET_TP_ADDRESSES_SENT:
     case REGISTER.REGISTER_FULFILLED:
@@ -42,6 +48,8 @@ const userReducer = (state = initialState, action) => {
     case USER.LOGOUT_SENT:
     case USER.LOGOUT_FULFILLED:
     case USER.LOGOUT_REJECTED:
+    case USER.GET_MEALS_SENT:
+    case USER.GET_MEALS_REJECTED:
       return {
         ...state,
         ...action.payload
@@ -63,18 +71,18 @@ const profileReducer = (state = {}, action) => {
     case PROFILE.GET_USER_TRANSACTIONS_SENT:
       return {
         ...state,
-        isTransactionsLoading : true
+        isTransactionsLoading: true
       };
     case PROFILE.GET_USER_TRANSACTIONS_FULFILLED:
       return {
         ...state,
-        isTransactionsLoading : false,
-        transactions : action.payload
+        isTransactionsLoading: false,
+        transactions: action.payload
       };
     case PROFILE.GET_USER_TRANSACTIONS_REJECTED:
       return {
         ...state,
-        isTransactionsLoading : false
+        isTransactionsLoading: false
       };
     default:
       // console.log(action.type);

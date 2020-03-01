@@ -23,10 +23,11 @@ export const PROFILE = {
   SAVE_OFFICE_ADDRESS_FOR_USER_SENT: "SAVE_OFFICE_ADDRESS_FOR_USER_SENT",
   SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED:
     "SAVE_OFFICE_ADDRESS_FOR_USER_FULFILLED",
-  SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED: "SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED",
+  SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED:
+    "SAVE_OFFICE_ADDRESS_FOR_USER_REJECTED",
   GET_USER_TRANSACTIONS_SENT: "GET_USER_TRANSACTIONS_SENT",
   GET_USER_TRANSACTIONS_FULFILLED: "GET_USER_TRANSACTIONS_FULFILLED",
-  GET_USER_TRANSACTIONS_REJECTED: "GET_USER_TRANSACTIONS_REJECTED",
+  GET_USER_TRANSACTIONS_REJECTED: "GET_USER_TRANSACTIONS_REJECTED"
 };
 export const USER = {
   GET_PROFILE_SENT: "GET_PROFILE_SENT",
@@ -37,7 +38,10 @@ export const USER = {
   CHANGE_PASS_REJECTED: "CHANGE_PASS_REJECTED",
   LOGOUT_SENT: "LOGOUT_SENT",
   LOGOUT_FULFILLED: "LOGOUT_FULFILLED",
-  LOGOUT_REJECTED: "LOGOUT_REJECTED"
+  LOGOUT_REJECTED: "LOGOUT_REJECTED",
+  GET_MEALS_SENT: "GET_MEALS_SENT",
+  GET_MEALS_FULFILLED: "GET_MEALS_FULFILLED",
+  GET_MEALS_REJECTED: "GET_MEALS_REJECTED"
 };
 
 export const textChange = () => dispatch => {
@@ -225,7 +229,10 @@ export const updateProfile = Obj => async dispatch => {
   }
 };
 
-export const getTechAddresses = (searchAddressQuery, initialLoad) => async dispatch => {
+export const getTechAddresses = (
+  searchAddressQuery,
+  initialLoad
+) => async dispatch => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
@@ -233,8 +240,10 @@ export const getTechAddresses = (searchAddressQuery, initialLoad) => async dispa
       payload: {
         isLoading: initialLoad
       }
-    })
-    const url = `${ipAddress}/api/general/techparks${searchAddressQuery ? ('?searchAddressQuery='+searchAddressQuery):""}`;
+    });
+    const url = `${ipAddress}/api/general/techparks${
+      searchAddressQuery ? "?searchAddressQuery=" + searchAddressQuery : ""
+    }`;
     const res = await fetch(url, {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -331,7 +340,7 @@ export const _uploadImage = async uploadUrl => {
 export const pushNotifToken = async token => {
   try {
     const jwtToken = await AsyncStorage.getItem("authToken");
-    const bodyData = { "pushNotificationToken" : token };
+    const bodyData = { pushNotificationToken: token };
     const res = await fetch(`${ipAddress}/api/me/user_push_notif_token`, {
       method: "post",
       headers: {
@@ -341,10 +350,10 @@ export const pushNotifToken = async token => {
       body: JSON.stringify(bodyData)
     });
     const data = await res.json();
-    console.log("DATA",data);
+    console.log("DATA", data);
     return Promise.resolve(data);
   } catch (err) {
-    console.log("ERROR",err.message);
+    console.log("ERROR", err.message);
     return Promise.reject(err.message);
   }
 };
@@ -354,7 +363,7 @@ export const getUserTransactions = () => async dispatch => {
     const jwtToken = await AsyncStorage.getItem("authToken");
     dispatch({
       type: PROFILE.GET_USER_TRANSACTIONS_SENT
-    })
+    });
     const url = `${ipAddress}/api/me/transactions`;
     const res = await fetch(url, {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -376,6 +385,39 @@ export const getUserTransactions = () => async dispatch => {
         payload: { err: result._message, isLoading: false }
       });
       return Promise.resolve("REJECTED");
+    }
+  } catch (error) {
+    return Promise.reject(error.message);
+  }
+};
+
+export const getMeals = () => async dispatch => {
+  try {
+    const jwtToken = await AsyncStorage.getItem("authToken");
+    dispatch({
+      type: USER.GET_MEALS_SENT,
+      payload: {
+        isLoading: true
+      }
+    });
+    const res = await fetch(ipAddress + "/api/general/meals", {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": jwtToken
+      }
+    });
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: USER.GET_MEALS_FULFILLED,
+        payload: result._data
+      });
+    } else {
+      dispatch({
+        type: USER.GET_MEALS_REJECTED,
+        payload: { err: result._message, isLoading: false }
+      });
     }
   } catch (error) {
     return Promise.reject(error.message);
