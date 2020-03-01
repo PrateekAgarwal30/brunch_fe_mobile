@@ -8,7 +8,7 @@ import { withAppContextConsumer } from "./../components/AppContext";
 import Colors from "./../components/Colors";
 import BannerCarousel from "./../components/BannerCarousel";
 // import Constants from "expo-constants";
-import { MealsListItem } from "../components/MealListItems";
+import { MealsListItem, NoMealsListItem } from "../components/MealListItems";
 class Home extends React.Component {
   state = {
     colorViewOpen: false,
@@ -142,6 +142,7 @@ class Home extends React.Component {
           refreshing={isLoading}
           ListHeaderComponent={<BannerCarousel />}
           numColumns={2}
+          ListEmptyComponent={<NoMealsListItem />}
         />
         <View
           style={{
