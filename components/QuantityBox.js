@@ -1,14 +1,43 @@
-import { Text, View, Alert } from "react-native";
+import { Text, View, Alert, AsyncStorage } from "react-native";
 import { Button } from "native-base";
 import React from "react";
 import * as Animatable from "react-native-animatable";
+import _ from "lodash";
 export default class QuantityBox extends React.Component {
-  state = {
-    quantity: 0
-  };
-  handleQty = x => {
-    // console.log(x);
+  constructor(props) {
+    super(props);
+    this.state = {
+      quantity: 0,
+      mealId: props.mealId
+    };
+  }
+  async componentDidMount() {
+    const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
+    const cart = JSON.parse(cartAsync);
+    let cartItem = _.find(cart, _.matchesProperty("mealId", this.state.mealId));
+    if (cartItem) {
+      this.setState({ ...this.state, quantity: cartItem.quantity });
+    }
+  }
+  handleQty = async x => {
     if (x === "-" && this.state.quantity !== 0) {
+      const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
+      let cart = JSON.parse(cartAsync);
+      let cartItem = _.find(
+        cart,
+        _.matchesProperty("mealId", this.state.mealId)
+      );
+      if (cartItem) {
+        const cartItemIndex = _.findIndex(cart, cartItem);
+        if (cartItem.quantity > 1) {
+          cartItem.quantity -= 1;
+          cart[cartItemIndex] = cartItem;
+        } else {
+          cart = _.filter(cart, item => item.mealId !== cartItem.mealId);
+        }
+      }
+      // console.log(cart);
+      AsyncStorage.setItem("cart", JSON.stringify(cart));
       this.setState(prevState => ({
         ...prevState,
         quantity: prevState.quantity - 1
@@ -17,10 +46,26 @@ export default class QuantityBox extends React.Component {
       if (this.state.quantity >= 5) {
         Alert.alert("Max 5 same meals can be ordered in a order.");
       } else {
-        this.setState(prevState => ({
-          ...prevState,
-          quantity: prevState.quantity + 1
-        }));
+        const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
+        const cart = JSON.parse(cartAsync);
+        let cartItem = _.find(
+          cart,
+          _.matchesProperty("mealId", this.state.mealId)
+        );
+        if (cartItem) {
+          const cartItemIndex = _.findIndex(cart, cartItem);
+          cartItem.quantity += 1;
+          cart[cartItemIndex] = cartItem;
+        } else {
+          cartItem = {
+            mealId: this.state.mealId,
+            quantity: 1
+          };
+          cart.push(cartItem);
+        }
+        // console.log(cart);
+        AsyncStorage.setItem("cart", JSON.stringify(cart));
+        this.setState({ ...this.state, quantity: cartItem.quantity });
       }
     }
   };
