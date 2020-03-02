@@ -148,7 +148,7 @@ class Home extends React.Component {
                   paddingRight: 12.5,
                   minWidth: 45
                 }}
-                onPress={() => this.props.navigation.openDrawer()}
+                onPress={() => this.props.navigation.navigate("Cart")}
               >
                 <Icon
                   name="cart"

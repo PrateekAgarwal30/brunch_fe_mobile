@@ -41,7 +41,10 @@ export const USER = {
   LOGOUT_REJECTED: "LOGOUT_REJECTED",
   GET_MEALS_SENT: "GET_MEALS_SENT",
   GET_MEALS_FULFILLED: "GET_MEALS_FULFILLED",
-  GET_MEALS_REJECTED: "GET_MEALS_REJECTED"
+  GET_MEALS_REJECTED: "GET_MEALS_REJECTED",
+  POST_CART_ITEMS_SENT: "POST_CART_ITEMS_SENT",
+  POST_CART_ITEMS_FULFILLED: "POST_CART_ITEMS_FULFILLED",
+  POST_CART_ITEMS_REJECTED: "POST_CART_ITEMS_REJECTED"
 };
 
 export const textChange = () => dispatch => {
@@ -419,6 +422,34 @@ export const getMeals = () => async dispatch => {
         payload: { err: result._message, isLoading: false }
       });
     }
+  } catch (error) {
+    return Promise.reject(error.message);
+  }
+};
+
+export const postCartItems = items => async dispatch => {
+  try {
+    dispatch({ type: USER.POST_CART_ITEMS_SENT, payload: { isLoading: true } });
+    const res = await fetch(ipAddress + "/api/general/cart", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cartItems: items }) // body data type must match "Content-Type" header
+    });
+    const result = await res.json();
+    if (result._status === "success") {
+      dispatch({
+        type: USER.POST_CART_ITEMS_FULFILLED,
+        payload: result._data
+      });
+    } else {
+      dispatch({
+        type: USER.POST_CART_ITEMS_REJECTED,
+        payload: { err: result._message }
+      });
+    }
+    return Promise.resolve();
   } catch (error) {
     return Promise.reject(error.message);
   }

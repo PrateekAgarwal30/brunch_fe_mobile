@@ -28,6 +28,22 @@ const userReducer = (state = initialState, action) => {
         isLoading: false,
         meals: action.payload
       };
+    case USER.POST_CART_ITEMS_SENT:
+      return {
+        ...state,
+        isCartLoading: true
+      };
+    case USER.POST_CART_ITEMS_FULFILLED:
+      return {
+        ...state,
+        isCartLoading: false,
+        cart: action.payload
+      };
+    case USER.POST_CART_ITEMS_REJECTED:
+      return {
+        ...state,
+        isCartLoading: false
+      };
     case USER.GET_PROFILE_REJECTED:
     case PROFILE.GET_TP_ADDRESSES_SENT:
     case REGISTER.REGISTER_FULFILLED:

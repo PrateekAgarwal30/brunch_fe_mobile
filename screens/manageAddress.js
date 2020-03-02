@@ -69,7 +69,7 @@ class ManageAddress extends React.Component {
         style={{
           flex: 1,
           zIndex: 0,
-          backgroundColor: "white"
+          backgroundColor: "#EDEEF1"
         }}
       >
         <LinearGradient
