@@ -9,10 +9,13 @@ import Colors from "./../components/Colors";
 import BannerCarousel from "./../components/BannerCarousel";
 // import Constants from "expo-constants";
 import { MealsListItem, NoMealsListItem } from "../components/MealListItems";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Animatable from "react-native-animatable";
 class Home extends React.Component {
   state = {
     colorViewOpen: false,
-    searchText: ""
+    searchText: "",
+    searcToolVisiable: false
   };
 
   toogleColorViewOpen = () => {
@@ -41,8 +44,7 @@ class Home extends React.Component {
   };
   render() {
     const { isLoading, meals } = this.props.user;
-    // console.log("isLoading", isLoading);
-    // console.log("meals", meals);
+    const { themes } = this.props;
     return (
       <View
         style={{
@@ -51,46 +53,128 @@ class Home extends React.Component {
           backgroundColor: "#EDEEF1"
         }}
       >
-        <Header
-          transparent
-          style={{ alignContent: "flex-start", marginBottom: 5 }}
+        <LinearGradient
+          colors={[themes["light"].secondary, themes["light"].primary]}
+          style={{
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            elevation: 2,
+            marginBottom: 5
+          }}
         >
-          <Left style={{ flex: 1 }}>
-            <Button
-              transparent
-              style={{
-                marginTop: 5,
-                marginLeft: 2.5,
-                paddingLeft: 12.5,
-                paddingRight: 12.5,
-                backgroundColor: "#16235A",
-                minWidth: 45
-              }}
-              onPress={() => this.props.navigation.openDrawer()}
-            >
-              <Icon
-                name="menu"
+          <Header transparent>
+            <Left style={{ flex: 1 }}>
+              <Button
+                transparent
                 style={{
-                  color: "#E1E0E2",
-                  fontSize: 20,
-                  margin: 0,
-                  padding: 0
+                  marginTop: 5,
+                  marginLeft: 2.5,
+                  paddingLeft: 12.5,
+                  paddingRight: 12.5,
+                  minWidth: 45
                 }}
-              />
-            </Button>
-          </Left>
-          <Body
-            style={{
-              flex: 6
-            }}
-          >
-            <Card
-              padd
+                onPress={() => this.props.navigation.openDrawer()}
+              >
+                <Icon
+                  name="menu"
+                  style={{
+                    color: "#E1E0E2",
+                    fontSize: 25,
+                    margin: 0,
+                    padding: 0
+                  }}
+                />
+              </Button>
+            </Left>
+            <Body
+              style={{
+                flex: 6
+              }}
+            ></Body>
+            <Right style={{ flex: 2 }}>
+              <Button
+                transparent
+                style={{
+                  marginTop: 5,
+                  marginLeft: 2.5,
+                  paddingLeft: 12.5,
+                  paddingRight: 12.5,
+                  minWidth: 45
+                }}
+                onPress={() => this.props.navigation.openDrawer()}
+              >
+                <Icon
+                  name="heart"
+                  style={{
+                    color: "#E1E0E2",
+                    fontSize: 25,
+                    margin: 0,
+                    padding: 0
+                  }}
+                />
+              </Button>
+              <Button
+                transparent
+                style={{
+                  marginTop: 5,
+                  marginLeft: 2.5,
+                  paddingLeft: 12.5,
+                  paddingRight: 12.5,
+                  minWidth: 45
+                }}
+                onPress={() =>
+                  this.setState({
+                    ...this.state,
+                    searcToolVisiable: !this.state.searcToolVisiable
+                  })
+                }
+              >
+                <Icon
+                  name="search"
+                  style={{
+                    color: "#E1E0E2",
+                    fontSize: 25,
+                    margin: 0,
+                    padding: 0
+                  }}
+                />
+              </Button>
+              <Button
+                transparent
+                style={{
+                  marginTop: 5,
+                  marginLeft: 2.5,
+                  paddingLeft: 12.5,
+                  paddingRight: 12.5,
+                  minWidth: 45
+                }}
+                onPress={() => this.props.navigation.openDrawer()}
+              >
+                <Icon
+                  name="cart"
+                  style={{
+                    color: "#E1E0E2",
+                    fontSize: 25,
+                    margin: 0,
+                    padding: 0
+                  }}
+                />
+              </Button>
+            </Right>
+          </Header>
+          {this.state.searcToolVisiable ? (
+            <Animatable.View
               style={{
                 flexDirection: "row",
-                marginBottom: 0,
-                marginRight: 0
+                width: "90%",
+                justifyContent: "center",
+                alignSelf: "center",
+                backgroundColor: "#E1E0E2",
+                marginBottom: 5,
+                borderRadius: 10
               }}
+              animation={"zoomIn"}
+              duration={200}
             >
               <TextInput
                 style={{
@@ -128,10 +212,10 @@ class Home extends React.Component {
                   }}
                 />
               )}
-            </Card>
-          </Body>
-          <Right style={{ flex: 0 }} />
-        </Header>
+            </Animatable.View>
+          ) : null}
+        </LinearGradient>
+
         <FlatList
           data={meals}
           renderItem={({ item }) => <MealsListItem mealData={item} />}
