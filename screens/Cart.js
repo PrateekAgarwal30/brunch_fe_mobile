@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, AsyncStorage, ActivityIndicator } from "react-native";
 import { connect } from "react-redux";
 import { withAppContextConsumer } from "../components/AppContext";
-import { postCartItems } from "../redux/actions";
+import { postCartItems, clearCartItems } from "../redux/actions";
 class Cart extends React.Component {
   state = {
     cartItems: []
@@ -13,11 +13,14 @@ class Cart extends React.Component {
       const cartItems = JSON.parse(cart);
       await this.props.postCartItems(cartItems);
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
   }
+  componentWillUnmount() {
+    this.props.clearCartItems();
+  }
   render() {
-    const {cart} = this.props.user;
+    const { cart } = this.props.user;
     // console.log(cart);
     return (
       <View>
@@ -28,7 +31,8 @@ class Cart extends React.Component {
 }
 const mapStateToProps = state => ({ profile: state.profile, user: state.user });
 const mapActionsToProps = {
-  postCartItems: postCartItems
+  postCartItems: postCartItems,
+  clearCartItems: clearCartItems
 };
 export default connect(
   mapStateToProps,

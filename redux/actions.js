@@ -44,7 +44,8 @@ export const USER = {
   GET_MEALS_REJECTED: "GET_MEALS_REJECTED",
   POST_CART_ITEMS_SENT: "POST_CART_ITEMS_SENT",
   POST_CART_ITEMS_FULFILLED: "POST_CART_ITEMS_FULFILLED",
-  POST_CART_ITEMS_REJECTED: "POST_CART_ITEMS_REJECTED"
+  POST_CART_ITEMS_REJECTED: "POST_CART_ITEMS_REJECTED",
+  CLEAR_CART_ITEMS: "CLEAR_CART_ITEMS"
 };
 
 export const textChange = () => dispatch => {
@@ -452,5 +453,13 @@ export const postCartItems = items => async dispatch => {
     return Promise.resolve();
   } catch (error) {
     return Promise.reject(error.message);
+  }
+};
+
+export const clearCartItems = () => dispatch => {
+  try {
+    dispatch({ type: USER.CLEAR_CART_ITEMS });
+  } catch (error) {
+    console.log("clearCartItems", error.message);
   }
 };

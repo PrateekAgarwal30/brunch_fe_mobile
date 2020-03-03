@@ -44,6 +44,12 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isCartLoading: false
       };
+    case USER.CLEAR_CART_ITEMS:
+      return {
+        ...state,
+        isCartLoading: false,
+        cart: null
+      };
     case USER.GET_PROFILE_REJECTED:
     case PROFILE.GET_TP_ADDRESSES_SENT:
     case REGISTER.REGISTER_FULFILLED:
