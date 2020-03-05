@@ -71,7 +71,7 @@ export const MealsListItem = ({ mealData }) => {
           >
             {mealData.price} ₹
           </Text>
-          <QuantityBox mealId={mealData._id} />
+          <QuantityBox mealId={mealData._id} quantity={mealData.quantity} />
         </View>
       </Animatable.View>
     </View>

@@ -3,29 +3,15 @@ import { Button } from "native-base";
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import _ from "lodash";
+import appEventEmitter from "../utils/eventUtil";
 export default class QuantityBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quantity: 0,
-      mealId: props.mealId
-    };
-  }
-  async componentDidMount() {
-    const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
-    const cart = JSON.parse(cartAsync);
-    let cartItem = _.find(cart, _.matchesProperty("mealId", this.state.mealId));
-    if (cartItem) {
-      this.setState({ ...this.state, quantity: cartItem.quantity });
-    }
-  }
   handleQty = async x => {
-    if (x === "-" && this.state.quantity !== 0) {
+    if (x === "-" && this.props.quantity !== 0) {
       const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
       let cart = JSON.parse(cartAsync);
       let cartItem = _.find(
         cart,
-        _.matchesProperty("mealId", this.state.mealId)
+        _.matchesProperty("mealId", this.props.mealId)
       );
       if (cartItem) {
         const cartItemIndex = _.findIndex(cart, cartItem);
@@ -36,21 +22,18 @@ export default class QuantityBox extends React.Component {
           cart = _.filter(cart, item => item.mealId !== cartItem.mealId);
         }
       }
-      // console.log(cart);
-      AsyncStorage.setItem("cart", JSON.stringify(cart));
-      this.setState(prevState => ({
-        ...prevState,
-        quantity: prevState.quantity - 1
-      }));
+      AsyncStorage.setItem("cart", JSON.stringify(cart)).then(() => {
+        appEventEmitter.emit("cartUpdated");
+      });
     } else if (x === "+") {
-      if (this.state.quantity >= 5) {
+      if (this.props.quantity >= 5) {
         Alert.alert("Max 5 same meals can be ordered in a order.");
       } else {
         const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
         const cart = JSON.parse(cartAsync);
         let cartItem = _.find(
           cart,
-          _.matchesProperty("mealId", this.state.mealId)
+          _.matchesProperty("mealId", this.props.mealId)
         );
         if (cartItem) {
           const cartItemIndex = _.findIndex(cart, cartItem);
@@ -58,19 +41,19 @@ export default class QuantityBox extends React.Component {
           cart[cartItemIndex] = cartItem;
         } else {
           cartItem = {
-            mealId: this.state.mealId,
+            mealId: this.props.mealId,
             quantity: 1
           };
           cart.push(cartItem);
         }
-        // console.log(cart);
-        AsyncStorage.setItem("cart", JSON.stringify(cart));
-        this.setState({ ...this.state, quantity: cartItem.quantity });
+        AsyncStorage.setItem("cart", JSON.stringify(cart)).then(() => {
+          appEventEmitter.emit("cartUpdated");
+        });
       }
     }
   };
   render() {
-    if (this.state.quantity === 0) {
+    if (this.props.quantity === 0) {
       return (
         <View
           style={{
@@ -91,7 +74,7 @@ export default class QuantityBox extends React.Component {
           >
             <Text
               style={{
-                color: this.state.quantity === 5 ? "grey" : "#E19D40",
+                color: this.props.quantity === 5 ? "grey" : "#E19D40",
                 fontSize: 16,
                 fontWeight: "bold"
               }}
@@ -122,7 +105,7 @@ export default class QuantityBox extends React.Component {
           >
             <Text
               style={{
-                color: this.state.quantity === 0 ? "grey" : "#E19D40",
+                color: this.props.quantity === 0 ? "grey" : "#E19D40",
                 fontSize: 16,
                 fontWeight: "bold"
               }}
@@ -142,7 +125,7 @@ export default class QuantityBox extends React.Component {
             }}
           >
             <Text style={{ color: "white", fontSize: 16, fontWeight: "200" }}>
-              {this.state.quantity}
+              {this.props.quantity}
             </Text>
           </Animatable.View>
           <Button
@@ -152,7 +135,7 @@ export default class QuantityBox extends React.Component {
           >
             <Text
               style={{
-                color: this.state.quantity === 5 ? "grey" : "#E19D40",
+                color: this.props.quantity === 5 ? "grey" : "#E19D40",
                 fontSize: 16,
                 fontWeight: "bold"
               }}

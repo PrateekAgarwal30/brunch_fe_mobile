@@ -1,30 +1,58 @@
 import React from "react";
-import { View, Text, AsyncStorage, ActivityIndicator } from "react-native";
+import { View, AsyncStorage, FlatList } from "react-native";
 import { connect } from "react-redux";
 import { withAppContextConsumer } from "../components/AppContext";
 import { postCartItems, clearCartItems } from "../redux/actions";
+import { MealsListItem, NoMealsListItem } from "../components/MealListItems";
+import appEventEmitter from "../utils/eventUtil";
 class Cart extends React.Component {
-  state = {
-    cartItems: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      mealsWithQuantityFromCart: []
+    };
+    this.onCartUpdate = this.onCartUpdate;
+  }
+
+  onCartUpdate = async () => {
+    const cart = (await AsyncStorage.getItem("cart")) || "[]";
+    const cartItems = JSON.parse(cart);
+    await this.props.postCartItems(cartItems);
   };
+
   async componentDidMount() {
     try {
       const cart = (await AsyncStorage.getItem("cart")) || "[]";
       const cartItems = JSON.parse(cart);
       await this.props.postCartItems(cartItems);
+      appEventEmitter.on("cartUpdated", this.onCartUpdate);
     } catch (error) {
       console.log(error.message);
     }
   }
+
   componentWillUnmount() {
     this.props.clearCartItems();
+    appEventEmitter.removeEventListener("cartUpdated", this.onCartUpdate);
   }
+
   render() {
-    const { cart } = this.props.user;
+    const { cart, isCartLoading } = this.props.user;
     // console.log(cart);
     return (
       <View>
-        <Text>{JSON.stringify(cart)}</Text>
+        <FlatList
+          data={cart ? cart.cartItems || [] : []}
+          renderItem={({ item }) => <MealsListItem mealData={item} />}
+          keyExtractor={itemData => itemData._id}
+          onRefresh={() => {
+            this.props.postCartItems();
+          }}
+          refreshing={isCartLoading || false}
+          // ListHeaderComponent={<BannerCarousel />}
+          numColumns={2}
+          ListEmptyComponent={<NoMealsListItem />}
+        />
       </View>
     );
   }
