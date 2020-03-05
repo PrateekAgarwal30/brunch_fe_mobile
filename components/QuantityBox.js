@@ -72,7 +72,8 @@ export default class QuantityBox extends React.Component {
             style={{ flex: 2, height: 25, justifyContent: "center" }}
             onPress={() => this.handleQty("+")}
           >
-            <Text
+            <Animatable.Text
+              animation="bounceIn"
               style={{
                 color: this.props.quantity === 5 ? "grey" : "#E19D40",
                 fontSize: 16,
@@ -80,7 +81,7 @@ export default class QuantityBox extends React.Component {
               }}
             >
               Buy
-            </Text>
+            </Animatable.Text>
           </Button>
         </View>
       );
@@ -124,9 +125,12 @@ export default class QuantityBox extends React.Component {
               backgroundColor: "#E19D40"
             }}
           >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "200" }}>
+            <Animatable.Text
+              animation="fadeIn"
+              style={{ color: "white", fontSize: 16, fontWeight: "200" }}
+            >
               {this.props.quantity}
-            </Text>
+            </Animatable.Text>
           </Animatable.View>
           <Button
             transparent
