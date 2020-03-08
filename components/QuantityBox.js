@@ -4,7 +4,8 @@ import React from "react";
 import * as Animatable from "react-native-animatable";
 import _ from "lodash";
 import appEventEmitter from "../utils/eventUtil";
-export default class QuantityBox extends React.Component {
+import { withAppContextConsumer } from "./AppContext";
+class QuantityBox extends React.Component {
   handleQty = async x => {
     if (x === "-" && this.props.quantity !== 0) {
       const cartAsync = (await AsyncStorage.getItem("cart")) || "[]";
@@ -53,6 +54,7 @@ export default class QuantityBox extends React.Component {
     }
   };
   render() {
+    const { themes } = this.props;
     if (this.props.quantity === 0) {
       return (
         <View
@@ -60,7 +62,7 @@ export default class QuantityBox extends React.Component {
             flex: 7,
             flexDirection: "row",
             height: 30,
-            borderColor: "#E19D40",
+            borderColor: themes["light"].primary,
             borderWidth: 1.5,
             maxWidth: 70,
             borderRadius: 5,
@@ -75,7 +77,8 @@ export default class QuantityBox extends React.Component {
             <Animatable.Text
               animation="bounceIn"
               style={{
-                color: this.props.quantity === 5 ? "grey" : "#E19D40",
+                color:
+                  this.props.quantity === 5 ? "grey" : themes["light"].primary,
                 fontSize: 16,
                 fontWeight: "bold"
               }}
@@ -92,7 +95,7 @@ export default class QuantityBox extends React.Component {
             flex: 7,
             flexDirection: "row",
             height: 30,
-            borderColor: "#E19D40",
+            borderColor: themes["light"].primary,
             borderWidth: 1.5,
             maxWidth: 70,
             borderRadius: 5,
@@ -106,7 +109,8 @@ export default class QuantityBox extends React.Component {
           >
             <Text
               style={{
-                color: this.props.quantity === 0 ? "grey" : "#E19D40",
+                color:
+                  this.props.quantity === 0 ? "grey" : themes["light"].primary,
                 fontSize: 16,
                 fontWeight: "bold"
               }}
@@ -122,7 +126,7 @@ export default class QuantityBox extends React.Component {
               height: 26.5,
               justifyContent: "center",
               alignItems: "center",
-              backgroundColor: "#E19D40"
+              backgroundColor: themes["light"].primary
             }}
           >
             <Animatable.Text
@@ -139,7 +143,8 @@ export default class QuantityBox extends React.Component {
           >
             <Text
               style={{
-                color: this.props.quantity === 5 ? "grey" : "#E19D40",
+                color:
+                  this.props.quantity === 5 ? "grey" : themes["light"].primary,
                 fontSize: 16,
                 fontWeight: "bold"
               }}
@@ -152,3 +157,5 @@ export default class QuantityBox extends React.Component {
     }
   }
 }
+
+export default withAppContextConsumer(QuantityBox);
