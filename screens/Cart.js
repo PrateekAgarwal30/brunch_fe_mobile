@@ -5,7 +5,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Header, Body, Button, Icon, Left, Right } from "native-base";
 import { withAppContextConsumer } from "../components/AppContext";
 import { postCartItems, clearCartItems } from "../redux/actions";
-import { CartListItem, NoCartListItem } from "../components/CartListItems";
+import {
+  CartListItem,
+  NoCartListItem,
+  CartAmountDetails
+} from "../components/CartListItems";
 import appEventEmitter from "../utils/eventUtil";
 import _ from "lodash";
 class Cart extends React.Component {
@@ -43,6 +47,7 @@ class Cart extends React.Component {
     const { themes } = this.props;
     const { cart, isCartLoading } = this.props.user;
     const cartData = _.get(cart, "cartItems", []) || [];
+    const priceDetails = _.get(cart, "priceDetails", {}) || {};
     return (
       <View
         style={{
@@ -56,7 +61,8 @@ class Cart extends React.Component {
           style={{
             borderBottomLeftRadius: 25,
             borderBottomRightRadius: 25,
-            elevation: 2
+            elevation: 2,
+            marginBottom: 5
           }}
         >
           <Header transparent>
@@ -90,6 +96,9 @@ class Cart extends React.Component {
           }}
           refreshing={isCartLoading || false}
           ListEmptyComponent={<NoCartListItem />}
+          ListFooterComponent={
+            <CartAmountDetails priceDetails={priceDetails} />
+          }
         />
         {cartData.length ? (
           <Button

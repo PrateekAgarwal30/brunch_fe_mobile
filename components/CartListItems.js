@@ -3,6 +3,7 @@ import * as Animatable from "react-native-animatable";
 import { Text, View, Dimensions } from "react-native";
 import { ipAddress } from "../constants";
 import QuantityBox from "./QuantityBox";
+import _ from "lodash";
 import {
   Placeholder,
   PlaceholderMedia,
@@ -11,7 +12,6 @@ import {
 } from "rn-placeholder";
 const { width } = Dimensions.get("screen");
 export const CartListItem = ({ mealData }) => {
-  console.log(mealData);
   return (
     <View
       style={{
@@ -210,6 +210,51 @@ export const NoCartListItem = () => {
           </View>
         </View>
       </Placeholder>
+    </View>
+  );
+};
+
+export const CartAmountDetails = ({ priceDetails }) => {
+  if (_.isEqual(priceDetails, {})) {
+    return null;
+  }
+  return (
+    <View
+      style={{
+        backgroundColor: "white",
+        marginVertical: 5,
+        marginHorizontal: 7.5,
+        borderRadius: 10,
+        padding: 10
+      }}
+    >
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text>Items Total</Text>
+        <Text style={{ fontWeight: "bold" }}>
+          {(priceDetails.totalCartItemPrice || 0).toFixed(2)}
+        </Text>
+      </View>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text>Taxes</Text>
+        <Text style={{ fontWeight: "bold" }}>
+          {(priceDetails.taxAmount || 0).toFixed(2)}
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingTop: 3,
+          marginTop: 3,
+          borderTopColor: "grey",
+          borderTopWidth: 1
+        }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>Grand Total</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          {(priceDetails.totalCartPrice || 0).toFixed(2)}
+        </Text>
+      </View>
     </View>
   );
 };
