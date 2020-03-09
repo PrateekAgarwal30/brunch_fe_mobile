@@ -1,7 +1,6 @@
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import { Text, View, Dimensions } from "react-native";
-import { ipAddress } from "../constants";
 import QuantityBox from "./QuantityBox";
 import _ from "lodash";
 import {
@@ -27,7 +26,7 @@ export const CartListItem = ({ mealData }) => {
         style={{ flexDirection: "row", alignItems: "center" }}
       >
         <Animatable.Image
-          source={{ uri: `${ipAddress}/${mealData.mealThumbnailUrl}` }}
+          source={{ uri: `${mealData.mealThumbnailUrl}` }}
           style={{ height: 75, width: 105, borderRadius: 10 }}
           iterationCount={1}
           animation={"fadeIn"}

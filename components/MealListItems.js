@@ -1,7 +1,6 @@
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import { Text, View, TouchableHighlight, Dimensions } from "react-native";
-import { ipAddress } from "../constants";
 import QuantityBox from "./QuantityBox";
 import {
   Placeholder,
@@ -33,7 +32,7 @@ export const MealsListItem = ({ mealData }) => {
         >
           <View>
             <Animatable.Image
-              source={{ uri: `${ipAddress}/${mealData.mealImageUrl}` }}
+              source={{ uri: `${mealData.mealImageUrl}` }}
               style={{ height: 125, width: "100%", borderRadius: 10 }}
               iterationCount={1}
               animation={"fadeIn"}
