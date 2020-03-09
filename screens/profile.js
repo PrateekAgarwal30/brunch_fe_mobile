@@ -14,7 +14,6 @@ import { logOut, getProfile } from "../redux/actions";
 import { Icon, Card } from "native-base";
 import _ from "lodash";
 import CustomImagePicker from "../components/CustomImagePicker";
-import { ipAddress } from "../constants";
 class Profile extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -73,10 +72,8 @@ class Profile extends React.Component {
       <View style={styles.container}>
         <View style={styles.header} />
         <CustomImagePicker
-          imageUrl={imageUrl ? `${ipAddress}\\${imageUrl}` : null}
-          imageThumbnail={
-            imageThumbnail ? `${ipAddress}\\${imageThumbnail}` : null
-          }
+          imageUrl={imageUrl ? `${imageUrl}` : null}
+          imageThumbnail={imageThumbnail ? `${imageThumbnail}` : null}
           onUploadImageSuccess={this._onUploadImageSuccess}
         />
         <View style={styles.body}>
