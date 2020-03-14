@@ -418,7 +418,8 @@ class Wallet extends React.Component {
               renderItem={({ item }) => <TxnListItem txnData={item} />}
               stickySectionHeadersEnabled={true}
               ListEmptyComponent={<NoTxnFound />}
-              initialNumToRender={2}
+              initialNumToRender={1}
+              showsVerticalScrollIndicator={false}
               // ListFooterComponent={(<Text>{`End of Transactions`}</Text>)}
               // ListHeaderComponent={(<Text>ListHeaderComponent</Text>)}
               contentContainerStyle={{ paddingBottom: 10 }}

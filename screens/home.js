@@ -258,6 +258,7 @@ class Home extends React.Component {
           ListHeaderComponent={<BannerCarousel />}
           numColumns={2}
           ListEmptyComponent={<NoMealsListItem />}
+          showsVerticalScrollIndicator={false}
         />
         <View
           style={{

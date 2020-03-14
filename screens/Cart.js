@@ -10,6 +10,7 @@ import {
   NoCartListItem,
   CartAmountDetails
 } from "../components/CartListItems";
+import { MealsListItem } from "../components/MealListItems";
 import appEventEmitter from "../utils/eventUtil";
 import _ from "lodash";
 class Cart extends React.Component {
@@ -98,6 +99,19 @@ class Cart extends React.Component {
           ListEmptyComponent={<NoCartListItem />}
           ListFooterComponent={
             <CartAmountDetails priceDetails={priceDetails} />
+          }
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View style={{ marginBottom: 2 }}>
+              <Text>Add Ons</Text>
+              <FlatList
+                data={_.get(this, "props.user.meals", []) || []}
+                renderItem={({ item }) => <MealsListItem mealData={item} />}
+                keyExtractor={itemData => itemData._id}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
           }
         />
         {cartData.length ? (
