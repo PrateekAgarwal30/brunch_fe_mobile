@@ -111,6 +111,7 @@ class Register extends React.Component {
         extraHeight={140}
         extraScrollHeight={30}
         style={{ flex: 1, backgroundColor: "#EDEEF1" }}
+        showsVerticalScrollIndicator={false}
       >
         <View style={{ backgroundColor: themes["light"].primary, flex: 1 }}>
           <View
